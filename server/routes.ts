@@ -1,7 +1,13 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertContactMessageSchema, insertArticleSchema } from "@shared/schema";
+import { 
+  insertContactMessageSchema, 
+  insertArticleSchema,
+  insertTestimonialSchema,
+  insertNewsletterSubscriberSchema,
+  insertCareerInquirySchema,
+} from "@shared/schema";
 import { fromZodError } from "zod-validation-error";
 import { setupAuth, isAuthenticated, isAdmin } from "./googleAuth";
 
@@ -63,6 +69,181 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({
         success: false,
         message: "Failed to fetch messages",
+      });
+    }
+  });
+
+  // Testimonials endpoints
+  app.get("/api/testimonials", async (req, res) => {
+    try {
+      const featuredOnly = req.query.featured === "true";
+      const testimonials = await storage.getAllTestimonials(featuredOnly);
+      res.json({
+        success: true,
+        data: testimonials,
+      });
+    } catch (error: any) {
+      console.error("Error fetching testimonials:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch testimonials",
+      });
+    }
+  });
+
+  app.post("/api/testimonials", isAdmin, async (req, res) => {
+    try {
+      const validatedData = insertTestimonialSchema.parse(req.body);
+      const testimonial = await storage.createTestimonial(validatedData);
+      
+      res.status(201).json({
+        success: true,
+        data: testimonial,
+      });
+    } catch (error: any) {
+      if (error.name === "ZodError") {
+        const validationError = fromZodError(error);
+        res.status(400).json({
+          success: false,
+          message: validationError.message,
+        });
+      } else {
+        console.error("Error creating testimonial:", error);
+        res.status(500).json({
+          success: false,
+          message: "Failed to create testimonial",
+        });
+      }
+    }
+  });
+
+  app.put("/api/testimonials/:id", isAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updated = await storage.updateTestimonial(id, req.body);
+      
+      if (!updated) {
+        return res.status(404).json({
+          success: false,
+          message: "Testimonial not found",
+        });
+      }
+      
+      res.json({
+        success: true,
+        data: updated,
+      });
+    } catch (error: any) {
+      console.error("Error updating testimonial:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to update testimonial",
+      });
+    }
+  });
+
+  app.delete("/api/testimonials/:id", isAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteTestimonial(id);
+      
+      res.json({
+        success: true,
+        message: "Testimonial deleted successfully",
+      });
+    } catch (error: any) {
+      console.error("Error deleting testimonial:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to delete testimonial",
+      });
+    }
+  });
+
+  // Newsletter subscription endpoints
+  app.post("/api/newsletter", async (req, res) => {
+    try {
+      const validatedData = insertNewsletterSubscriberSchema.parse(req.body);
+      const subscriber = await storage.createNewsletterSubscriber(validatedData);
+      
+      res.status(201).json({
+        success: true,
+        message: "Successfully subscribed to newsletter!",
+        data: subscriber,
+      });
+    } catch (error: any) {
+      if (error.name === "ZodError") {
+        const validationError = fromZodError(error);
+        res.status(400).json({
+          success: false,
+          message: validationError.message,
+        });
+      } else {
+        console.error("Error subscribing to newsletter:", error);
+        res.status(500).json({
+          success: false,
+          message: "Failed to subscribe. Please try again later.",
+        });
+      }
+    }
+  });
+
+  app.get("/api/newsletter", isAdmin, async (req, res) => {
+    try {
+      const subscribers = await storage.getAllNewsletterSubscribers();
+      res.json({
+        success: true,
+        data: subscribers,
+      });
+    } catch (error: any) {
+      console.error("Error fetching newsletter subscribers:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch subscribers",
+      });
+    }
+  });
+
+  // Career inquiries endpoints
+  app.post("/api/career", async (req, res) => {
+    try {
+      const validatedData = insertCareerInquirySchema.parse(req.body);
+      const inquiry = await storage.createCareerInquiry(validatedData);
+      
+      res.status(201).json({
+        success: true,
+        message: "Your inquiry has been submitted successfully!",
+        data: inquiry,
+      });
+    } catch (error: any) {
+      if (error.name === "ZodError") {
+        const validationError = fromZodError(error);
+        res.status(400).json({
+          success: false,
+          message: validationError.message,
+        });
+      } else {
+        console.error("Error creating career inquiry:", error);
+        res.status(500).json({
+          success: false,
+          message: "Failed to submit inquiry. Please try again later.",
+        });
+      }
+    }
+  });
+
+  app.get("/api/career", isAdmin, async (req, res) => {
+    try {
+      const inquiries = await storage.getAllCareerInquiries();
+      res.json({
+        success: true,
+        data: inquiries,
+      });
+    } catch (error: any) {
+      console.error("Error fetching career inquiries:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch inquiries",
       });
     }
   });

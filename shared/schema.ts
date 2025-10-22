@@ -119,3 +119,86 @@ export interface TimelineItem {
   company: string;
   description: string;
 }
+
+// Testimonials table
+export const testimonials = pgTable("testimonials", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  role: text("role").notNull(),
+  company: text("company").notNull(),
+  content: text("content").notNull(),
+  rating: integer("rating").notNull().default(5),
+  image: text("image"),
+  featured: boolean("featured").default(false).notNull(),
+  order: integer("order").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertTestimonialSchema = createInsertSchema(testimonials).omit({
+  id: true,
+  createdAt: true,
+}).extend({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  role: z.string().min(2, "Role must be at least 2 characters"),
+  company: z.string().min(2, "Company must be at least 2 characters"),
+  content: z.string().min(10, "Content must be at least 10 characters"),
+  rating: z.number().min(1).max(5),
+});
+
+export type Testimonial = typeof testimonials.$inferSelect;
+export type InsertTestimonial = z.infer<typeof insertTestimonialSchema>;
+
+// Newsletter subscribers table
+export const newsletterSubscribers = pgTable("newsletter_subscribers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  email: text("email").notNull().unique(),
+  name: text("name"),
+  subscribed: boolean("subscribed").default(true).notNull(),
+  subscribedAt: timestamp("subscribed_at").defaultNow().notNull(),
+  unsubscribedAt: timestamp("unsubscribed_at"),
+});
+
+export const insertNewsletterSubscriberSchema = createInsertSchema(newsletterSubscribers).omit({
+  id: true,
+  subscribedAt: true,
+  unsubscribedAt: true,
+}).extend({
+  email: z.string().email("Please enter a valid email address"),
+  name: z.string().optional(),
+});
+
+export type NewsletterSubscriber = typeof newsletterSubscribers.$inferSelect;
+export type InsertNewsletterSubscriber = z.infer<typeof insertNewsletterSubscriberSchema>;
+
+// Career inquiries table
+export const careerInquiries = pgTable("career_inquiries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  inquiryType: text("inquiry_type").notNull(),
+  message: text("message").notNull(),
+  resumeUrl: text("resume_url"),
+  linkedinUrl: text("linkedin_url"),
+  portfolioUrl: text("portfolio_url"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertCareerInquirySchema = createInsertSchema(careerInquiries).omit({
+  id: true,
+  createdAt: true,
+}).extend({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  phone: z.string().optional(),
+  inquiryType: z.enum(["freelance", "collaboration", "fulltime", "consulting", "other"], {
+    errorMap: () => ({ message: "Please select an inquiry type" }),
+  }),
+  message: z.string().min(20, "Message must be at least 20 characters"),
+  resumeUrl: z.string().url().optional().or(z.literal("")),
+  linkedinUrl: z.string().url().optional().or(z.literal("")),
+  portfolioUrl: z.string().url().optional().or(z.literal("")),
+});
+
+export type CareerInquiry = typeof careerInquiries.$inferSelect;
+export type InsertCareerInquiry = z.infer<typeof insertCareerInquirySchema>;

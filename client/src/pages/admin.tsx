@@ -4,10 +4,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Home, FileText, Mail, Newspaper, TrendingUp } from "lucide-react";
+import { Home, FileText, Mail, Newspaper, TrendingUp, Star, Briefcase } from "lucide-react";
 import { ArticleManager } from "@/components/admin/article-manager";
 import { ContactMessages } from "@/components/admin/contact-messages";
 import { DashboardOverview } from "@/components/admin/dashboard-overview";
+import { TestimonialManager } from "@/components/admin/testimonial-manager";
+import { NewsletterManager } from "@/components/admin/newsletter-manager";
+import { CareerInquiries } from "@/components/admin/career-inquiries";
 
 export default function AdminDashboard() {
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
@@ -57,7 +60,7 @@ export default function AdminDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-3 max-w-2xl">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 max-w-4xl">
             <TabsTrigger value="overview" className="gap-2">
               <TrendingUp className="h-4 w-4" />
               <span className="hidden sm:inline">Overview</span>
@@ -65,6 +68,18 @@ export default function AdminDashboard() {
             <TabsTrigger value="articles" className="gap-2">
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">Articles</span>
+            </TabsTrigger>
+            <TabsTrigger value="testimonials" className="gap-2">
+              <Star className="h-4 w-4" />
+              <span className="hidden sm:inline">Testimonials</span>
+            </TabsTrigger>
+            <TabsTrigger value="newsletter" className="gap-2">
+              <Newspaper className="h-4 w-4" />
+              <span className="hidden sm:inline">Newsletter</span>
+            </TabsTrigger>
+            <TabsTrigger value="career" className="gap-2">
+              <Briefcase className="h-4 w-4" />
+              <span className="hidden sm:inline">Career</span>
             </TabsTrigger>
             <TabsTrigger value="messages" className="gap-2">
               <Mail className="h-4 w-4" />
@@ -78,6 +93,18 @@ export default function AdminDashboard() {
 
           <TabsContent value="articles">
             <ArticleManager />
+          </TabsContent>
+
+          <TabsContent value="testimonials">
+            <TestimonialManager />
+          </TabsContent>
+
+          <TabsContent value="newsletter">
+            <NewsletterManager />
+          </TabsContent>
+
+          <TabsContent value="career">
+            <CareerInquiries />
           </TabsContent>
 
           <TabsContent value="messages">

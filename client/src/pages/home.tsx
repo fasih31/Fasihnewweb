@@ -5,6 +5,8 @@ import { ServicesSection } from "@/components/services-section";
 import { SolutionsSection } from "@/components/solutions-section";
 import { PortfolioSection } from "@/components/portfolio-section";
 import { BlogSection } from "@/components/blog-section";
+import { TestimonialsSection } from "@/components/testimonials-section";
+import { NewsletterForm } from "@/components/newsletter-form";
 import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
 import { StockTicker } from "@/components/stock-ticker";
@@ -24,15 +26,19 @@ export default function Home() {
         <SolutionsSection />
         <PortfolioSection />
         <BlogSection />
-        <ContactSection />
-        <section className="py-8 md:py-12 bg-muted/30 border-t border-border">
+        <TestimonialsSection />
+        <section className="py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-6">
-              <StockTicker />
-              <NewsFeed />
+            <div className="grid lg:grid-cols-2 gap-8 items-start">
+              <NewsletterForm />
+              <div className="space-y-6">
+                <StockTicker />
+                <NewsFeed />
+              </div>
             </div>
           </div>
         </section>
+        <ContactSection />
       </main>
       <Footer />
     </div>

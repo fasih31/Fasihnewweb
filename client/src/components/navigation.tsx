@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "wouter";
 import { Menu, X, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
@@ -8,6 +9,8 @@ import logoImage from "@assets/generated_images/Fasih_ur_Rehman_professional_log
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [location] = useLocation();
+  const isHome = location === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,6 +80,11 @@ export function Navigation() {
           <div className="hidden md:flex items-center gap-2">
             <ThemeToggle />
             <AuthButton />
+            <Link href="/career">
+              <Button variant="ghost" className="hover-elevate active-elevate-2">
+                Career
+              </Button>
+            </Link>
             <Button
               variant="default"
               size="default"
@@ -124,6 +132,15 @@ export function Navigation() {
                 {link.name}
               </Button>
             ))}
+            <Link href="/career">
+              <Button
+                variant="ghost"
+                className="w-full justify-start hover-elevate active-elevate-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Career
+              </Button>
+            </Link>
             <Button
               variant="default"
               size="default"
