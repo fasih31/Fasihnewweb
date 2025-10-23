@@ -1,9 +1,14 @@
-import { Briefcase, Calendar } from "lucide-react";
+import { useState } from "react";
+import { Briefcase, Calendar, ChevronDown, ChevronUp } from "lucide-react";
 import { timeline } from "@/data/portfolio-data";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export function AboutSection() {
+  const [showAllTimeline, setShowAllTimeline] = useState(false);
+  const INITIAL_ITEMS = 3;
+  const displayedTimeline = showAllTimeline ? timeline : timeline.slice(0, INITIAL_ITEMS);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -78,7 +83,7 @@ export function AboutSection() {
               {/* Timeline line */}
               <div className="absolute left-4 top-4 bottom-4 w-0.5 bg-border hidden sm:block"></div>
 
-              {timeline.map((item, index) => (
+              {displayedTimeline.map((item, index) => (
                 <Card
                   key={index}
                   className="relative hover-elevate transition-all duration-300 p-6 sm:ml-12 border-card-border"
@@ -104,6 +109,29 @@ export function AboutSection() {
                   </div>
                 </Card>
               ))}
+              
+              {timeline.length > INITIAL_ITEMS && (
+                <div className="sm:ml-12 mt-4">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowAllTimeline(!showAllTimeline)}
+                    className="w-full gap-2"
+                    data-testid="button-toggle-timeline"
+                  >
+                    {showAllTimeline ? (
+                      <>
+                        <ChevronUp className="h-4 w-4" />
+                        Show Less
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown className="h-4 w-4" />
+                        Show More ({timeline.length - INITIAL_ITEMS} more positions)
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>

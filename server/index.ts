@@ -12,8 +12,12 @@ declare module 'http' {
 
 // Security middleware - add headers to prevent common attacks
 app.use((req, res, next) => {
-  // Prevent clickjacking
-  res.setHeader('X-Frame-Options', 'DENY');
+  // Allow iframe embedding for Replit environment, prevent clickjacking elsewhere
+  if (process.env.REPL_ID) {
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  } else {
+    res.setHeader('X-Frame-Options', 'DENY');
+  }
   // Prevent MIME type sniffing
   res.setHeader('X-Content-Type-Options', 'nosniff');
   // Enable XSS protection

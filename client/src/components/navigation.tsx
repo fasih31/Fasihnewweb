@@ -68,14 +68,14 @@ export function Navigation() {
           </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
               <Button
                 key={link.id}
                 variant="ghost"
                 onClick={() => scrollToSection(link.id)}
                 data-testid={`link-${link.id}`}
-                className="hover-elevate active-elevate-2"
+                className="hover-elevate active-elevate-2 text-sm"
               >
                 {link.name}
               </Button>
@@ -83,27 +83,27 @@ export function Navigation() {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-2">
-            <ThemeToggle />
-            <AuthButton />
+          <div className="hidden lg:flex items-center gap-2">
             <Link href="/tools">
-              <Button variant="ghost" className="hover-elevate active-elevate-2">
+              <Button variant="ghost" size="sm" className="hover-elevate active-elevate-2 text-sm">
                 Tools
               </Button>
             </Link>
             <Link href="/islamic-fintech">
-              <Button variant="ghost" className="hover-elevate active-elevate-2">
+              <Button variant="ghost" size="sm" className="hover-elevate active-elevate-2 text-sm">
                 Islamic FinTech
               </Button>
             </Link>
             <Link href="/career">
-              <Button variant="ghost" className="hover-elevate active-elevate-2">
+              <Button variant="ghost" size="sm" className="hover-elevate active-elevate-2 text-sm">
                 Career
               </Button>
             </Link>
+            <ThemeToggle />
+            <AuthButton />
             <Button
               variant="default"
-              size="default"
+              size="sm"
               data-testid="button-download-resume"
               className="gap-2"
             >
