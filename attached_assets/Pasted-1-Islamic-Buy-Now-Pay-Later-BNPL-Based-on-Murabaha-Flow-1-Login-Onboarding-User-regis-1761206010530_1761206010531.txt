@@ -1,0 +1,196 @@
+1. Islamic Buy-Now-Pay-Later (BNPL) – Based on Murabaha
+
+Flow:
+	1.	Login & Onboarding:
+	•	User registers or signs in (email/phone → OTP → JWT session).
+	•	Perform KYC (ID, selfie, proof of income).
+	•	Verify against AML/Shariah database.
+	2.	Merchant Checkout Integration:
+	•	User selects BNPL at checkout (API call to BNPL service).
+	•	BNPL system retrieves product price → generates Murabaha contract.
+	•	System buys the item from merchant → sells to user with disclosed markup (e.g., cost + 10%).
+	3.	Approval Engine:
+	•	Credit scoring (AI/Rule-based — salary, history).
+	•	Limit assignment (e.g., AED 2,000).
+	•	Contract digitally signed.
+	4.	Disbursement & Settlement:
+	•	BNPL platform pays merchant upfront.
+	•	Customer repays in equal, interest-free installments.
+	5.	Repayment Tracking:
+	•	Dashboard showing remaining dues, schedule.
+	•	Auto debit via card or bank (no interest, only fixed margin).
+	•	Late fee can be donated to charity (not profit).
+	6.	Return/Refund Handling:
+	•	Merchant refund triggers Murabaha cancellation → customer balance adjusted → charity portion reallocated.
+
+⸻
+
+💸 2. Advance Salary / Islamic Payroll Financing – Qard Hasan or Murabaha
+
+Flow:
+	1.	Login & KYC:
+	•	Linked to employer account → verify employee ID + salary slip.
+	2.	Eligibility Check:
+	•	Salary history + repayment score.
+	•	Maximum limit (e.g., 50% of salary).
+	3.	Contract Generation:
+	•	Qard Hasan: interest-free loan; small admin fee (not profit).
+	•	Murabaha: if tied to asset purchase (cost + markup).
+	4.	Approval:
+	•	Auto approval if within limit; else HR verification.
+	5.	Disbursement:
+	•	Transfer to user wallet/bank.
+	•	Repayment auto-deducted from salary on next payday.
+	6.	Return/Reschedule:
+	•	In case of job change, platform notifies employer to adjust or reschedule repayment.
+
+⸻
+
+🏠 3. Islamic Home Finance – Ijarah / Diminishing Musharakah
+
+Flow:
+	1.	Login & KYC:
+	•	Customer uploads ID, proof of income, property details.
+	2.	Eligibility & Property Assessment:
+	•	Creditworthiness, property valuation, legal verification.
+	3.	Contract Structure:
+	•	Ijarah: Bank buys house → leases to customer → customer pays rent + can purchase after term.
+	•	Diminishing Musharakah: Bank + customer co-own property; customer gradually buys bank’s share.
+	4.	Approval Process:
+	•	Legal + Shariah verification.
+	•	Generate digital contract, sign via e-signature.
+	5.	Disbursement:
+	•	Payment to property seller.
+	•	Asset registered under joint ownership or bank until complete.
+	6.	Repayment & Ownership Transfer:
+	•	Monthly payments split into rent + ownership purchase.
+	•	Once full amount paid → ownership transferred.
+
+⸻
+
+🚗 4. Car Finance – Murabaha / Ijarah
+
+Flow:
+	1.	Login & KYC:
+	•	Customer signs up → uploads driving license, income proof.
+	2.	Vehicle Selection & Quote:
+	•	Customer selects car → system fetches dealer invoice.
+	3.	Contract Creation:
+	•	Murabaha: Financier buys car → sells to customer at markup.
+	•	Ijarah: Financier leases car → ownership after final payment.
+	4.	Approval Workflow:
+	•	Auto + manual approval; verify affordability & Shariah compliance.
+	5.	Disbursement:
+	•	Payment made to dealer; customer gets delivery.
+	6.	Repayment:
+	•	Monthly installments through app.
+	•	Early payment = discount on remaining markup.
+	7.	Return/Default:
+	•	Car repossession handled ethically; resale proceeds settled transparently.
+
+⸻
+
+🏡 5. Islamic Ijarah Leasing Platform (Equipment / Asset Leasing)
+
+Flow:
+	1.	Login & KYC:
+	•	User or business registers → verifies identity & purpose.
+	2.	Asset Listing:
+	•	Platform lists available equipment (vehicles, machinery).
+	3.	Contract Setup:
+	•	Ijarah: ownership remains with financier; user pays rent.
+	•	Maintenance may be shared depending on agreement.
+	4.	Approval:
+	•	Evaluate user affordability, purpose of lease.
+	5.	Asset Delivery & Usage:
+	•	Financier leases asset; customer receives for agreed period.
+	6.	Repayment:
+	•	Monthly rentals; tracked via dashboard.
+	7.	End of Term:
+	•	Option to renew, return, or purchase asset.
+
+⸻
+
+💰 6. Islamic Savings / Investment Account – Mudarabah
+
+Flow:
+	1.	Login & KYC:
+	•	User signs up → ID verification → selects risk appetite.
+	2.	Fund Pooling:
+	•	Deposits pooled under Mudarabah (user = Rab al Maal, bank = Mudarib).
+	3.	Investment Process:
+	•	Bank invests in Shariah-compliant ventures.
+	•	Profit/loss shared as per pre-agreed ratio.
+	4.	Dashboard:
+	•	Real-time performance and profit updates.
+	5.	Withdrawal:
+	•	User requests redemption; funds liquidated and paid.
+	6.	Closure:
+	•	Final profit sharing computed → transferred to user.
+
+⸻
+
+🧾 7. Takaful (Islamic Insurance)
+
+Flow:
+	1.	Login & KYC:
+	•	User registers → ID and health/vehicle data collected.
+	2.	Policy Creation:
+	•	User contributes to Tabarru’ pool (donation-based).
+	•	Operator earns service fee.
+	3.	Underwriting:
+	•	Risk profiling → approval.
+	4.	Contribution Payment:
+	•	User pays premium → recorded in pool ledger.
+	5.	Claim Request:
+	•	Claim submitted → verified → paid from pool.
+	6.	Surplus Distribution:
+	•	If surplus exists → distributed to participants.
+
+⸻
+
+🕌 8. Zakat & Waqf Platform
+
+Flow:
+	1.	Login & KYC (Optional):
+	•	User can donate anonymously or after login.
+	2.	Zakat Calculator:
+	•	Calculates due Zakat based on assets/liabilities.
+	3.	Payment Gateway:
+	•	User donates → smart contract logs transaction.
+	4.	Distribution Engine:
+	•	Allocates funds to verified beneficiaries.
+	5.	Transparency Dashboard:
+	•	Donor tracks usage and impact of Zakat.
+
+⸻
+
+⚙️ 9. Islamic P2P Lending Platform – Musharakah / Mudarabah
+
+Flow:
+	1.	Login & KYC:
+	•	Both investors and borrowers verified separately.
+	2.	Listing Creation:
+	•	Borrowers list business/project proposal.
+	3.	Shariah Review:
+	•	Internal Shariah team approves project.
+	4.	Funding:
+	•	Investors pledge funds; smart contract executes Mudarabah or Musharakah.
+	5.	Disbursement:
+	•	Funds released to borrower account.
+	6.	Profit Sharing:
+	•	Business returns shared according to agreed ratios.
+	7.	Exit:
+	•	Upon maturity, capital + profit returned.
+
+⸻
+
+🧠 10. Islamic Credit Scoring Engine (Support Module)
+
+Flow:
+	1.	Data Inputs:
+	•	Income history, repayment record, employer verification.
+	2.	Scoring Algorithm:
+	•	AI-based score avoiding interest-based behaviors (instead, measures reliability & risk).
+	3.	Output:
+	•	Risk grade → used across all financing modules.
