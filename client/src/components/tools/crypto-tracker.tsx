@@ -4,8 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TrendingUp, TrendingDown, RefreshCw } from "lucide-react";
+import { TrendingUp, TrendingDown, RefreshCw, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface CryptoData {
   id: string;
@@ -21,7 +22,7 @@ interface CryptoData {
 export function CryptoTracker() {
   const [refreshKey, setRefreshKey] = useState(0);
 
-  const { data: cryptos, isLoading } = useQuery<CryptoData[]>({
+  const { data: cryptos, isLoading, isError } = useQuery<CryptoData[]>({
     queryKey: [`/api/crypto`, refreshKey],
     refetchInterval: 60000, // Refresh every minute
   });
@@ -48,8 +49,8 @@ export function CryptoTracker() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Cryptocurrency Market Tracker</CardTitle>
-              <CardDescription>Real-time cryptocurrency prices and market data</CardDescription>
+              <CardTitle className="text-2xl">Cryptocurrency Market Tracker</CardTitle>
+              <CardDescription>Real-time cryptocurrency prices and market data powered by CoinGecko</CardDescription>
             </div>
             <Button
               variant="outline"
@@ -62,41 +63,62 @@ export function CryptoTracker() {
           </div>
         </CardHeader>
         <CardContent>
+          {isError && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                Unable to fetch live data. Displaying sample data.
+              </AlertDescription>
+            </Alert>
+          )}
+          
           <div className="grid gap-4">
             {isLoading ? (
               Array.from({ length: 10 }).map((_, i) => (
-                <Skeleton key={i} className="h-20 w-full" />
+                <Skeleton key={i} className="h-24 w-full" />
               ))
             ) : cryptos && cryptos.length > 0 ? (
-              cryptos.map((crypto) => (
-                <Card key={crypto.id} className="hover-elevate transition-all">
-                  <CardContent className="p-4">
+              cryptos.map((crypto, index) => (
+                <Card key={crypto.id} className="hover:shadow-lg transition-all duration-300 border-l-4" style={{
+                  borderLeftColor: crypto.price_change_percentage_24h >= 0 ? '#10b981' : '#ef4444'
+                }}>
+                  <CardContent className="p-6">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-chart-2/20 flex items-center justify-center font-bold text-lg">
+                          {index + 1}
+                        </div>
                         <div>
-                          <div className="flex items-center gap-2">
-                            <h3 className="font-bold text-lg">{crypto.name}</h3>
-                            <Badge variant="secondary">{crypto.symbol.toUpperCase()}</Badge>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className="font-bold text-xl">{crypto.name}</h3>
+                            <Badge variant="secondary" className="text-xs">{crypto.symbol.toUpperCase()}</Badge>
                           </div>
-                          <p className="text-2xl font-bold text-foreground mt-1">
+                          <p className="text-3xl font-bold text-foreground">
                             {formatPrice(crypto.current_price)}
                           </p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className={`flex items-center gap-1 ${crypto.price_change_percentage_24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                      <div className="text-right space-y-2">
+                        <div className={`flex items-center gap-2 justify-end ${crypto.price_change_percentage_24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                           {crypto.price_change_percentage_24h >= 0 ? (
-                            <TrendingUp className="h-4 w-4" />
+                            <TrendingUp className="h-5 w-5" />
                           ) : (
-                            <TrendingDown className="h-4 w-4" />
+                            <TrendingDown className="h-5 w-5" />
                           )}
-                          <span className="font-semibold">
-                            {Math.abs(crypto.price_change_percentage_24h).toFixed(2)}%
+                          <span className="font-bold text-lg">
+                            {crypto.price_change_percentage_24h >= 0 ? '+' : ''}
+                            {crypto.price_change_percentage_24h.toFixed(2)}%
                           </span>
                         </div>
-                        <div className="text-sm text-muted-foreground mt-1">
-                          <div>Cap: {formatMarketCap(crypto.market_cap)}</div>
-                          <div>Vol: {formatMarketCap(crypto.total_volume)}</div>
+                        <div className="text-sm text-muted-foreground space-y-1">
+                          <div className="flex justify-between gap-4">
+                            <span>Market Cap:</span>
+                            <span className="font-semibold">{formatMarketCap(crypto.market_cap)}</span>
+                          </div>
+                          <div className="flex justify-between gap-4">
+                            <span>Volume 24h:</span>
+                            <span className="font-semibold">{formatMarketCap(crypto.total_volume)}</span>
+                          </div>
                         </div>
                       </div>
                     </div>

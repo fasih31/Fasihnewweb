@@ -9,10 +9,12 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   ShoppingBag, Banknote, Home, Car, Shield, HeartHandshake,
-  ArrowRight, CheckCircle2, ChevronRight
+  ArrowRight, CheckCircle2, ChevronRight, Calculator
 } from "lucide-react";
 import { islamicFinTechProducts, type IslamicProduct } from "@/data/islamic-fintech-products";
 import { useLocation } from "wouter";
+import { BNPLCalculator } from "@/components/islamic-tools/bnpl-calculator";
+import { HomeFinanceCalculator } from "@/components/islamic-tools/home-finance-calculator";
 
 const iconMap = {
   "shopping-bag": ShoppingBag,
@@ -209,6 +211,27 @@ export default function IslamicFinTech() {
                 </Button>
               )}
             </div>
+
+            {/* Interactive Calculator */}
+            {(selectedProduct.id === "bnpl" || selectedProduct.id === "home-finance") && (
+              <div className="mt-12">
+                <Card className="bg-gradient-to-br from-primary/5 to-chart-2/5 border-primary/20">
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <Calculator className="h-5 w-5 text-primary" />
+                      <CardTitle>Interactive Calculator</CardTitle>
+                    </div>
+                    <CardDescription>
+                      Try out the calculator to see how {selectedProduct.title} works
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {selectedProduct.id === "bnpl" && <BNPLCalculator />}
+                    {selectedProduct.id === "home-finance" && <HomeFinanceCalculator />}
+                  </CardContent>
+                </Card>
+              </div>
+            )}
 
             {/* Product Info Tabs */}
             <div className="mt-12">
