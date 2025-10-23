@@ -1,4 +1,3 @@
-
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { SEOHead } from "@/components/seo-head";
@@ -10,11 +9,11 @@ import { CurrencyConverter } from "@/components/tools/currency-converter";
 import { UnitConverter } from "@/components/tools/unit-converter";
 import { WebsiteScanner } from "@/components/tools/website-scanner";
 import { LoanCalculator } from "@/components/tools/loan-calculator";
-import { 
-  TrendingUp, 
-  DollarSign, 
-  Ruler, 
-  Search, 
+import {
+  TrendingUp,
+  DollarSign,
+  Ruler,
+  Search,
   Calculator,
   Sparkles
 } from "lucide-react";
@@ -27,7 +26,7 @@ export default function Tools() {
         description="Access free interactive tools including crypto market tracker, currency converter, unit converter, website scanner, and financial calculators. Built with modern web technologies."
       />
       <Navigation />
-      
+
       <main className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -45,32 +44,27 @@ export default function Tools() {
           </div>
 
           {/* Tools Tabs */}
-          <Tabs defaultValue="crypto" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 gap-2">
-              <TabsTrigger value="crypto" className="gap-2">
-                <TrendingUp className="h-4 w-4" />
-                <span className="hidden sm:inline">Crypto Market</span>
-                <span className="sm:hidden">Crypto</span>
+          <Tabs defaultValue="crypto" className="space-y-4 sm:space-y-6">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 h-auto gap-2">
+              <TabsTrigger value="crypto" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3">
+                <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="text-xs sm:text-sm">Crypto</span>
               </TabsTrigger>
-              <TabsTrigger value="currency" className="gap-2">
-                <DollarSign className="h-4 w-4" />
-                <span className="hidden sm:inline">Currency</span>
-                <span className="sm:hidden">Currency</span>
+              <TabsTrigger value="currency" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3">
+                <DollarSign className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="text-xs sm:text-sm">Currency</span>
               </TabsTrigger>
-              <TabsTrigger value="converter" className="gap-2">
-                <Ruler className="h-4 w-4" />
-                <span className="hidden sm:inline">Converter</span>
-                <span className="sm:hidden">Convert</span>
+              <TabsTrigger value="converter" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3">
+                <Ruler className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="text-xs sm:text-sm">Units</span>
               </TabsTrigger>
-              <TabsTrigger value="scanner" className="gap-2">
-                <Search className="h-4 w-4" />
-                <span className="hidden sm:inline">Website Scanner</span>
-                <span className="sm:hidden">Scanner</span>
+              <TabsTrigger value="scanner" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3">
+                <Search className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="text-xs sm:text-sm">Scanner</span>
               </TabsTrigger>
-              <TabsTrigger value="calculator" className="gap-2">
-                <Calculator className="h-4 w-4" />
-                <span className="hidden sm:inline">Calculators</span>
-                <span className="sm:hidden">Calc</span>
+              <TabsTrigger value="calculator" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3 col-span-2 sm:col-span-1">
+                <Calculator className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="text-xs sm:text-sm">Loan Calc</span>
               </TabsTrigger>
             </TabsList>
 

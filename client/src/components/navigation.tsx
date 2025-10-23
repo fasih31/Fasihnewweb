@@ -40,6 +40,7 @@ export function Navigation() {
 
   const externalLinks = [
     { name: "Tools", path: "/tools" },
+    { name: "Islamic FinTech", path: "/islamic-fintech" },
     { name: "Career", path: "/career" },
   ];
 
@@ -88,6 +89,11 @@ export function Navigation() {
             <Link href="/tools">
               <Button variant="ghost" className="hover-elevate active-elevate-2">
                 Tools
+              </Button>
+            </Link>
+            <Link href="/islamic-fintech">
+              <Button variant="ghost" className="hover-elevate active-elevate-2">
+                Islamic FinTech
               </Button>
             </Link>
             <Link href="/career">
@@ -149,6 +155,15 @@ export function Navigation() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Tools
+              </Button>
+            </Link>
+            <Link href="/islamic-fintech">
+              <Button
+                variant="ghost"
+                className="w-full justify-start hover-elevate active-elevate-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Islamic FinTech
               </Button>
             </Link>
             <Link href="/career">
