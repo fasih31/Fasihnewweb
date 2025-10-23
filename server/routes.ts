@@ -10,6 +10,29 @@ import {
 } from "@shared/schema";
 import { fromZodError } from "zod-validation-error";
 import { setupAuth, isAuthenticated, isAdmin } from "./googleAuth";
+import nodemailer from "nodemailer";
+
+// Email configuration
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER || 'Fasih31@gmail.com',
+    pass: process.env.EMAIL_PASSWORD, // You'll need to set this in Replit Secrets
+  },
+});
+
+async function sendEmailNotification(subject: string, html: string) {
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER || 'Fasih31@gmail.com',
+      to: 'Fasih31@gmail.com',
+      subject,
+      html,
+    });
+  } catch (error) {
+    console.error('Failed to send email notification:', error);
+  }
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   await setupAuth(app);
@@ -49,6 +72,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const validatedData = insertContactMessageSchema.parse(sanitizedBody);
       const message = await storage.createContactMessage(validatedData);
+      
+      // Send email notification
+      const emailHtml = `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>From:</strong> ${validatedData.name}</p>
+        <p><strong>Email:</strong> ${validatedData.email}</p>
+        <p><strong>Subject:</strong> ${validatedData.subject || 'No subject'}</p>
+        <p><strong>Message:</strong></p>
+        <p>${validatedData.message}</p>
+        <hr>
+        <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
+      `;
+      
+      await sendEmailNotification(`New Contact Form: ${validatedData.subject || 'General Inquiry'}`, emailHtml);
       
       res.status(201).json({
         success: true,
@@ -225,6 +262,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertCareerInquirySchema.parse(req.body);
       const inquiry = await storage.createCareerInquiry(validatedData);
+      
+      // Send email notification
+      const emailHtml = `
+        <h2>New Career Inquiry</h2>
+        <p><strong>Name:</strong> ${validatedData.name}</p>
+        <p><strong>Email:</strong> ${validatedData.email}</p>
+        <p><strong>Phone:</strong> ${validatedData.phone || 'Not provided'}</p>
+        <p><strong>Inquiry Type:</strong> ${validatedData.inquiryType}</p>
+        <p><strong>Message:</strong></p>
+        <p>${validatedData.message}</p>
+        <p><strong>LinkedIn:</strong> ${validatedData.linkedinUrl || 'Not provided'}</p>
+        <p><strong>Portfolio:</strong> ${validatedData.portfolioUrl || 'Not provided'}</p>
+        <p><strong>Resume:</strong> ${validatedData.resumeUrl || 'Not provided'}</p>
+        <hr>
+        <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
+      `;
+      
+      await sendEmailNotification(`New Career Inquiry: ${validatedData.inquiryType}`, emailHtml);
       
       res.status(201).json({
         success: true,

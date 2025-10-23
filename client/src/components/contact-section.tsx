@@ -1,4 +1,4 @@
-import { Github, Linkedin, Twitter, Send } from "lucide-react";
+import { Github, Linkedin, Twitter, Send, MessageCircle, Send as TelegramIcon, MessageSquare } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -58,6 +58,9 @@ export function ContactSection() {
     { name: "GitHub", icon: Github, url: "https://github.com/fasihurrehman", color: "hover:text-foreground" },
     { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/in/fasihurrehman05", color: "hover:text-[#0077b5]" },
     { name: "Twitter", icon: Twitter, url: "https://twitter.com/fasihurrehman", color: "hover:text-[#1da1f2]" },
+    { name: "WhatsApp", icon: MessageCircle, url: "https://wa.me/971506184687", color: "hover:text-[#25D366]" },
+    { name: "Telegram", icon: TelegramIcon, url: "https://t.me/+971506184687", color: "hover:text-[#0088cc]" },
+    { name: "Discord", icon: MessageSquare, url: "https://discord.gg/your-discord-invite", color: "hover:text-[#5865F2]" },
   ];
 
   return (
@@ -177,7 +180,7 @@ export function ContactSection() {
                 collaborations.
               </p>
 
-              <div className="flex gap-4">
+              <div className="grid grid-cols-3 sm:flex gap-3 sm:gap-4">
                 {socialLinks.map((social) => (
                   <Button
                     key={social.name}
