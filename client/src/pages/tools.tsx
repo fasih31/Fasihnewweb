@@ -30,15 +30,15 @@ export default function Tools() {
       <main className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="text-center mb-8 sm:mb-12">
-            <Badge className="mb-4" variant="secondary">
+          <div className="text-center mb-8 sm:mb-12 px-4">
+            <Badge className="mb-4 text-xs sm:text-sm" variant="secondary">
               <Sparkles className="h-3 w-3 mr-1" />
               Free Tools
             </Badge>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 leading-tight">
               Professional Tools & Utilities
             </h1>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Real-time data, accurate calculations, and professional-grade utilities.
             </p>
           </div>

@@ -75,47 +75,47 @@ export default function Career() {
         keywords="hire fasih ur rehman, fintech consultant, product manager hire, freelance product manager, collaboration opportunities"
       />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Work With Me</h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 leading-tight">Work With Me</h1>
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
             I'm open to new opportunities in product management, consulting, and collaboration.
             Let's discuss how we can work together.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
           <Card className="text-center hover-elevate">
-            <CardContent className="pt-6">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4">
-                <Briefcase className="h-6 w-6 text-primary" />
+            <CardContent className="pt-6 pb-6 px-4">
+              <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 mb-3 sm:mb-4">
+                <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
               </div>
-              <h3 className="font-semibold mb-2">Full-Time Roles</h3>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="font-semibold mb-2 text-sm sm:text-base">Full-Time Roles</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 Product Manager positions in FinTech, EdTech, or AI/AGI
               </p>
             </CardContent>
           </Card>
 
           <Card className="text-center hover-elevate">
-            <CardContent className="pt-6">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4">
-                <Briefcase className="h-6 w-6 text-primary" />
+            <CardContent className="pt-6 pb-6 px-4">
+              <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 mb-3 sm:mb-4">
+                <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
               </div>
-              <h3 className="font-semibold mb-2">Freelance Projects</h3>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="font-semibold mb-2 text-sm sm:text-base">Freelance Projects</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 Short-term projects and product consulting
               </p>
             </CardContent>
           </Card>
 
           <Card className="text-center hover-elevate">
-            <CardContent className="pt-6">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4">
-                <Briefcase className="h-6 w-6 text-primary" />
+            <CardContent className="pt-6 pb-6 px-4">
+              <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 mb-3 sm:mb-4">
+                <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
               </div>
-              <h3 className="font-semibold mb-2">Collaboration</h3>
-              <p className="text-sm text-muted-foreground">
+              <h3 className="font-semibold mb-2 text-sm sm:text-base">Collaboration</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 Strategic partnerships and co-founding opportunities
               </p>
             </CardContent>
