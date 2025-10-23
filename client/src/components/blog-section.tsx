@@ -1,25 +1,27 @@
 import { useState } from "react";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, Search } from "lucide-react";
 import { blogPosts } from "@/data/portfolio-data";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArticleSearch } from "@/components/article-search";
+import { Input } from "@/components/ui/input";
 import { useLocation } from "wouter";
 
 export function BlogSection() {
-  const [searchQuery, setSearchQuery] = useState("");
   const [, setLocation] = useLocation();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   const filteredPosts = blogPosts.filter((post) => {
-    if (!searchQuery) return true;
-    const searchLower = searchQuery.toLowerCase();
-    return (
-      post.title.toLowerCase().includes(searchLower) ||
-      post.excerpt.toLowerCase().includes(searchLower) ||
-      post.category.toLowerCase().includes(searchLower)
-    );
+    const matchesSearch =
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "all" || post.category === selectedCategory;
+    return matchesSearch && matchesCategory;
   });
+
+  // Get unique categories
+  const categories = ["all", ...Array.from(new Set(blogPosts.map(a => a.category)))];
 
   return (
     <section
@@ -28,15 +30,39 @@ export function BlogSection() {
       data-testid="section-blog"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
             Insights & Articles
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-primary to-chart-2 mx-auto"></div>
-        </div>
+          <div className="w-20 h-1 bg-gradient-to-r from-primary to-chart-2 mx-auto mb-8"></div>
 
-        <div className="max-w-md mx-auto mb-8">
-          <ArticleSearch onSearch={setSearchQuery} />
+          {/* Search and Filter */}
+          <div className="max-w-3xl mx-auto space-y-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search articles..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-2">
+              {categories.map((category) => (
+                <Button
+                  key={category}
+                  variant={selectedCategory === category ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedCategory(category)}
+                  className="capitalize"
+                >
+                  {category}
+                </Button>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -57,7 +83,7 @@ export function BlogSection() {
                       </Badge>
                       <div className="flex items-center gap-1 text-xs text-muted-foreground">
                         <Clock className="h-3 w-3" />
-                        <span>{post.readTime}</span>
+                        <span>{post.readTime} min read</span>
                       </div>
                     </div>
 

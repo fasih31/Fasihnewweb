@@ -2,6 +2,7 @@ import { Navigation } from "@/components/navigation";
 import { HeroSection } from "@/components/hero-section";
 import { AboutSection } from "@/components/about-section";
 import { ServicesSection } from "@/components/services-section";
+import { SkillsSection } from "@/components/skills-section";
 import { SolutionsSection } from "@/components/solutions-section";
 import { PortfolioSection } from "@/components/portfolio-section";
 import { BlogSection } from "@/components/blog-section";
@@ -28,6 +29,7 @@ export default function Home() {
         <StatsSection />
         <AboutSection />
         <ServicesSection />
+        <SkillsSection />
         <SolutionsSection />
         <PortfolioSection />
         <BlogSection />

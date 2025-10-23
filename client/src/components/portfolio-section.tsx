@@ -1,17 +1,31 @@
 import { useState } from "react";
-import { ExternalLink, Github, ArrowRight } from "lucide-react";
+import { ExternalLink, Github, ArrowRight, Eye } from "lucide-react";
 import { projects } from "@/data/portfolio-data";
 import type { Project } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 type Category = "All" | "AI" | "Web3" | "FinTech" | "EdTech" | "eCommerce";
 
 export function PortfolioSection() {
-  const [selectedCategory, setSelectedCategory] = useState<Category>("All");
   const [, setLocation] = useLocation();
+  const [selectedCategory, setSelectedCategory] = useState<Category>("All");
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [caseStudyOpen, setCaseStudyOpen] = useState(false);
+
+  const handleViewCaseStudy = (project: Project) => {
+    setSelectedProject(project);
+    setCaseStudyOpen(true);
+  };
 
   const categories: Category[] = ["All", "AI", "Web3", "FinTech", "EdTech", "eCommerce"];
 
@@ -35,7 +49,7 @@ export function PortfolioSection() {
         </div>
 
         {/* Category Filter */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((category) => (
             <Button
               key={category}
@@ -43,7 +57,11 @@ export function PortfolioSection() {
               size="sm"
               onClick={() => setSelectedCategory(category)}
               data-testid={`filter-${category.toLowerCase()}`}
-              className="toggle-elevate"
+              className={`capitalize transition-all duration-300 ${
+                selectedCategory === category
+                  ? 'scale-105 shadow-lg'
+                  : 'hover:scale-105'
+              }`}
               data-state={selectedCategory === category ? "on" : "off"}
             >
               {category}
@@ -60,7 +78,7 @@ export function PortfolioSection() {
               data-testid={`project-card-${project.id}`}
             >
               {/* Project Image */}
-              <div 
+              <div
                 className="relative aspect-video overflow-hidden bg-muted cursor-pointer"
                 onClick={() => setLocation(`/project/${project.id}`)}
               >
@@ -81,7 +99,7 @@ export function PortfolioSection() {
               <CardContent className="p-6 space-y-4">
                 <div className="space-y-2">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 
+                    <h3
                       className="text-xl font-bold text-foreground cursor-pointer hover:text-primary transition-colors"
                       onClick={() => setLocation(`/project/${project.id}`)}
                     >
@@ -111,22 +129,30 @@ export function PortfolioSection() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-2 pt-2">
+                <div className="flex gap-2 mt-4">
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() => handleViewCaseStudy(project)}
+                    className="flex-1"
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    Case Study
+                  </Button>
                   {project.liveUrl && (
                     <Button
-                      variant="default"
+                      variant="outline"
                       size="sm"
-                      className="flex-1 gap-2"
                       asChild
-                      data-testid={`button-live-${project.id}`}
+                      className="shrink-0"
                     >
                       <a
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        data-testid={`project-live-${project.id}`}
                       >
                         <ExternalLink className="h-4 w-4" />
-                        Live Demo
                       </a>
                     </Button>
                   )}
@@ -134,17 +160,16 @@ export function PortfolioSection() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="flex-1 gap-2"
                       asChild
-                      data-testid={`button-github-${project.id}`}
+                      className="shrink-0"
                     >
                       <a
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        data-testid={`project-github-${project.id}`}
                       >
                         <Github className="h-4 w-4" />
-                        GitHub
                       </a>
                     </Button>
                   )}
@@ -162,6 +187,79 @@ export function PortfolioSection() {
           </div>
         )}
       </div>
+
+      {/* Case Study Modal */}
+      <Dialog open={caseStudyOpen} onOpenChange={setCaseStudyOpen}>
+        <DialogContent className="sm:max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{selectedProject?.title}</DialogTitle>
+            <DialogClose asChild>
+              <Button variant="outline" size="icon" className="absolute top-4 right-4 h-8 w-8">
+                <ArrowRight className="rotate-90 h-4 w-4" />
+                <span className="sr-only">Close</span>
+              </Button>
+            </DialogClose>
+          </DialogHeader>
+          {selectedProject && (
+            <div className="space-y-6 py-4">
+              <img
+                src={selectedProject.image}
+                alt={selectedProject.title}
+                className="w-full h-auto rounded-lg shadow-md"
+              />
+              <p className="text-muted-foreground leading-relaxed">
+                {selectedProject.description}
+              </p>
+              <div className="space-y-2">
+                <h4 className="text-lg font-semibold text-foreground">Technologies Used:</h4>
+                <div className="flex flex-wrap gap-2">
+                  {selectedProject.techStack.map((tech, index) => (
+                    <Badge key={index} variant="outline" className="text-xs">
+                      {tech}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              {selectedProject.caseStudy && (
+                <div className="space-y-2">
+                  <h4 className="text-lg font-semibold text-foreground">Case Study:</h4>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {selectedProject.caseStudy}
+                  </p>
+                </div>
+              )}
+              <div className="flex flex-wrap gap-2 pt-2">
+                {selectedProject.liveUrl && (
+                  <Button
+                    variant="default"
+                    size="sm"
+                    asChild
+                    className="flex-1 min-w-[120px]"
+                  >
+                    <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      Live Demo
+                    </a>
+                  </Button>
+                )}
+                {selectedProject.githubUrl && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
+                    className="flex-1 min-w-[120px]"
+                  >
+                    <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer">
+                      <Github className="h-4 w-4 mr-2" />
+                      GitHub
+                    </a>
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
