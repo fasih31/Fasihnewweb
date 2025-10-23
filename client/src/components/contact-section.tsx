@@ -80,8 +80,9 @@ export function ContactSection() {
 
         <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
           {/* Contact Form */}
-          <Card className="border-card-border">
-            <CardContent className="p-8">
+          <Card className="border-card-border relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-chart-2/5"></div>
+            <CardContent className="p-8 relative">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <FormField

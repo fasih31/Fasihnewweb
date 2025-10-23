@@ -153,8 +153,8 @@ export class DatabaseStorage implements IStorage {
         .orderBy(testimonials.order, desc(testimonials.createdAt));
     }
     try {
-      const result = await db.select().from(testimonials).execute();
-      return result || [];
+      const results = await db.select().from(testimonials).execute();
+      return results || [];
     } catch (error) {
       console.error('Error fetching testimonials:', error);
       return [];
