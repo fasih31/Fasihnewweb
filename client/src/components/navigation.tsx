@@ -57,6 +57,15 @@ export function Navigation() {
     { name: "Contact", id: "contact" },
   ];
 
+  // Update navLinks to reflect the change from "Blog" to "Articles" and update the ID
+  const updatedNavLinks = navLinks.map(link => {
+    if (link.id === "blog") {
+      return { name: "Articles", id: "articles" };
+    }
+    return link;
+  });
+
+
   const externalLinks = [
     { name: "Tools", path: "/tools" },
     { name: "Islamic FinTech", path: "/islamic-fintech" },
@@ -89,7 +98,7 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) => (
+            {updatedNavLinks.map((link) => (
               <Button
                 key={link.id}
                 variant="ghost"
@@ -160,7 +169,7 @@ export function Navigation() {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-background border-b border-border">
           <div className="px-4 py-4 space-y-2">
-            {navLinks.map((link) => (
+            {updatedNavLinks.map((link) => (
               <Button
                 key={link.id}
                 variant="ghost"
