@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Download } from "lucide-react";
+import { Menu, X, Download, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "./theme-toggle";
 import { AuthButton } from "./auth-dialog";
 import logoImage from "@assets/generated_images/Fasih_ur_Rehman_professional_logo_824d90b3.png";
@@ -66,7 +72,7 @@ export function Navigation() {
   });
 
 
-  const externalLinks = [
+  const professionalTools = [
     { name: "Tools", path: "/tools" },
     { name: "Islamic FinTech", path: "/islamic-fintech" },
     { name: "Career", path: "/career" },
@@ -113,21 +119,25 @@ export function Navigation() {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-2">
-            <Link href="/tools">
-              <Button variant="ghost" size="sm" className="hover-elevate active-elevate-2 text-sm">
-                Tools
-              </Button>
-            </Link>
-            <Link href="/islamic-fintech">
-              <Button variant="ghost" size="sm" className="hover-elevate active-elevate-2 text-sm">
-                Islamic FinTech
-              </Button>
-            </Link>
-            <Link href="/career">
-              <Button variant="ghost" size="sm" className="hover-elevate active-elevate-2 text-sm">
-                Career
-              </Button>
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="hover-elevate active-elevate-2 text-sm gap-1">
+                  Professional Tools
+                  <ChevronDown className="h-3 w-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                {professionalTools.map((tool) => (
+                  <DropdownMenuItem key={tool.path} asChild>
+                    <Link href={tool.path}>
+                      <button className="w-full text-left px-2 py-1.5">
+                        {tool.name}
+                      </button>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
             <ThemeToggle />
             <AuthButton />
             <Button
@@ -180,33 +190,20 @@ export function Navigation() {
                 {link.name}
               </Button>
             ))}
-            <Link href="/tools">
-              <Button
-                variant="ghost"
-                className="w-full justify-start hover-elevate active-elevate-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Tools
-              </Button>
-            </Link>
-            <Link href="/islamic-fintech">
-              <Button
-                variant="ghost"
-                className="w-full justify-start hover-elevate active-elevate-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Islamic FinTech
-              </Button>
-            </Link>
-            <Link href="/career">
-              <Button
-                variant="ghost"
-                className="w-full justify-start hover-elevate active-elevate-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Career
-              </Button>
-            </Link>
+            <div className="pt-2 border-t border-border/50">
+              <p className="text-xs font-semibold text-muted-foreground px-2 py-1">Professional Tools</p>
+              {professionalTools.map((tool) => (
+                <Link key={tool.path} href={tool.path}>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start hover-elevate active-elevate-2 pl-6"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {tool.name}
+                  </Button>
+                </Link>
+              ))}
+            </div>
             <Button
               variant="default"
               size="default"
