@@ -23,11 +23,20 @@ export function StockTicker() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <DollarSign className="h-5 w-5" />
-            Market Snapshot
+            <TrendingUp className="h-5 w-5" />
+            Market Overview
           </CardTitle>
-          <CardDescription>Loading stock prices...</CardDescription>
         </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex justify-between items-center animate-pulse">
+                <div className="h-4 bg-muted rounded w-20"></div>
+                <div className="h-4 bg-muted rounded w-24"></div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
       </Card>
     );
   }

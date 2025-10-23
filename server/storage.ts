@@ -24,10 +24,10 @@ import { eq, desc, sql } from "drizzle-orm";
 export interface IStorage {
   createContactMessage(message: InsertContactMessage): Promise<ContactMessage>;
   getAllContactMessages(): Promise<ContactMessage[]>;
-  
+
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: InsertUser): Promise<User>;
-  
+
   createArticle(article: InsertArticle): Promise<Article>;
   updateArticle(id: string, article: Partial<InsertArticle>): Promise<Article | undefined>;
   deleteArticle(id: string): Promise<void>;
@@ -35,16 +35,16 @@ export interface IStorage {
   getArticleBySlug(slug: string): Promise<Article | undefined>;
   getAllArticles(publishedOnly?: boolean): Promise<Article[]>;
   incrementArticleViews(id: string): Promise<void>;
-  
+
   createTestimonial(testimonial: InsertTestimonial): Promise<Testimonial>;
   updateTestimonial(id: string, testimonial: Partial<InsertTestimonial>): Promise<Testimonial | undefined>;
   deleteTestimonial(id: string): Promise<void>;
   getAllTestimonials(featuredOnly?: boolean): Promise<Testimonial[]>;
-  
+
   createNewsletterSubscriber(subscriber: InsertNewsletterSubscriber): Promise<NewsletterSubscriber>;
   getAllNewsletterSubscribers(): Promise<NewsletterSubscriber[]>;
   unsubscribeNewsletter(email: string): Promise<void>;
-  
+
   createCareerInquiry(inquiry: InsertCareerInquiry): Promise<CareerInquiry>;
   getAllCareerInquiries(): Promise<CareerInquiry[]>;
 }
@@ -152,7 +152,13 @@ export class DatabaseStorage implements IStorage {
         .where(eq(testimonials.featured, true))
         .orderBy(testimonials.order, desc(testimonials.createdAt));
     }
-    return await db.select().from(testimonials).orderBy(testimonials.order, desc(testimonials.createdAt));
+    try {
+      const result = await db.select().from(testimonials).execute();
+      return result || [];
+    } catch (error) {
+      console.error('Error fetching testimonials:', error);
+      return [];
+    }
   }
 
   async createNewsletterSubscriber(insertSubscriber: InsertNewsletterSubscriber): Promise<NewsletterSubscriber> {

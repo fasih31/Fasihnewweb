@@ -11,7 +11,7 @@ interface SEOHeadProps {
 
 export function SEOHead({
   title = "Fasih ur Rehman | Fasih Best FinTech Advisor | Product Manager for FinTech/EdTech | Islamic Finance Expert",
-  description = "Fasih ur Rehman - Best FinTech Advisor and Product Manager for FinTech/EdTech with 9+ years experience. Expert Islamic fintech advisor specializing in Shariah-compliant financial solutions, digital banking, e-commerce designer, and AI-powered product development across FinTech and EdTech sectors.",
+  description = "Fasih ur Rehman - Best FinTech Advisor & Product Manager for FinTech/EdTech. Expert in Islamic Finance, Shariah-compliant banking, AI-powered solutions, and e-commerce design. 9+ years transforming digital platforms.",
   keywords = "Fasih best fintech advisor, product manager for fintech/edtech, product manager for fintech, product manager for edtech, Islamic fintech advisor, fintech advisor, e-commerce designer, Islamic finance expert, fintech product manager, shariah compliant fintech, digital banking product manager, payment systems expert, AI product manager, web3 product manager, certified product manager, PMP, digital transformation",
   ogImage = "/og-image.png",
   canonicalUrl,

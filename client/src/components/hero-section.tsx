@@ -99,9 +99,12 @@ export function HeroSection() {
                 variant="default"
                 data-testid="button-hero-download-resume"
                 className="gap-2 text-base"
+                asChild
               >
-                <Download className="h-5 w-5" />
-                Download Resume
+                <a href="/attached_assets/Fasih ur Rehman - CV-1_1761140201663.pdf" download="Fasih_ur_Rehman_Resume.pdf">
+                  <Download className="h-5 w-5" />
+                  Download Resume
+                </a>
               </Button>
               <Button
                 size="lg"
