@@ -27,13 +27,37 @@ app.use((req, res, next) => {
 
 // Rate limiting to prevent brute force attacks
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
-const RATE_LIMIT = 100; // requests per window
+const RATE_LIMIT = 1000; // requests per window (increased for normal portfolio browsing)
 const RATE_WINDOW = 60000; // 1 minute
+
+// Contact form specific rate limiting
+const contactRateLimitStore = new Map<string, { count: number; resetTime: number }>();
+const CONTACT_RATE_LIMIT = 5; // submissions per window
+const CONTACT_RATE_WINDOW = 300000; // 5 minutes
 
 app.use((req, res, next) => {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
   const now = Date.now();
   
+  // Stricter rate limiting for contact form submissions
+  if (req.path === '/api/contact' && req.method === 'POST') {
+    if (!contactRateLimitStore.has(ip)) {
+      contactRateLimitStore.set(ip, { count: 1, resetTime: now + CONTACT_RATE_WINDOW });
+    } else {
+      const data = contactRateLimitStore.get(ip)!;
+      if (now > data.resetTime) {
+        data.count = 1;
+        data.resetTime = now + CONTACT_RATE_WINDOW;
+      } else {
+        data.count++;
+        if (data.count > CONTACT_RATE_LIMIT) {
+          return res.status(429).json({ message: 'Too many contact requests. Please try again later.' });
+        }
+      }
+    }
+  }
+  
+  // General rate limiting for all requests
   if (!rateLimitStore.has(ip)) {
     rateLimitStore.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
   } else {
