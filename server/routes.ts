@@ -521,12 +521,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     }
   });
-        total_volume: [30000000000, 15000000000, 2000000000, 1500000000, 500000000, 2000000000, 200000000, 800000000, 400000000, 300000000][i],
-      }));
-      
-      res.json(mockData);
-    }
-  });
 
   // Currency rates API endpoint
   app.get("/api/currency-rates", async (req, res) => {
@@ -574,6 +568,84 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error scanning website:', error);
       res.status(500).json({ error: 'Failed to scan website' });
+    }
+  });
+
+  // Quran API endpoint
+  app.get("/api/quran/:surah?", async (req, res) => {
+    try {
+      const surah = req.params.surah || '1';
+      const response = await fetch(
+        `https://api.alquran.cloud/v1/surah/${surah}/en.asad`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch Quran data');
+      }
+      
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error('Error fetching Quran data:', error);
+      res.status(500).json({ error: 'Failed to fetch Quran data' });
+    }
+  });
+
+  // Hadith API endpoint
+  app.get("/api/hadith/:book?/:number?", async (req, res) => {
+    try {
+      const book = req.params.book || 'bukhari';
+      const number = req.params.number;
+      
+      let url = 'https://random-hadith-generator.vercel.app/bukhari/';
+      if (number) {
+        url = `https://random-hadith-generator.vercel.app/${book}/${number}`;
+      }
+      
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch Hadith data');
+      }
+      
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error('Error fetching Hadith data:', error);
+      res.status(500).json({ error: 'Failed to fetch Hadith data' });
+    }
+  });
+
+  // Daily Islamic content endpoint
+  app.get("/api/islamic/daily", async (req, res) => {
+    try {
+      // Get random Ayah
+      const randomSurah = Math.floor(Math.random() * 114) + 1;
+      const quranResponse = await fetch(
+        `https://api.alquran.cloud/v1/surah/${randomSurah}/en.asad`
+      );
+      const quranData = await quranResponse.json();
+      const randomAyah = quranData.data.ayahs[Math.floor(Math.random() * quranData.data.ayahs.length)];
+      
+      // Get random Hadith
+      const hadithResponse = await fetch('https://random-hadith-generator.vercel.app/bukhari/');
+      const hadithData = await hadithResponse.json();
+      
+      res.json({
+        ayah: {
+          text: randomAyah.text,
+          surah: quranData.data.englishName,
+          number: randomAyah.numberInSurah,
+          reference: `${quranData.data.englishName} ${randomAyah.numberInSurah}`
+        },
+        hadith: {
+          text: hadithData.data?.hadith_english || hadithData.hadith,
+          reference: `${hadithData.data?.refno || hadithData.bookName || 'Sahih Bukhari'}`
+        }
+      });
+    } catch (error) {
+      console.error('Error fetching daily Islamic content:', error);
+      res.status(500).json({ error: 'Failed to fetch daily content' });
     }
   });
 
