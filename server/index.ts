@@ -9,12 +9,55 @@ declare module 'http' {
     rawBody: unknown
   }
 }
+
+// Security middleware - add headers to prevent common attacks
+app.use((req, res, next) => {
+  // Prevent clickjacking
+  res.setHeader('X-Frame-Options', 'DENY');
+  // Prevent MIME type sniffing
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  // Enable XSS protection
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  // Referrer policy
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  // Permissions policy
+  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+  next();
+});
+
+// Rate limiting to prevent brute force attacks
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT = 100; // requests per window
+const RATE_WINDOW = 60000; // 1 minute
+
+app.use((req, res, next) => {
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
+  const now = Date.now();
+  
+  if (!rateLimitStore.has(ip)) {
+    rateLimitStore.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
+  } else {
+    const data = rateLimitStore.get(ip)!;
+    if (now > data.resetTime) {
+      data.count = 1;
+      data.resetTime = now + RATE_WINDOW;
+    } else {
+      data.count++;
+      if (data.count > RATE_LIMIT) {
+        return res.status(429).json({ message: 'Too many requests. Please try again later.' });
+      }
+    }
+  }
+  next();
+});
+
 app.use(express.json({
   verify: (req, _res, buf) => {
     req.rawBody = buf;
-  }
+  },
+  limit: '10mb' // Prevent large payload attacks
 }));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
 app.use((req, res, next) => {
   const start = Date.now();

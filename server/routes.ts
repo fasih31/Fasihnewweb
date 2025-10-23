@@ -31,7 +31,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {
-      const validatedData = insertContactMessageSchema.parse(req.body);
+      // Sanitize input to prevent XSS attacks
+      const sanitizeString = (str: string) => {
+        return str
+          .replace(/[<>]/g, '') // Remove HTML tags
+          .trim()
+          .substring(0, 5000); // Limit length
+      };
+
+      const sanitizedBody = {
+        ...req.body,
+        name: req.body.name ? sanitizeString(req.body.name) : '',
+        email: req.body.email ? sanitizeString(req.body.email) : '',
+        subject: req.body.subject ? sanitizeString(req.body.subject) : '',
+        message: req.body.message ? sanitizeString(req.body.message) : '',
+      };
+
+      const validatedData = insertContactMessageSchema.parse(sanitizedBody);
       const message = await storage.createContactMessage(validatedData);
       
       res.status(201).json({

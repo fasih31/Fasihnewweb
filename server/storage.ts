@@ -145,16 +145,18 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAllTestimonials(featuredOnly: boolean = false): Promise<Testimonial[]> {
-    if (featuredOnly) {
-      return await db
-        .select()
-        .from(testimonials)
-        .where(eq(testimonials.featured, true))
-        .orderBy(testimonials.order, desc(testimonials.createdAt));
-    }
     try {
+      if (featuredOnly) {
+        const results = await db
+          .select()
+          .from(testimonials)
+          .where(eq(testimonials.featured, true))
+          .orderBy(testimonials.order, desc(testimonials.createdAt))
+          .execute();
+        return Array.isArray(results) ? results : [];
+      }
       const results = await db.select().from(testimonials).execute();
-      return results || [];
+      return Array.isArray(results) ? results : [];
     } catch (error) {
       console.error('Error fetching testimonials:', error);
       return [];

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Download, ArrowRight } from "lucide-react";
+import { Download, ArrowRight, Shield, TrendingUp, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const skills = [
   "Product Management",
@@ -60,7 +61,7 @@ export function HeroSection() {
       {/* Animated background pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:4rem_4rem] animate-pulse"></div>
       <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
-      
+
       {/* Floating gradient orbs */}
       <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-chart-2/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -68,7 +69,12 @@ export function HeroSection() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 md:py-40">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: Content */}
-          <div className="space-y-8 text-center lg:text-left">
+          <motion.div
+            className="space-y-8 text-center lg:text-left"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight">
                 Hi, I'm{" "}
@@ -82,8 +88,8 @@ export function HeroSection() {
             </div>
 
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto lg:mx-0">
-              Fasih - your best fintech advisor and expert product manager for FinTech/EdTech solutions. 
-              Specializing in Islamic fintech advisory, Shariah-compliant banking, e-commerce design, 
+              Fasih - your best fintech advisor and expert product manager for FinTech/EdTech solutions.
+              Specializing in Islamic fintech advisory, Shariah-compliant banking, e-commerce design,
               and AI-powered product development. 9+ years transforming digital banking and EdTech platforms.
             </p>
 
@@ -121,16 +127,42 @@ export function HeroSection() {
                 <ArrowRight className="h-5 w-5" />
               </Button>
             </div>
-          </div>
+
+            {/* Trust Indicators */}
+            <motion.div
+              className="flex flex-wrap gap-6 items-center pt-8 border-t border-border/50"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.7 }}
+            >
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Shield className="h-4 w-4 text-primary" />
+                <span>PMP Certified</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <TrendingUp className="h-4 w-4 text-chart-2" />
+                <span>9+ Years Experience</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Briefcase className="h-4 w-4 text-chart-3" />
+                <span>50+ Projects Delivered</span>
+              </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right: Visual Element */}
-          <div className="relative lg:block hidden">
+          <motion.div
+            className="relative lg:block hidden"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.7 }}
+          >
             <div className="relative w-full aspect-square max-w-md mx-auto">
               {/* Animated circles */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-chart-2/20 animate-pulse"></div>
               <div className="absolute inset-8 rounded-full bg-gradient-to-tr from-primary/30 to-chart-2/30 animate-pulse delay-75"></div>
               <div className="absolute inset-16 rounded-full bg-gradient-to-bl from-primary/40 to-chart-2/40 animate-pulse delay-150"></div>
-              
+
               {/* Center icon/logo area */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-8xl font-bold bg-gradient-to-br from-primary to-chart-2 bg-clip-text text-transparent">
@@ -138,7 +170,7 @@ export function HeroSection() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
