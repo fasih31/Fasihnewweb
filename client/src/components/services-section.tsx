@@ -42,8 +42,8 @@ export function ServicesSection() {
                 data-testid={`service-card-${service.id}`}
               >
                 <CardContent className="p-8 space-y-4">
-                  <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                    <Icon className="h-8 w-8 text-primary" />
+                  <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-300 group-hover:scale-110">
+                    <Icon className="h-8 w-8 text-primary group-hover:scale-110 transition-transform duration-300" />
                   </div>
                   <h3 className="text-xl font-bold text-foreground">
                     {service.title}

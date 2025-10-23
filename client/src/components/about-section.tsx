@@ -46,15 +46,25 @@ export function AboutSection() {
               challenges and drive impactful outcomes across diverse industries.
             </p>
 
-            <Button
-              size="lg"
-              variant="default"
-              onClick={() => scrollToSection("portfolio")}
-              data-testid="button-see-projects"
-              className="mt-4"
-            >
-              See My Projects
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 mt-4">
+              <Button
+                size="lg"
+                variant="default"
+                onClick={() => scrollToSection("portfolio")}
+                data-testid="button-see-projects"
+              >
+                See My Projects
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                asChild
+              >
+                <a href="/attached_assets/Fasih ur Rehman - CV-1_1761140201663.pdf" download="Fasih_ur_Rehman_Resume.pdf">
+                  Download Resume
+                </a>
+              </Button>
+            </div>
           </div>
 
           {/* Right: Timeline */}

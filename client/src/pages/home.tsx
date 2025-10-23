@@ -12,15 +12,20 @@ import { Footer } from "@/components/footer";
 import { StockTicker } from "@/components/stock-ticker";
 import { NewsFeed } from "@/components/news-feed";
 import { SEOHead, StructuredData } from "@/components/seo-head";
+import { ScrollProgress } from "@/components/scroll-progress";
+import { StatsSection } from "@/components/stats-section";
+
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       <SEOHead />
       <StructuredData />
+      <ScrollProgress />
       <Navigation />
       <main>
         <HeroSection />
+        <StatsSection />
         <AboutSection />
         <ServicesSection />
         <SolutionsSection />
