@@ -434,6 +434,69 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Crypto API endpoint
+  app.get("/api/crypto", async (req, res) => {
+    try {
+      const response = await fetch(
+        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=true'
+      );
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error('Error fetching crypto data:', error);
+      res.status(500).json({ error: 'Failed to fetch cryptocurrency data' });
+    }
+  });
+
+  // Currency rates API endpoint
+  app.get("/api/currency-rates", async (req, res) => {
+    try {
+      const response = await fetch(
+        'https://api.exchangerate-api.com/v4/latest/USD'
+      );
+      const data = await response.json();
+      res.json(data.rates);
+    } catch (error) {
+      console.error('Error fetching currency rates:', error);
+      res.status(500).json({ error: 'Failed to fetch currency rates' });
+    }
+  });
+
+  // Website scanner API endpoint
+  app.post("/api/scan-website", async (req, res) => {
+    try {
+      const { url } = req.body;
+      if (!url) {
+        return res.status(400).json({ error: 'URL is required' });
+      }
+
+      const startTime = Date.now();
+      const response = await fetch(url);
+      const loadTime = Date.now() - startTime;
+      const html = await response.text();
+
+      const hasHttps = url.startsWith('https://');
+      const hasTitle = /<title[^>]*>([^<]+)<\/title>/i.test(html);
+      const hasMeta = /<meta\s+name="description"/i.test(html);
+      const hasOgTags = /<meta\s+property="og:/i.test(html);
+      const responsive = /<meta\s+name="viewport"/i.test(html);
+
+      res.json({
+        url,
+        hasHttps,
+        hasTitle,
+        hasMeta,
+        hasOgTags,
+        responsive,
+        loadTime,
+        status: response.status,
+      });
+    } catch (error) {
+      console.error('Error scanning website:', error);
+      res.status(500).json({ error: 'Failed to scan website' });
+    }
+  });
+
   app.get("/api/news/:category?", async (req, res) => {
     try {
       const category = req.params.category || req.query.category || "business";

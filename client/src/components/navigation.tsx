@@ -38,6 +38,11 @@ export function Navigation() {
     { name: "Contact", id: "contact" },
   ];
 
+  const externalLinks = [
+    { name: "Tools", path: "/tools" },
+    { name: "Career", path: "/career" },
+  ];
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -80,6 +85,11 @@ export function Navigation() {
           <div className="hidden md:flex items-center gap-2">
             <ThemeToggle />
             <AuthButton />
+            <Link href="/tools">
+              <Button variant="ghost" className="hover-elevate active-elevate-2">
+                Tools
+              </Button>
+            </Link>
             <Link href="/career">
               <Button variant="ghost" className="hover-elevate active-elevate-2">
                 Career
@@ -132,6 +142,15 @@ export function Navigation() {
                 {link.name}
               </Button>
             ))}
+            <Link href="/tools">
+              <Button
+                variant="ghost"
+                className="w-full justify-start hover-elevate active-elevate-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Tools
+              </Button>
+            </Link>
             <Link href="/career">
               <Button
                 variant="ghost"

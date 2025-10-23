@@ -10,6 +10,7 @@ import BlogArticle from "@/pages/blog-article";
 import ProjectDetail from "@/pages/project-detail";
 import SolutionDetail from "@/pages/solution-detail";
 import Career from "@/pages/career";
+import Tools from "@/pages/tools";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/blog/:slug" component={BlogArticle} />
       <Route path="/project/:id" component={ProjectDetail} />
       <Route path="/career" component={Career} />
+      <Route path="/tools" component={Tools} />
       <Route component={NotFound} />
     </Switch>
   );
