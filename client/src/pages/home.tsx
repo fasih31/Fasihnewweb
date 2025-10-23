@@ -5,7 +5,7 @@ import { ServicesSection } from "@/components/services-section";
 import { SkillsSection } from "@/components/skills-section";
 import { SolutionsSection } from "@/components/solutions-section";
 import { PortfolioSection } from "@/components/portfolio-section";
-import { BlogSection } from "@/components/blog-section";
+import { LinkedInArticlesSection } from "@/components/linkedin-articles-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { ContactSection } from "@/components/contact-section";
@@ -32,7 +32,7 @@ export default function Home() {
         <SkillsSection />
         <SolutionsSection />
         <PortfolioSection />
-        <BlogSection />
+        <LinkedInArticlesSection />
         <TestimonialsSection />
         <section className="py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
