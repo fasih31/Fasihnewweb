@@ -12,6 +12,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Briefcase, Send, CheckCircle } from "lucide-react";
 import { insertCareerInquirySchema, type InsertCareerInquiry } from "@shared/schema";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+
 
 export default function Career() {
   const { toast } = useToast();
@@ -75,232 +77,257 @@ export default function Career() {
         keywords="hire fasih ur rehman, fintech consultant, product manager hire, freelance product manager, collaboration opportunities"
       />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 leading-tight">Work With Me</h1>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
-            I'm open to new opportunities in product management, consulting, and collaboration.
-            Let's discuss how we can work together.
-          </p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Hero Section */}
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16">
+          <div className="order-2 md:order-1">
+            <Badge className="mb-4 text-xs sm:text-sm" variant="secondary">
+              <Briefcase className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+              Career Opportunities
+            </Badge>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 md:mb-6">
+              Join Our Team
+            </h1>
+            <p className="text-base sm:text-lg text-muted-foreground mb-6 md:mb-8">
+              Looking for talented professionals passionate about technology and innovation. Explore opportunities to grow your career with us.
+            </p>
+          </div>
+          <div className="relative order-1 md:order-2">
+            <img
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=500&fit=crop"
+              alt="Team collaboration"
+              className="rounded-lg shadow-2xl w-full h-auto object-cover aspect-video"
+            />
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
-          <Card className="text-center hover-elevate">
-            <CardContent className="pt-6 pb-6 px-4">
-              <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 mb-3 sm:mb-4">
-                <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-              </div>
-              <h3 className="font-semibold mb-2 text-sm sm:text-base">Full-Time Roles</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Product Manager positions in FinTech, EdTech, or AI/AGI
-              </p>
-            </CardContent>
-          </Card>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="text-center mb-8 sm:mb-12">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 leading-tight">Work With Me</h1>
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
+              I'm open to new opportunities in product management, consulting, and collaboration.
+              Let's discuss how we can work together.
+            </p>
+          </div>
 
-          <Card className="text-center hover-elevate">
-            <CardContent className="pt-6 pb-6 px-4">
-              <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 mb-3 sm:mb-4">
-                <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-              </div>
-              <h3 className="font-semibold mb-2 text-sm sm:text-base">Freelance Projects</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Short-term projects and product consulting
-              </p>
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
+            <Card className="text-center hover-elevate">
+              <CardContent className="pt-6 pb-6 px-4">
+                <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 mb-3 sm:mb-4">
+                  <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2 text-sm sm:text-base">Full-Time Roles</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Product Manager positions in FinTech, EdTech, or AI/AGI
+                </p>
+              </CardContent>
+            </Card>
 
-          <Card className="text-center hover-elevate">
-            <CardContent className="pt-6 pb-6 px-4">
-              <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 mb-3 sm:mb-4">
-                <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-              </div>
-              <h3 className="font-semibold mb-2 text-sm sm:text-base">Collaboration</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Strategic partnerships and co-founding opportunities
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+            <Card className="text-center hover-elevate">
+              <CardContent className="pt-6 pb-6 px-4">
+                <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 mb-3 sm:mb-4">
+                  <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2 text-sm sm:text-base">Freelance Projects</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Short-term projects and product consulting
+                </p>
+              </CardContent>
+            </Card>
 
-        {isSubmitted ? (
-          <Card className="border-green-200 dark:border-green-800">
-            <CardContent className="pt-12 pb-12 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 mb-4">
-                <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
-              </div>
-              <h2 className="text-2xl font-bold mb-2">Thank You!</h2>
-              <p className="text-muted-foreground mb-6">
-                Your inquiry has been submitted successfully. I'll review it and get back to you within 24-48 hours.
-              </p>
-              <Button onClick={() => setIsSubmitted(false)} variant="outline">
-                Submit Another Inquiry
-              </Button>
-            </CardContent>
-          </Card>
-        ) : (
-          <Card>
-            <CardHeader>
-              <CardTitle>Get in Touch</CardTitle>
-              <CardDescription>
-                Fill out the form below and I'll respond as soon as possible
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Full Name *</FormLabel>
-                          <FormControl>
-                            <Input placeholder="John Doe" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+            <Card className="text-center hover-elevate">
+              <CardContent className="pt-6 pb-6 px-4">
+                <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 mb-3 sm:mb-4">
+                  <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2 text-sm sm:text-base">Collaboration</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Strategic partnerships and co-founding opportunities
+                </p>
+              </CardContent>
+            </Card>
+          </div>
 
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email Address *</FormLabel>
-                          <FormControl>
-                            <Input type="email" placeholder="john@example.com" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Phone Number (Optional)</FormLabel>
-                          <FormControl>
-                            <Input placeholder="+1 (555) 000-0000" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="inquiryType"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Inquiry Type *</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          {isSubmitted ? (
+            <Card className="border-green-200 dark:border-green-800">
+              <CardContent className="pt-12 pb-12 text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 mb-4">
+                  <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
+                </div>
+                <h2 className="text-2xl font-bold mb-2">Thank You!</h2>
+                <p className="text-muted-foreground mb-6">
+                  Your inquiry has been submitted successfully. I'll review it and get back to you within 24-48 hours.
+                </p>
+                <Button onClick={() => setIsSubmitted(false)} variant="outline">
+                  Submit Another Inquiry
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle>Get in Touch</CardTitle>
+                <CardDescription>
+                  Fill out the form below and I'll respond as soon as possible
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full Name *</FormLabel>
                             <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select type" />
-                              </SelectTrigger>
+                              <Input placeholder="John Doe" {...field} />
                             </FormControl>
-                            <SelectContent>
-                              <SelectItem value="fulltime">Full-Time Position</SelectItem>
-                              <SelectItem value="freelance">Freelance Project</SelectItem>
-                              <SelectItem value="collaboration">Collaboration</SelectItem>
-                              <SelectItem value="consulting">Consulting</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                  <FormField
-                    control={form.control}
-                    name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Message *</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Tell me about the opportunity, project scope, timeline, or how you'd like to collaborate..."
-                            className="min-h-[150px]"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email Address *</FormLabel>
+                            <FormControl>
+                              <Input type="email" placeholder="john@example.com" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
-                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Phone Number (Optional)</FormLabel>
+                            <FormControl>
+                              <Input placeholder="+1 (555) 000-0000" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="inquiryType"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Inquiry Type *</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select type" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="fulltime">Full-Time Position</SelectItem>
+                                <SelectItem value="freelance">Freelance Project</SelectItem>
+                                <SelectItem value="collaboration">Collaboration</SelectItem>
+                                <SelectItem value="consulting">Consulting</SelectItem>
+                                <SelectItem value="other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
                     <FormField
                       control={form.control}
-                      name="linkedinUrl"
+                      name="message"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>LinkedIn Profile</FormLabel>
+                          <FormLabel>Message *</FormLabel>
                           <FormControl>
-                            <Input placeholder="https://linkedin.com/in/..." {...field} />
+                            <Textarea
+                              placeholder="Tell me about the opportunity, project scope, timeline, or how you'd like to collaborate..."
+                              className="min-h-[150px]"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
 
-                    <FormField
-                      control={form.control}
-                      name="portfolioUrl"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Company/Portfolio URL</FormLabel>
-                          <FormControl>
-                            <Input placeholder="https://yourcompany.com" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    <div className="grid md:grid-cols-3 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="linkedinUrl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>LinkedIn Profile</FormLabel>
+                            <FormControl>
+                              <Input placeholder="https://linkedin.com/in/..." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                    <FormField
-                      control={form.control}
-                      name="resumeUrl"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Resume/Job Description URL</FormLabel>
-                          <FormControl>
-                            <Input placeholder="https://..." {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                      <FormField
+                        control={form.control}
+                        name="portfolioUrl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Company/Portfolio URL</FormLabel>
+                            <FormControl>
+                              <Input placeholder="https://yourcompany.com" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                  <Button
-                    type="submit"
-                    className="w-full md:w-auto"
-                    size="lg"
-                    disabled={submitMutation.isPending}
-                  >
-                    {submitMutation.isPending ? (
-                      "Submitting..."
-                    ) : (
-                      <>
-                        <Send className="h-4 w-4 mr-2" />
-                        Submit Inquiry
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
-        )}
+                      <FormField
+                        control={form.control}
+                        name="resumeUrl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Resume/Job Description URL</FormLabel>
+                            <FormControl>
+                              <Input placeholder="https://..." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full md:w-auto"
+                      size="lg"
+                      disabled={submitMutation.isPending}
+                    >
+                      {submitMutation.isPending ? (
+                        "Submitting..."
+                      ) : (
+                        <>
+                          <Send className="h-4 w-4 mr-2" />
+                          Submit Inquiry
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </Form>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </div>
     </div>
   );

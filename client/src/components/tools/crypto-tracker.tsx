@@ -23,7 +23,7 @@ export function CryptoTracker() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const { data: cryptos, isLoading, isError } = useQuery<CryptoData[]>({
-    queryKey: [`/api/crypto`, refreshKey],
+    queryKey: ['/api/crypto', refreshKey],
     refetchInterval: 60000, // Refresh every minute
   });
 

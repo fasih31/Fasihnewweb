@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
@@ -7,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
+import {
   ShoppingBag, Banknote, Home, Car, Shield, HeartHandshake,
-  ArrowRight, CheckCircle2, ChevronRight, Calculator
+  ArrowRight, CheckCircle2, ChevronRight, Calculator, TrendingUp
 } from "lucide-react";
 import { islamicFinTechProducts, type IslamicProduct } from "@/data/islamic-fintech-products";
 import { useLocation } from "wouter";
@@ -64,15 +63,27 @@ export default function IslamicFinTech() {
       <main className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16">
         {!selectedProduct ? (
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Header */}
-            <div className="text-center mb-12 sm:mb-16">
-              <Badge variant="secondary" className="mb-4">Islamic FinTech Solutions</Badge>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
-                Shariah-Compliant<br className="hidden sm:block" /> Financial Products
-              </h1>
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-                Explore our comprehensive suite of Islamic financial solutions designed with transparency, ethics, and Shariah compliance at their core.
-              </p>
+            {/* Hero Section */}
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16">
+              <div className="order-2 md:order-1">
+                <Badge className="mb-4 text-xs sm:text-sm" variant="secondary">
+                  <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  Islamic Finance Technology
+                </Badge>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 md:mb-6">
+                  Shariah-Compliant FinTech Solutions
+                </h1>
+                <p className="text-base sm:text-lg text-muted-foreground mb-6 md:mb-8">
+                  Empowering ethical finance through cutting-edge technology. Our Islamic FinTech solutions combine traditional Islamic finance principles with modern innovation.
+                </p>
+              </div>
+              <div className="relative order-1 md:order-2">
+                <img
+                  src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=500&fit=crop"
+                  alt="Islamic Finance"
+                  className="rounded-lg shadow-2xl w-full h-auto object-cover aspect-video"
+                />
+              </div>
             </div>
 
             {/* Products Grid */}

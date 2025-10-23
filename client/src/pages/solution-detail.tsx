@@ -100,68 +100,26 @@ export default function SolutionDetail() {
         <section className="relative py-24 md:py-32 bg-gradient-to-br from-background via-background to-primary/5 overflow-hidden">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
 
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Button
-              variant="ghost"
-              onClick={() => {
-                setLocation("/");
-                setTimeout(() => scrollToSection("solutions"), 300);
-              }}
-              className="mb-8 hover-elevate"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Solutions
-            </Button>
-
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-chart-2/20 flex items-center justify-center">
-                    <Icon className="h-10 w-10 text-primary" />
-                  </div>
-                  <Badge variant="secondary" className="text-sm">
-                    {solution.id.toUpperCase()}
-                  </Badge>
-                </div>
-
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Hero Section */}
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16">
+              <div className="order-2 md:order-1">
+                <Badge className="mb-4" variant="secondary">
+                  {solution.category}
+                </Badge>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 md:mb-6">
                   {solution.title}
                 </h1>
-
-                <p className="text-lg text-muted-foreground leading-relaxed">
+                <p className="text-base sm:text-lg text-muted-foreground mb-6 md:mb-8">
                   {solution.description}
                 </p>
-
-                <div className="flex gap-4 pt-4">
-                  <Button
-                    size="lg"
-                    onClick={() => {
-                      setLocation("/");
-                      setTimeout(() => scrollToSection("contact"), 300);
-                    }}
-                    className="gap-2"
-                  >
-                    Request Consultation
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    onClick={() => {
-                      setLocation("/");
-                      setTimeout(() => scrollToSection("portfolio"), 300);
-                    }}
-                  >
-                    View Related Projects
-                  </Button>
-                </div>
               </div>
-
-              <div className="relative">
-                <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/10 via-chart-2/10 to-background border-2 border-border overflow-hidden">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Icon className="h-48 w-48 text-primary/20" />
-                  </div>
-                </div>
+              <div className="relative order-1 md:order-2">
+                <img
+                  src={solution.image}
+                  alt={solution.title}
+                  className="rounded-lg shadow-2xl w-full h-auto object-cover aspect-video"
+                />
               </div>
             </div>
           </div>
