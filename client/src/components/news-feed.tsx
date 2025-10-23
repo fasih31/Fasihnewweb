@@ -48,7 +48,7 @@ export function NewsFeed() {
             {isLoading ? (
               <div className="text-center py-8 text-muted-foreground">Loading news...</div>
             ) : articles.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">No articles available</div>
+              <div className="text-center py-8 text-muted-foreground">{newsData?.message || "No articles available"}</div>
             ) : (
               articles.slice(0, 5).map((article, index) => (
                 <div key={index} className="border-b pb-4 last:border-b-0">

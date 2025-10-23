@@ -43,20 +43,20 @@ export default function ProjectDetail() {
         keywords={`${project.category}, ${project.techStack.join(", ")}, product management`}
       />
       <Navigation />
-      <main className="pt-24 pb-16">
+      <main className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Back Button */}
           <Button
             variant="ghost"
             onClick={() => setLocation("/#portfolio")}
-            className="mb-8 -ml-2"
+            className="mb-6 sm:mb-8 -ml-2"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Portfolio
           </Button>
 
           {/* Project Header */}
-          <div className="mb-12">
+          <div className="mb-8 sm:mb-12">
             <div className="flex items-center gap-3 mb-6">
               <Badge variant="secondary" className="text-sm">
                 {project.category}

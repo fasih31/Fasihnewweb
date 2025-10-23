@@ -88,20 +88,20 @@ export default function BlogArticle() {
         article={true}
       />
       <Navigation />
-      <main className="pt-24 pb-16">
+      <main className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16">
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Back Button */}
           <Button
             variant="ghost"
             onClick={() => setLocation("/#blog")}
-            className="mb-8 -ml-2"
+            className="mb-6 sm:mb-8 -ml-2"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Articles
           </Button>
 
           {/* Article Header */}
-          <header className="mb-12 space-y-6">
+          <header className="mb-8 sm:mb-12 space-y-4 sm:space-y-6">
             <div className="flex items-center gap-3 flex-wrap">
               <Badge variant="secondary" className="text-sm">
                 {article.category}

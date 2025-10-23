@@ -33,11 +33,12 @@ export const projects: Project[] = [
   },
   {
     id: "4",
-    title: "FinTech Banking Platform",
-    description: "Digital banking solution with AI-driven risk management and multi-platform payment integration.",
+    title: "Islamic FinTech Platform",
+    description: "Comprehensive Shariah-compliant financial solutions including BNPL, home finance, Takaful, and more.",
     category: "FinTech",
     image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=500&fit=crop",
-    techStack: ["React", "Node.js", "PostgreSQL", "Stripe"],
+    liveUrl: "/islamic-fintech",
+    techStack: ["React", "Node.js", "PostgreSQL", "Blockchain"],
   },
   {
     id: "5",

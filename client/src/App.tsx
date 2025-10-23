@@ -11,6 +11,7 @@ import ProjectDetail from "@/pages/project-detail";
 import SolutionDetail from "@/pages/solution-detail";
 import Career from "@/pages/career";
 import Tools from "@/pages/tools";
+import IslamicFinTech from "@/pages/islamic-fintech";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/project/:id" component={ProjectDetail} />
       <Route path="/career" component={Career} />
       <Route path="/tools" component={Tools} />
+      <Route path="/islamic-fintech" component={IslamicFinTech} />
       <Route component={NotFound} />
     </Switch>
   );
