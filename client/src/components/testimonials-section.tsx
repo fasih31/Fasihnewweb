@@ -5,11 +5,11 @@ import { Quote, Star } from "lucide-react";
 import { Testimonial } from "@shared/schema";
 
 export function TestimonialsSection() {
-  const { data: response, isLoading } = useQuery<{ success: boolean; data: Testimonial[] }>({
+  const { data: response, isLoading, error } = useQuery<{ success: boolean; data: Testimonial[] }>({
     queryKey: ["/api/testimonials?featured=true"],
   });
 
-  const testimonials = response?.data || [];
+  const testimonials = Array.isArray(response?.data) ? response.data : [];
 
   if (isLoading) {
     return (

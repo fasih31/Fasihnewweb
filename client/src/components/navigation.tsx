@@ -75,16 +75,17 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <button
-            onClick={() => scrollToSection("hero")}
-            className="flex items-center gap-3 hover-elevate active-elevate-2 rounded-md px-2 py-1 -ml-2"
-            data-testid="button-logo"
-          >
-            <img src={logoImage} alt="Fasih ur Rehman" className="h-10 w-10" />
-            <span className="text-xl font-bold text-foreground hidden sm:block">
-              Fasih ur Rehman
-            </span>
-          </button>
+          <Link href="/">
+            <button
+              className="flex items-center gap-3 hover-elevate active-elevate-2 rounded-md px-2 py-1 -ml-2"
+              data-testid="button-logo"
+            >
+              <img src={logoImage} alt="Fasih ur Rehman" className="h-10 w-10" />
+              <span className="text-xl font-bold text-foreground hidden sm:block">
+                Fasih ur Rehman
+              </span>
+            </button>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">

@@ -19,17 +19,15 @@ const iconMap = {
 };
 
 const scrollToSection = (id: string) => {
-  const element = document.getElementById(id);
-  if (element) {
-    const offset = 80;
-    const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: "smooth",
-    });
-  }
+  const [, setLocation] = useLocation(); // Added setLocation here to use it within scrollToSection
+  // Navigate to home first, then scroll
+  setLocation("/");
+  setTimeout(() => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, 300);
 };
 
 export default function SolutionDetail() {
@@ -101,7 +99,7 @@ export default function SolutionDetail() {
       <main className="pt-20">
         <section className="relative py-24 md:py-32 bg-gradient-to-br from-background via-background to-primary/5 overflow-hidden">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
-          
+
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Button
               variant="ghost"
@@ -125,11 +123,11 @@ export default function SolutionDetail() {
                     {solution.id.toUpperCase()}
                   </Badge>
                 </div>
-                
+
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
                   {solution.title}
                 </h1>
-                
+
                 <p className="text-lg text-muted-foreground leading-relaxed">
                   {solution.description}
                 </p>

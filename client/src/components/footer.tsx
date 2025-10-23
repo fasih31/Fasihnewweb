@@ -72,10 +72,16 @@ export function Footer() {
             <p className="text-xs">Professional Product Manager | FinTech & AI Specialist</p>
           </div>
           <div className="flex gap-6">
-            <button className="hover:text-foreground transition-colors">
+            <button 
+              onClick={scrollToTop}
+              className="hover:text-foreground transition-colors"
+            >
               Privacy Policy
             </button>
-            <button className="hover:text-foreground transition-colors">
+            <button 
+              onClick={scrollToTop}
+              className="hover:text-foreground transition-colors"
+            >
               Terms of Service
             </button>
           </div>
