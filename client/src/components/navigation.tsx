@@ -106,9 +106,12 @@ export function Navigation() {
               size="sm"
               data-testid="button-download-resume"
               className="gap-2"
+              asChild
             >
-              <Download className="h-4 w-4" />
-              Resume
+              <a href="/attached_assets/Fasih ur Rehman - CV-1_1761140201663.pdf" download="Fasih_ur_Rehman_Resume.pdf">
+                <Download className="h-4 w-4" />
+                Resume
+              </a>
             </Button>
           </div>
 
@@ -180,9 +183,12 @@ export function Navigation() {
               size="default"
               data-testid="mobile-button-download-resume"
               className="w-full gap-2 mt-4"
+              asChild
             >
-              <Download className="h-4 w-4" />
-              Download Resume
+              <a href="/attached_assets/Fasih ur Rehman - CV-1_1761140201663.pdf" download="Fasih_ur_Rehman_Resume.pdf">
+                <Download className="h-4 w-4" />
+                Download Resume
+              </a>
             </Button>
           </div>
         </div>
