@@ -9,7 +9,7 @@ import logoImage from "@assets/generated_images/Fasih_ur_Rehman_professional_log
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const isHome = location === "/";
 
   useEffect(() => {
@@ -20,10 +20,29 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    // Handle hash navigation when coming from external pages
+    if (location === "/" && window.location.hash) {
+      const hash = window.location.hash.substring(1);
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    }
+  }, [location]);
+
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (isHome) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        setIsMobileMenuOpen(false);
+      }
+    } else {
+      // Navigate to home page with hash
+      setLocation(`/#${id}`);
       setIsMobileMenuOpen(false);
     }
   };
