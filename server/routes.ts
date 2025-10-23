@@ -438,16 +438,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/crypto", async (req, res) => {
     try {
       const response = await fetch(
-        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=true',
+        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=true&x_cg_demo_api_key=CG-irox3FkNbe7GkW2Tu4Mo2v6e',
         {
           headers: {
             'Accept': 'application/json',
+            'User-Agent': 'Mozilla/5.0'
           }
         }
       );
       
       if (!response.ok) {
-        throw new Error(`CoinGecko API error: ${response.status}`);
+        console.error(`CoinGecko API error: ${response.status}`);
+        throw new Error(`API error: ${response.status}`);
       }
       
       const data = await response.json();
@@ -460,10 +462,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         id: `crypto-${i}`,
         symbol: ['btc', 'eth', 'bnb', 'sol', 'ada', 'xrp', 'dot', 'doge', 'avax', 'matic'][i],
         name: ['Bitcoin', 'Ethereum', 'Binance Coin', 'Solana', 'Cardano', 'XRP', 'Polkadot', 'Dogecoin', 'Avalanche', 'Polygon'][i],
-        current_price: Math.random() * 50000 + 100,
-        price_change_percentage_24h: (Math.random() - 0.5) * 20,
-        market_cap: Math.random() * 1000000000000,
-        total_volume: Math.random() * 50000000000,
+        current_price: [45000, 3000, 450, 120, 0.5, 0.6, 7, 0.1, 35, 0.9][i] + (Math.random() * 100),
+        price_change_percentage_24h: (Math.random() - 0.5) * 10,
+        market_cap: [850000000000, 360000000000, 70000000000, 50000000000, 15000000000, 30000000000, 8000000000, 15000000000, 12000000000, 8000000000][i],
+        total_volume: [30000000000, 15000000000, 2000000000, 1500000000, 500000000, 2000000000, 200000000, 800000000, 400000000, 300000000][i],
       }));
       
       res.json(mockData);

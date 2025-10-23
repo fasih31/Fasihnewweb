@@ -30,16 +30,16 @@ export default function Tools() {
       <main className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-8 sm:mb-12">
             <Badge className="mb-4" variant="secondary">
               <Sparkles className="h-3 w-3 mr-1" />
-              Free Interactive Tools
+              Free Tools
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
               Professional Tools & Utilities
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Explore free tools built by Fasih ur Rehman. Real-time data, accurate calculations, and professional-grade utilities.
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
+              Real-time data, accurate calculations, and professional-grade utilities.
             </p>
           </div>
 
@@ -90,15 +90,14 @@ export default function Tools() {
           </Tabs>
 
           {/* Footer Note */}
-          <Card className="mt-12 bg-gradient-to-br from-primary/5 to-chart-2/5 border-primary/20">
+          <Card className="mt-8 sm:mt-12 bg-gradient-to-br from-primary/5 to-chart-2/5 border-primary/20">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                 <Sparkles className="h-5 w-5 text-primary" />
                 Built by Fasih ur Rehman
               </CardTitle>
-              <CardDescription>
-                All tools are free to use and built with modern web technologies. Data updates in real-time where applicable.
-                Want a custom tool for your business? <a href="/#contact" className="text-primary hover:underline">Get in touch</a>.
+              <CardDescription className="text-sm sm:text-base">
+                All tools are free and built with modern web technologies. Want a custom tool? <a href="/#contact" className="text-primary hover:underline font-medium">Get in touch</a>.
               </CardDescription>
             </CardHeader>
           </Card>
