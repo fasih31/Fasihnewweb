@@ -87,6 +87,7 @@ export interface Project {
   liveUrl?: string;
   githubUrl?: string;
   techStack: string[];
+  caseStudy?: string;
 }
 
 export interface BlogPost {
