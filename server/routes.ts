@@ -493,7 +493,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/crypto", async (req, res) => {
     try {
       const response = await fetch(
-        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=true&x_cg_demo_api_key=CG-irox3FkNbe7GkW2Tu4Mo2v6e',
+        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=true',
         {
           headers: {
             'Accept': 'application/json',
@@ -503,23 +503,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       );
       
       if (!response.ok) {
-        console.error(`CoinGecko API error: ${response.status}`);
+        const errorText = await response.text();
+        console.error(`CoinGecko API error: ${response.status} - ${errorText}`);
         throw new Error(`API error: ${response.status}`);
       }
       
       const data = await response.json();
+      console.log('Successfully fetched live crypto data');
       res.json(data);
     } catch (error) {
       console.error('Error fetching crypto data:', error);
       
-      // Fallback mock data if API fails
-      const mockData = Array.from({ length: 10 }, (_, i) => ({
-        id: `crypto-${i}`,
-        symbol: ['btc', 'eth', 'bnb', 'sol', 'ada', 'xrp', 'dot', 'doge', 'avax', 'matic'][i],
-        name: ['Bitcoin', 'Ethereum', 'Binance Coin', 'Solana', 'Cardano', 'XRP', 'Polkadot', 'Dogecoin', 'Avalanche', 'Polygon'][i],
-        current_price: [45000, 3000, 450, 120, 0.5, 0.6, 7, 0.1, 35, 0.9][i] + (Math.random() * 100),
-        price_change_percentage_24h: (Math.random() - 0.5) * 10,
-        market_cap: [850000000000, 360000000000, 70000000000, 50000000000, 15000000000, 30000000000, 8000000000, 15000000000, 12000000000, 8000000000][i],
+      // Return error response instead of mock data
+      res.status(503).json({
+        error: 'Unable to fetch live crypto data',
+        message: 'Please try again in a moment'
+      });
+    }
+  });
         total_volume: [30000000000, 15000000000, 2000000000, 1500000000, 500000000, 2000000000, 200000000, 800000000, 400000000, 300000000][i],
       }));
       

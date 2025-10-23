@@ -155,7 +155,7 @@ export function Navigation() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-2">
             <ThemeToggle />
             <AuthButton />
             <Button
@@ -177,26 +177,26 @@ export function Navigation() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-background border-b border-border">
-          <div className="px-4 py-4 space-y-2">
+        <div className="lg:hidden bg-background border-b border-border shadow-lg">
+          <div className="px-4 py-4 space-y-1 max-h-[calc(100vh-5rem)] overflow-y-auto">
             {updatedNavLinks.map((link) => (
               <Button
                 key={link.id}
                 variant="ghost"
                 onClick={() => scrollToSection(link.id)}
                 data-testid={`mobile-link-${link.id}`}
-                className="w-full justify-start hover-elevate active-elevate-2"
+                className="w-full justify-start hover-elevate active-elevate-2 h-12 text-base"
               >
                 {link.name}
               </Button>
             ))}
-            <div className="pt-2 border-t border-border/50">
-              <p className="text-xs font-semibold text-muted-foreground px-2 py-1">Professional Tools</p>
+            <div className="pt-3 mt-2 border-t border-border/50">
+              <p className="text-sm font-semibold text-muted-foreground px-3 py-2 mb-1">Professional Tools</p>
               {professionalTools.map((tool) => (
                 <Link key={tool.path} href={tool.path}>
                   <Button
                     variant="ghost"
-                    className="w-full justify-start hover-elevate active-elevate-2 pl-6"
+                    className="w-full justify-start hover-elevate active-elevate-2 pl-8 h-11 text-base"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {tool.name}
@@ -206,9 +206,9 @@ export function Navigation() {
             </div>
             <Button
               variant="default"
-              size="default"
+              size="lg"
               data-testid="mobile-button-download-resume"
-              className="w-full gap-2 mt-4"
+              className="w-full gap-2 mt-4 h-12"
               asChild
             >
               <a href="/attached_assets/Fasih ur Rehman - CV-1_1761140201663.pdf" download="Fasih_ur_Rehman_Resume.pdf">

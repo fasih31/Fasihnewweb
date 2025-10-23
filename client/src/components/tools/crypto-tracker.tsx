@@ -22,9 +22,11 @@ interface CryptoData {
 export function CryptoTracker() {
   const [refreshKey, setRefreshKey] = useState(0);
 
-  const { data: cryptos, isLoading, isError } = useQuery<CryptoData[]>({
-    queryKey: ['/api/crypto'],
+  const { data: cryptos, isLoading, isError, error } = useQuery<CryptoData[]>({
+    queryKey: ['/api/crypto', refreshKey],
     refetchInterval: 60000, // Refresh every minute
+    retry: 3,
+    retryDelay: 1000,
   });
 
   const formatPrice = (price: number) => {
@@ -67,7 +69,7 @@ export function CryptoTracker() {
           <Alert variant="destructive" className="mb-4">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              Unable to fetch live data. Displaying sample data.
+              Unable to fetch live cryptocurrency data from CoinGecko API. Please check your internet connection and try refreshing.
             </AlertDescription>
           </Alert>
         )}
