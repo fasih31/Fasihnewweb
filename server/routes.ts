@@ -418,9 +418,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/news", async (req, res) => {
+  app.get("/api/news/:category?", async (req, res) => {
     try {
-      const category = req.query.category || "business";
+      const category = req.params.category || req.query.category || "business";
       
       const NEWS_API_KEY = process.env.NEWS_API_KEY;
       if (NEWS_API_KEY) {

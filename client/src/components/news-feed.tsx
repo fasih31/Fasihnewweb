@@ -21,7 +21,7 @@ export function NewsFeed() {
   const [category, setCategory] = useState<"business" | "technology">("business");
 
   const { data: newsData, isLoading } = useQuery<{ articles: NewsArticle[] }>({
-    queryKey: ["/api/news", category],
+    queryKey: [`/api/news/${category}`],
     refetchInterval: 300000, // Refresh every 5 minutes
     staleTime: 60000,
   });
