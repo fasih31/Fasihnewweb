@@ -8,29 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, ArrowLeft, Eye } from "lucide-react";
 import { SEOHead, getArticleSchema } from "@/components/seo-head";
 
-// Helper function to generate Article schema
-const getArticleSchema = (title, description, date) => ({
-  "@context": "https://schema.org",
-  "@type": "Article",
-  headline: title,
-  description: description,
-  datePublished: new Date(date).toISOString(),
-  author: {
-    "@type": "Person",
-    name: "Fasih ur Rehman",
-    url: "https://fasih.com.pk",
-  },
-  publisher: {
-    "@type": "Organization",
-    name: "Fasih ur Rehman",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://fasih.com.pk/logo.png", // Replace with your actual logo URL
-    },
-  },
-  // Add more properties as needed, e.g., image, mainEntityOfPage
-});
-
 export default function BlogArticle() {
   const [, params] = useRoute("/blog/:slug");
   const [, setLocation] = useLocation();

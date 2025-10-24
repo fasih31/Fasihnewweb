@@ -8,7 +8,7 @@ interface SEOHeadProps {
   ogImage?: string;
   canonicalUrl?: string;
   article?: boolean;
-  schema?: object;
+  schema?: object | object[];
 }
 
 export function SEOHead({
@@ -29,9 +29,11 @@ export function SEOHead({
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="author" content="Fasih ur Rehman" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
         {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 
         {/* Open Graph */}
@@ -49,14 +51,26 @@ export function SEOHead({
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={ogImage} />
         <meta name="twitter:creator" content="@Fasih31" />
+        <meta name="twitter:site" content="@Fasih31" />
 
+        {/* LinkedIn */}
+        <meta property="og:see_also" content="https://www.linkedin.com/in/fasihurrehman05" />
+        
+        {/* Additional Meta Tags */}
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Fasih ur Rehman" />
+        <meta name="application-name" content="Fasih ur Rehman Portfolio" />
+        
         {/* Theme */}
         <meta name="theme-color" content="#0d1117" />
+        <meta name="msapplication-TileColor" content="#0d1117" />
 
         {/* Schema.org Structured Data */}
         {schema && (
           <script type="application/ld+json">
-            {JSON.stringify(schema)}
+            {JSON.stringify(Array.isArray(schema) ? schema : [schema])}
           </script>
         )}
       </Helmet>
@@ -98,23 +112,37 @@ export const getPersonSchema = () => ({
   ]
 });
 
-export const getArticleSchema = (title: string, description: string, datePublished: string, dateModified?: string) => ({
+export const getArticleSchema = (title: string, description: string, datePublished: string, dateModified?: string, imageUrl?: string) => ({
   "@context": "https://schema.org",
-  "@type": "Article",
+  "@type": "BlogPosting",
   headline: title,
   description: description,
+  image: imageUrl || "/og-image.png",
   author: {
     "@type": "Person",
     name: "Fasih ur Rehman",
-    url: typeof window !== "undefined" ? window.location.origin : ""
+    url: typeof window !== "undefined" ? window.location.origin : "",
+    sameAs: [
+      "https://www.linkedin.com/in/fasihurrehman05",
+      "https://github.com/fasih31",
+      "https://twitter.com/Fasih31"
+    ]
   },
   publisher: {
     "@type": "Person",
-    name: "Fasih ur Rehman"
+    name: "Fasih ur Rehman",
+    logo: {
+      "@type": "ImageObject",
+      url: "/og-image.png"
+    }
   },
   datePublished: datePublished,
   dateModified: dateModified || datePublished,
-  image: "/og-image.png"
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": typeof window !== "undefined" ? window.location.href : ""
+  },
+  inLanguage: "en-US"
 });
 
 export const getProjectSchema = (project: { title: string; description: string; technologies: string[] }) => ({
@@ -127,4 +155,41 @@ export const getProjectSchema = (project: { title: string; description: string; 
     name: "Fasih ur Rehman"
   },
   keywords: project.technologies.join(", ")
+});
+
+export const getBreadcrumbSchema = (items: Array<{ name: string; url: string }>) => ({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: item.name,
+    item: item.url
+  }))
+});
+
+export const getOrganizationSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Fasih ur Rehman - FinTech & AI Solutions",
+  description: "Expert Product Manager specializing in FinTech, AI, Islamic Finance, and digital transformation solutions",
+  url: typeof window !== "undefined" ? window.location.origin : "https://fasih.com.pk",
+  logo: "/og-image.png",
+  image: "/og-image.png",
+  telephone: "+971-50-618-4687",
+  email: "fasih31@gmail.com",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Dubai",
+    addressCountry: "UAE"
+  },
+  sameAs: [
+    "https://www.linkedin.com/in/fasihurrehman05",
+    "https://github.com/fasih31",
+    "https://twitter.com/Fasih31",
+    "https://www.instagram.com/fasih31/",
+    "https://www.youtube.com/@fasih31"
+  ],
+  areaServed: ["UAE", "Saudi Arabia", "Middle East", "Global"],
+  priceRange: "$$"
 });
