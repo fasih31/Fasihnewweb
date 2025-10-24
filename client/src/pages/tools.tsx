@@ -15,9 +15,7 @@ import {
   Ruler,
   Search,
   Calculator,
-  Sparkles,
-  BookOpen,
-  Moon
+  Sparkles
 } from "lucide-react";
 
 export default function Tools() {
@@ -25,7 +23,7 @@ export default function Tools() {
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Free Tools & Utilities — Fasih ur Rehman"
-        description="Access free interactive tools including crypto market tracker, currency converter, unit converter, website scanner, financial calculators, and Islamic tools for Qur'an and Hadith. Built with modern web technologies."
+        description="Access free interactive professional tools including real-time crypto market tracker, currency converter, unit converter, website scanner, and financial loan calculators. Built with modern web technologies by Fasih ur Rehman."
       />
       <Navigation />
 
@@ -68,18 +66,6 @@ export default function Tools() {
                 <Calculator className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="text-xs sm:text-sm">Loan Calc</span>
               </TabsTrigger>
-              <TabsTrigger value="quran" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3">
-                <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="text-xs sm:text-sm">Qur'an</span>
-              </TabsTrigger>
-              <TabsTrigger value="hadith" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3">
-                <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="text-xs sm:text-sm">Hadith</span>
-              </TabsTrigger>
-              <TabsTrigger value="daily" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3">
-                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="text-xs sm:text-sm">Daily</span>
-              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="crypto" className="space-y-4">
@@ -100,28 +86,6 @@ export default function Tools() {
 
             <TabsContent value="calculator" className="space-y-4">
               <LoanCalculator />
-            </TabsContent>
-
-            {/* Placeholder for Islamic Tools Tabs */}
-            <TabsContent value="quran" className="space-y-4">
-              {/* Quran Tool Component would go here */}
-              <div className="flex items-center justify-center h-64 rounded-lg border border-dashed">
-                <p className="text-muted-foreground">Qur'an Tool coming soon!</p>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="hadith" className="space-y-4">
-              {/* Hadith Tool Component would go here */}
-              <div className="flex items-center justify-center h-64 rounded-lg border border-dashed">
-                <p className="text-muted-foreground">Hadith Tool coming soon!</p>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="daily" className="space-y-4">
-              {/* Daily Ayah/Hadith Component would go here */}
-              <div className="flex items-center justify-center h-64 rounded-lg border border-dashed">
-                <p className="text-muted-foreground">Daily Islamic Content coming soon!</p>
-              </div>
             </TabsContent>
           </Tabs>
 
