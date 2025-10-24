@@ -55,9 +55,9 @@ export function ContactSection() {
   };
 
   const socialLinks = [
-    { name: "GitHub", icon: Github, url: "https://github.com/fasihurrehman", color: "hover:text-foreground" },
+    { name: "GitHub", icon: Github, url: "https://github.com/fasih31", color: "hover:text-foreground" },
     { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/in/fasihurrehman05", color: "hover:text-[#0077b5]" },
-    { name: "Twitter", icon: Twitter, url: "https://twitter.com/fasihurrehman", color: "hover:text-[#1da1f2]" },
+    { name: "Twitter", icon: Twitter, url: "https://twitter.com/Fasih31", color: "hover:text-[#1da1f2]" },
     { name: "WhatsApp", icon: MessageCircle, url: "https://wa.me/971506184687", color: "hover:text-[#25D366]" },
     { name: "Telegram", icon: TelegramIcon, url: "https://t.me/+971506184687", color: "hover:text-[#0088cc]" },
     { name: "Discord", icon: MessageSquare, url: "https://discord.gg/your-discord-invite", color: "hover:text-[#5865F2]" },

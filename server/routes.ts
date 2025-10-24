@@ -66,7 +66,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ...req.body,
         name: req.body.name ? sanitizeString(req.body.name) : '',
         email: req.body.email ? sanitizeString(req.body.email) : '',
-        subject: req.body.subject ? sanitizeString(req.body.subject) : '',
         message: req.body.message ? sanitizeString(req.body.message) : '',
       };
 
@@ -78,14 +77,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         <h2>New Contact Form Submission</h2>
         <p><strong>From:</strong> ${validatedData.name}</p>
         <p><strong>Email:</strong> ${validatedData.email}</p>
-        <p><strong>Subject:</strong> ${validatedData.subject || 'No subject'}</p>
         <p><strong>Message:</strong></p>
         <p>${validatedData.message}</p>
         <hr>
         <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
       `;
       
-      await sendEmailNotification(`New Contact Form: ${validatedData.subject || 'General Inquiry'}`, emailHtml);
+      await sendEmailNotification(`New Contact Form from ${validatedData.name}`, emailHtml);
       
       res.status(201).json({
         success: true,
@@ -789,18 +787,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const baseUrl = process.env.REPL_SLUG 
         ? `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`
-        : req.get('host') ? `${req.protocol}://${req.get('host')}` : 'https://example.com';
+        : req.get('host') ? `${req.protocol}://${req.get('host')}` : 'https://fasih.com.pk';
 
       const currentDate = new Date().toISOString().split('T')[0];
 
-      const articles = await storage.getAllArticles(true);
-      const articleUrls = articles.map(article => `
+      let articleUrls = '';
+      try {
+        const articles = await storage.getAllArticles(true);
+        if (articles && articles.length > 0) {
+          articleUrls = articles.map(article => `
   <url>
     <loc>${baseUrl}/blog/${article.slug}</loc>
     <lastmod>${article.updatedAt ? new Date(article.updatedAt).toISOString().split('T')[0] : currentDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`).join('');
+        }
+      } catch (err) {
+        console.log("No articles available for sitemap");
+      }
 
       const solutions = ["fintech", "edtech", "ecommerce", "daas"];
       const solutionUrls = solutions.map(id => `
@@ -811,6 +816,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     <priority>0.8</priority>
   </url>`).join('');
 
+      const staticPages = [
+        { path: '/career', priority: '0.6' },
+        { path: '/tools', priority: '0.6' },
+        { path: '/islamic-fintech', priority: '0.7' },
+      ].map(page => `
+  <url>
+    <loc>${baseUrl}${page.path}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>${page.priority}</priority>
+  </url>`).join('');
+
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -818,14 +835,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>${solutionUrls}${articleUrls}
+  </url>${solutionUrls}${staticPages}${articleUrls}
 </urlset>`;
 
       res.header('Content-Type', 'application/xml');
       res.send(sitemap);
     } catch (error: any) {
       console.error("Error generating sitemap:", error);
-      res.status(500).send("Error generating sitemap");
+      
+      // Send a minimal sitemap on error
+      const baseUrl = 'https://fasih.com.pk';
+      const currentDate = new Date().toISOString().split('T')[0];
+      const minimalSitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${baseUrl}/</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>`;
+      res.header('Content-Type', 'application/xml');
+      res.send(minimalSitemap);
     }
   });
 

@@ -32,7 +32,7 @@ export function Footer() {
                 <Linkedin className="h-5 w-5" />
               </a>
               <a
-                href="https://github.com/fasihurrehman"
+                href="https://github.com/fasih31"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover-elevate active-elevate-2 text-muted-foreground hover:text-foreground transition-colors"
