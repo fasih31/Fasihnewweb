@@ -12,34 +12,9 @@ import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
 import { StockTicker } from "@/components/stock-ticker";
 import { NewsFeed } from "@/components/news-feed";
-import { SEOHead, StructuredData } from "@/components/seo-head";
+import { SEOHead, getPersonSchema } from "@/components/seo-head";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { StatsSection } from "@/components/stats-section";
-
-// Assuming getPersonSchema is defined elsewhere and imported if necessary
-// For demonstration, let's define a placeholder here if it's not provided
-const getPersonSchema = () => {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Fasih ur Rehman",
-    "jobTitle": "FinTech Product Manager & AI Expert",
-    "url": "https://fasih.com.pk",
-    "sameAs": [
-      "https://www.linkedin.com/in/fasihur/",
-      // Add other relevant social media links
-    ],
-    "knowsAbout": [
-      "FinTech",
-      "AI",
-      "Web3",
-      "EdTech",
-      "Islamic Finance",
-      "Digital Transformation"
-    ]
-  };
-};
-
 
 export default function Home() {
   return (
@@ -51,7 +26,6 @@ export default function Home() {
         canonicalUrl="https://fasih.com.pk"
         schema={getPersonSchema()}
       />
-      <StructuredData />
       <ScrollProgress />
       <Navigation />
       <main>
