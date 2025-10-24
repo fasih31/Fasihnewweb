@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, ArrowLeft, Eye } from "lucide-react";
-import { SEOHead } from "@/components/seo-head";
+import { SEOHead, getArticleSchema } from "@/components/seo-head";
 
 // Helper function to generate Article schema
 const getArticleSchema = (title, description, date) => ({
