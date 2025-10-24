@@ -33,6 +33,7 @@ The application runs without these, but to enable full functionality:
 - `SESSION_SECRET` - Secret key for session encryption (auto-generated for development)
 - `FINNHUB_API_KEY` - Finnhub API key for live stock market data (optional, falls back to mock data)
 - `NEWS_API_KEY` - NewsAPI key for live news feed (optional, falls back to mock data)
+- `VITE_GA_MEASUREMENT_ID` - Google Analytics measurement ID (e.g., G-XXXXXXXXXX) for website tracking
 
 ### Development Commands
 - `npm run dev` - Start development server (port 5000)
@@ -69,12 +70,57 @@ The application runs without these, but to enable full functionality:
    - Native lazy loading for portfolio project images
    - Optimized image rendering for faster initial page load
 
+### SEO Improvements (October 24, 2025)
+**Comprehensive SEO optimization implemented to achieve B+ grade:**
+
+1. **Optimized Meta Tags**:
+   - Title tag reduced from 106 to 56 characters (within recommended 50-60 range)
+   - Meta description optimized to 155 characters (within 120-160 range)
+   - All Open Graph and Twitter Card metadata updated
+
+2. **XML Sitemap & Robots.txt**:
+   - Dynamic sitemap.xml at `/sitemap.xml` with all pages and routes
+   - Includes: Home, Solutions pages, Career, Tools, Islamic FinTech, and Articles
+   - robots.txt endpoint at `/robots.txt` with proper crawl directives
+   - Robust error handling for database queries
+
+3. **Enhanced Schema.org Markup**:
+   - Person schema with complete professional profile
+   - ProfessionalService schema with contact details and geographic data
+   - Occupation schema with skills and categories
+   - ContactPoint data for business communication
+
+4. **Social Media Integration**:
+   - Facebook profile meta tags
+   - Instagram profile meta tags (@fasih31)
+   - YouTube channel meta tags (@fasih31)
+   - Updated Twitter handle to @Fasih31
+   - Updated GitHub profile to fasih31
+   - All profiles linked in Schema.org Person markup
+
+5. **Google Analytics Support**:
+   - Integrated Google Analytics component
+   - Environment variable: `VITE_GA_MEASUREMENT_ID`
+   - Auto-loads when measurement ID is provided
+   - Non-intrusive implementation
+
+6. **International SEO**:
+   - Hreflang attributes for language targeting
+   - Geographic meta tags for Dubai, UAE
+   - Multi-region support configured
+
+7. **Social Links Updated**:
+   - Twitter: @Fasih31
+   - GitHub: fasih31
+   - LinkedIn: fasihurrehman05 (unchanged)
+
 ### Known Setup Notes
 - Frontend is configured to accept all hosts (required for Replit's iframe proxy)
 - Vite dev server binds to 0.0.0.0:5000
 - Google OAuth callback URL uses Replit domain in production
 - Database storage is now fully connected (DatabaseStorage implementation active)
 - Stock ticker and news feed work with or without API keys (graceful fallback to mock data)
+- Google Analytics requires `VITE_GA_MEASUREMENT_ID` environment variable to activate
 
 ## System Architecture
 

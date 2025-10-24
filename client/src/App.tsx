@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/lib/theme-provider";
+import { GoogleAnalytics } from "@/components/google-analytics";
 import Home from "@/pages/home";
 import AdminDashboard from "@/pages/admin";
 import BlogArticle from "@/pages/blog-article";
@@ -35,6 +36,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
+          <GoogleAnalytics />
           <Toaster />
           <Router />
         </TooltipProvider>
