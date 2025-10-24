@@ -12,7 +12,7 @@ import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
 import { StockTicker } from "@/components/stock-ticker";
 import { NewsFeed } from "@/components/news-feed";
-import { SEOHead, getPersonSchema, getOrganizationSchema } from "@/components/seo-head";
+import { SEOHead, getPersonSchema, getOrganizationSchema, getScholarlyArticleSchema } from "@/components/seo-head";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { StatsSection } from "@/components/stats-section";
 
@@ -24,7 +24,7 @@ export default function Home() {
         description="Expert Product Manager with 9+ years in FinTech, AI & EdTech. Specializing in Islamic Finance, digital transformation, and AI-powered solutions."
         keywords="Fasih ur Rehman, Product Manager, FinTech, AI, Web3, EdTech, Islamic Finance, Dubai"
         canonicalUrl="https://fasih.com.pk"
-        schema={[getPersonSchema(), getOrganizationSchema()]}
+        schema={[getPersonSchema(), getOrganizationSchema(), ...getScholarlyArticleSchema()]}
       />
       <ScrollProgress />
       <Navigation />

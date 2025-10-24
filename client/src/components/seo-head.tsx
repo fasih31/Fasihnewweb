@@ -14,7 +14,7 @@ interface SEOHeadProps {
 export function SEOHead({
   title = "Fasih ur Rehman | FinTech Product Manager & AI Expert",
   description = "Expert Product Manager with 9+ years in FinTech, AI & EdTech. Specializing in Islamic Finance, digital transformation, and AI-powered solutions.",
-  keywords = "Fasih ur Rehman, Product Manager, FinTech, AI, Web3, EdTech, eCommerce, Islamic Finance, Shariah Compliant, Dubai, Saudi Arabia",
+  keywords = "Fasih ur Rehman, Product Manager, FinTech, AI, AGI Research, Web3, Blockchain, EdTech, eCommerce, Islamic Finance, Shariah Compliant, BNPL, PMP, Agile, DevOps, Dubai, Saudi Arabia, VirtualIEC, Labs360, AI Ethics, Quantum-Resistant, DID, RPA, Azure DevOps, React, Flutter, Node.js",
   ogImage = "/og-image.png",
   canonicalUrl,
   article = false,
@@ -108,7 +108,62 @@ export const getPersonSchema = () => ({
     "AI & Machine Learning",
     "Web3 & Blockchain",
     "EdTech Solutions",
-    "E-commerce Design"
+    "E-commerce Design",
+    "Project Management Professional (PMP)",
+    "Agile & Scrum Methodologies",
+    "DevOps & CI/CD",
+    "Buy Now Pay Later (BNPL)",
+    "Salary Advance Solutions",
+    "Ijarah (Islamic Leasing)",
+    "Housing Finance",
+    "Car Finance",
+    "KYC & Digital Onboarding",
+    "AGI Research",
+    "Blockchain Architecture",
+    "Quantum-Resistant Design",
+    "AI-as-a-Service (AIaaS)",
+    "RPA-as-a-Service (RPAaaS)",
+    "Decentralized Identity (DID)",
+    "React & Flutter Development",
+    "Node.js Backend Systems",
+    "Azure DevOps",
+    "Docker & Cloud Deployment",
+    "Digital Marketing & SEO",
+    "Web3 Growth Marketing",
+    "Crypto Marketing",
+    "AI Ethics & Governance",
+    "FinTech Security & Privacy",
+    "Data Protection & Compliance"
+  ],
+  hasCredential: [
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "Professional Certification",
+      "name": "Project Management Professional (PMP)"
+    }
+  ],
+  alumniOf: [
+    {
+      "@type": "Organization",
+      "name": "IEEE"
+    }
+  ],
+  worksFor: {
+    "@type": "Organization",
+    "name": "Etisalat",
+    "description": "Senior Project Manager"
+  },
+  founder: [
+    {
+      "@type": "Organization",
+      "name": "VirtualIEC",
+      "description": "AI & Blockchain innovation ecosystem"
+    },
+    {
+      "@type": "Organization",
+      "name": "Labs360.io",
+      "description": "Web3 growth marketing agency"
+    }
   ]
 });
 
@@ -167,6 +222,55 @@ export const getBreadcrumbSchema = (items: Array<{ name: string; url: string }>)
     item: item.url
   }))
 });
+
+export const getScholarlyArticleSchema = () => [
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "The Implications of Artificial Intelligence on Society, Ethics, and Industry",
+    "author": {
+      "@type": "Person",
+      "name": "Fasih ur Rehman",
+      "url": typeof window !== "undefined" ? window.location.origin : "https://fasih.com.pk"
+    },
+    "datePublished": "2023",
+    "description": "Explores AI's ethical and industrial transformation across healthcare, banking, and transportation.",
+    "about": ["Artificial Intelligence", "AI Ethics", "Industrial Transformation", "Society"],
+    "identifier": {
+      "@type": "PropertyValue",
+      "propertyID": "DOI",
+      "value": "10.13140/RG.2.2.17764.14727"
+    },
+    "url": "https://doi.org/10.13140/RG.2.2.17764.14727",
+    "publisher": {
+      "@type": "Organization",
+      "name": "ResearchGate"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Data Defense: Examining Fintech's Security and Privacy Strategies",
+    "author": {
+      "@type": "Person",
+      "name": "Fasih ur Rehman",
+      "url": typeof window !== "undefined" ? window.location.origin : "https://fasih.com.pk"
+    },
+    "datePublished": "2023",
+    "description": "Focuses on cybersecurity, privacy, and encryption frameworks in financial technology.",
+    "about": ["FinTech", "Cybersecurity", "Data Privacy", "Encryption", "Financial Technology"],
+    "identifier": {
+      "@type": "PropertyValue",
+      "propertyID": "DOI",
+      "value": "10.3390/engproc2023032003"
+    },
+    "url": "https://doi.org/10.3390/engproc2023032003",
+    "publisher": {
+      "@type": "Organization",
+      "name": "MDPI"
+    }
+  }
+];
 
 export const getOrganizationSchema = () => ({
   "@context": "https://schema.org",
