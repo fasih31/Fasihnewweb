@@ -3,10 +3,13 @@ import { useRoute, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { SEOHead, getArticleSchema, getBreadcrumbSchema } from "@/components/seo-head";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, ArrowLeft, Eye } from "lucide-react";
-import { SEOHead, getArticleSchema } from "@/components/seo-head";
+import { Card } from "@/components/ui/card";
+import { ReadingTime } from "@/components/reading-time";
+import { SocialShare } from "@/components/social-share";
+import { ArrowLeft, Calendar, User, Eye } from "lucide-react";
 
 export default function BlogArticle() {
   const [, params] = useRoute("/blog/:slug");
@@ -123,26 +126,31 @@ export default function BlogArticle() {
               {article.excerpt}
             </p>
 
-            <div className="flex items-center gap-6 text-sm text-muted-foreground flex-wrap">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                <span>
-                  {new Date(article.publishedAt || article.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </span>
+                {new Date(article.publishedAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
               </div>
+              <ReadingTime content={article.content} />
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{article.readTime} min read</span>
+                <User className="h-4 w-4" />
+                {article.authorName || 'Fasih ur Rehman'}
               </div>
               <div className="flex items-center gap-2">
                 <Eye className="h-4 w-4" />
-                <span>{article.views} views</span>
+                {article.views || 0} views
               </div>
             </div>
+
+            <SocialShare 
+              url={window.location.href}
+              title={article.title}
+              description={article.excerpt}
+            />
           </header>
 
           {/* Featured Image */}

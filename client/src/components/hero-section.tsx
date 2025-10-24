@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Download, ArrowRight, Shield, TrendingUp, Briefcase } from "lucide-react";
+import { ArrowRight, Shield, TrendingUp, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ResumeDownloadButton } from "@/components/resume-download-tracker";
 import { motion } from "framer-motion";
 
 const skills = [
@@ -17,9 +18,7 @@ const skills = [
 export function HeroSection() {
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
 
-  useEffect(() => {
-    // Component mounted
-  }, []);
+  
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -108,18 +107,7 @@ export function HeroSection() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
-              <Button
-                size="lg"
-                variant="default"
-                data-testid="button-hero-download-resume"
-                className="gap-2 text-base"
-                asChild
-              >
-                <a href="/attached_assets/Fasih ur Rehman - CV-1_1761140201663.pdf" download="Fasih_ur_Rehman_Resume.pdf">
-                  <Download className="h-5 w-5" />
-                  Download Resume
-                </a>
-              </Button>
+              <ResumeDownloadButton />
               <Button
                 size="lg"
                 variant="outline"
