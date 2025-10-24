@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 interface SEOHeadProps {
   title?: string;
@@ -7,114 +8,123 @@ interface SEOHeadProps {
   ogImage?: string;
   canonicalUrl?: string;
   article?: boolean;
+  schema?: object;
 }
 
 export function SEOHead({
-  title = "Fasih ur Rehman | Fasih Best FinTech Advisor | Product Manager for FinTech/EdTech | Islamic Finance Expert",
-  description = "Fasih ur Rehman - Best FinTech Advisor & Product Manager for FinTech/EdTech. Expert in Islamic Finance, Shariah-compliant banking, AI-powered solutions, and e-commerce design. 9+ years transforming digital platforms.",
-  keywords = "Fasih best fintech advisor, product manager for fintech/edtech, product manager for fintech, product manager for edtech, Islamic fintech advisor, fintech advisor, e-commerce designer, Islamic finance expert, fintech product manager, shariah compliant fintech, digital banking product manager, payment systems expert, AI product manager, web3 product manager, certified product manager, PMP, digital transformation",
+  title = "Fasih ur Rehman | FinTech Product Manager & AI Expert",
+  description = "Expert Product Manager with 9+ years in FinTech, AI & EdTech. Specializing in Islamic Finance, digital transformation, and AI-powered solutions.",
+  keywords = "Fasih ur Rehman, Product Manager, FinTech, AI, Web3, EdTech, eCommerce, Islamic Finance, Shariah Compliant, Dubai, Saudi Arabia",
   ogImage = "/og-image.png",
   canonicalUrl,
   article = false,
+  schema,
 }: SEOHeadProps) {
-  useEffect(() => {
-    document.title = title;
+  const currentUrl = canonicalUrl || (typeof window !== "undefined" ? window.location.href : "");
 
-    const updateMeta = (name: string, content: string) => {
-      let element = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement;
-      if (!element) {
-        element = document.createElement("meta");
-        element.setAttribute("name", name);
-        document.head.appendChild(element);
-      }
-      element.setAttribute("content", content);
-    };
+  return (
+    <HelmetProvider>
+      <Helmet>
+        {/* Basic SEO */}
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta name="keywords" content={keywords} />
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Fasih ur Rehman" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 
-    const updateProperty = (property: string, content: string) => {
-      let element = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement;
-      if (!element) {
-        element = document.createElement("meta");
-        element.setAttribute("property", property);
-        document.head.appendChild(element);
-      }
-      element.setAttribute("content", content);
-    };
+        {/* Open Graph */}
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:type" content={article ? "article" : "website"} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:url" content={currentUrl} />
+        <meta property="og:site_name" content="Fasih ur Rehman Portfolio" />
+        <meta property="og:locale" content="en_US" />
 
-    updateMeta("description", description);
-    updateMeta("keywords", keywords);
-    updateMeta("author", "Fasih ur Rehman");
-    updateMeta("robots", "index, follow");
-    updateMeta("viewport", "width=device-width, initial-scale=1");
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
+        <meta name="twitter:creator" content="@Fasih31" />
 
-    updateProperty("og:title", title);
-    updateProperty("og:description", description);
-    updateProperty("og:type", article ? "article" : "website");
-    updateProperty("og:image", ogImage);
-    if (canonicalUrl) {
-      updateProperty("og:url", canonicalUrl);
-    }
+        {/* Theme */}
+        <meta name="theme-color" content="#0d1117" />
 
-    updateMeta("twitter:card", "summary_large_image");
-    updateMeta("twitter:title", title);
-    updateMeta("twitter:description", description);
-    updateMeta("twitter:image", ogImage);
-
-    if (canonicalUrl) {
-      let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-      if (!link) {
-        link = document.createElement("link");
-        link.setAttribute("rel", "canonical");
-        document.head.appendChild(link);
-      }
-      link.setAttribute("href", canonicalUrl);
-    }
-  }, [title, description, keywords, ogImage, canonicalUrl]);
-
-  return null;
+        {/* Schema.org Structured Data */}
+        {schema && (
+          <script type="application/ld+json">
+            {JSON.stringify(schema)}
+          </script>
+        )}
+      </Helmet>
+    </HelmetProvider>
+  );
 }
 
-export function StructuredData() {
-  useEffect(() => {
-    const structuredData = {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      name: "Fasih ur Rehman",
-      jobTitle: "FinTech Product Manager & Islamic Finance Advisor",
-      description: "Expert FinTech Product Manager and Islamic Finance Advisor specializing in Shariah-compliant financial technology, AI/AGI, Web3, EdTech, and eCommerce solutions. Delivering innovative digital banking, payment systems, and e-commerce platforms.",
-      knowsAbout: [
-        "FinTech Product Management",
-        "Islamic Finance",
-        "Shariah-Compliant Banking",
-        "Digital Banking Solutions",
-        "Payment Systems",
-        "E-commerce Design",
-        "AI & Machine Learning",
-        "Web3 & Blockchain",
-        "EdTech Solutions",
-        "Product Strategy",
-        "Agile Methodology",
-        "Digital Transformation"
-      ],
-      hasCredential: {
-        "@type": "EducationalOccupationalCredential",
-        credentialCategory: "certification",
-        name: "Project Management Professional (PMP)",
-      },
-      sameAs: [
-        "https://www.linkedin.com/in/fasih-ur-rehman",
-        "https://github.com/fasih-ur-rehman"
-      ],
-      url: typeof window !== "undefined" ? window.location.origin : "",
-    };
+// Page-specific schema generators
+export const getPersonSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Fasih ur Rehman",
+  jobTitle: "FinTech Product Manager & Islamic Finance Advisor",
+  description: "Expert Product Manager with 9+ years in FinTech, AI & EdTech. Specializing in Islamic Finance, digital transformation, and AI-powered solutions.",
+  url: typeof window !== "undefined" ? window.location.origin : "",
+  image: "/og-image.png",
+  sameAs: [
+    "https://www.linkedin.com/in/fasihurrehman05",
+    "https://github.com/fasih31",
+    "https://twitter.com/Fasih31",
+    "https://www.instagram.com/fasih31/",
+    "https://www.youtube.com/@fasih31"
+  ],
+  email: "fasih31@gmail.com",
+  telephone: "+971-50-618-4687",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Dubai",
+    addressCountry: "UAE"
+  },
+  knowsAbout: [
+    "FinTech Product Management",
+    "Islamic Finance",
+    "Shariah-Compliant Banking",
+    "AI & Machine Learning",
+    "Web3 & Blockchain",
+    "EdTech Solutions",
+    "E-commerce Design"
+  ]
+});
 
-    let script = document.querySelector('script[type="application/ld+json"]');
-    if (!script) {
-      script = document.createElement("script");
-      script.setAttribute("type", "application/ld+json");
-      document.head.appendChild(script);
-    }
-    script.textContent = JSON.stringify(structuredData);
-  }, []);
+export const getArticleSchema = (title: string, description: string, datePublished: string, dateModified?: string) => ({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description: description,
+  author: {
+    "@type": "Person",
+    name: "Fasih ur Rehman",
+    url: typeof window !== "undefined" ? window.location.origin : ""
+  },
+  publisher: {
+    "@type": "Person",
+    name: "Fasih ur Rehman"
+  },
+  datePublished: datePublished,
+  dateModified: dateModified || datePublished,
+  image: "/og-image.png"
+});
 
-  return null;
-}
+export const getProjectSchema = (project: { title: string; description: string; technologies: string[] }) => ({
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: project.title,
+  description: project.description,
+  creator: {
+    "@type": "Person",
+    name: "Fasih ur Rehman"
+  },
+  keywords: project.technologies.join(", ")
+});

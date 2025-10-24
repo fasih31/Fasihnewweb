@@ -14,6 +14,7 @@ import Career from "@/pages/career";
 import Tools from "@/pages/tools";
 import IslamicFinTech from "@/pages/islamic-fintech";
 import NotFound from "@/pages/not-found";
+import { HelmetProvider } from "react-helmet-async";
 
 function Router() {
   return (
@@ -33,15 +34,17 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="dark">
-        <TooltipProvider>
+    <HelmetProvider>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <QueryClientProvider client={queryClient}>
           <GoogleAnalytics />
-          <Toaster />
-          <Router />
-        </TooltipProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+          </TooltipProvider>
+        </QueryClientProvider>
       </ThemeProvider>
-    </QueryClientProvider>
+    </HelmetProvider>
   );
 }
 
