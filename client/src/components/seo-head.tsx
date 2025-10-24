@@ -1,5 +1,10 @@
-
 import { Helmet, HelmetProvider } from "react-helmet-async";
+
+export interface StructuredData {
+  "@context": string;
+  "@type": string;
+  [key: string]: any;
+}
 
 interface SEOHeadProps {
   title?: string;
@@ -55,14 +60,14 @@ export function SEOHead({
 
         {/* LinkedIn */}
         <meta property="og:see_also" content="https://www.linkedin.com/in/fasihurrehman05" />
-        
+
         {/* Additional Meta Tags */}
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Fasih ur Rehman" />
         <meta name="application-name" content="Fasih ur Rehman Portfolio" />
-        
+
         {/* Theme */}
         <meta name="theme-color" content="#0d1117" />
         <meta name="msapplication-TileColor" content="#0d1117" />

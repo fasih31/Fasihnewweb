@@ -54,6 +54,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {
+      console.log("Received contact form submission:", req.body);
+      
       // Sanitize input to prevent XSS attacks
       const sanitizeString = (str: string) => {
         return str
@@ -70,9 +72,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
 
       const validatedData = insertContactMessageSchema.parse(sanitizedBody);
-      const message = await storage.createContactMessage(validatedData);
+      console.log("Validated data:", validatedData);
       
-      // Send email notification
+      const message = await storage.createContactMessage(validatedData);
+      console.log("Message saved to database:", message);
+      
+      // Send email notification (non-blocking)
       const emailHtml = `
         <h2>New Contact Form Submission</h2>
         <p><strong>From:</strong> ${validatedData.name}</p>
@@ -83,7 +88,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
       `;
       
-      await sendEmailNotification(`New Contact Form from ${validatedData.name}`, emailHtml);
+      sendEmailNotification(`New Contact Form from ${validatedData.name}`, emailHtml).catch(err => 
+        console.error("Email notification failed:", err)
+      );
       
       res.status(201).json({
         success: true,
@@ -91,19 +98,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: message,
       });
     } catch (error: any) {
+      console.error("Contact form error:", error);
+      
       if (error.name === "ZodError") {
         const validationError = fromZodError(error);
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
           message: validationError.message,
         });
-      } else {
-        console.error("Error creating contact message:", error);
-        res.status(500).json({
-          success: false,
-          message: "Failed to send message. Please try again later.",
-        });
       }
+      
+      res.status(500).json({
+        success: false,
+        message: error.message || "Failed to send message. Please try again later.",
+      });
     }
   });
 
