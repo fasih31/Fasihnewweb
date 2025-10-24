@@ -7,6 +7,7 @@ import { SolutionsSection } from "@/components/solutions-section";
 import { PortfolioSection } from "@/components/portfolio-section";
 import { LinkedInArticlesSection } from "@/components/linkedin-articles-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
+import { FAQSection } from "@/components/faq-section";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
@@ -38,6 +39,7 @@ export default function Home() {
         <PortfolioSection />
         <LinkedInArticlesSection />
         <TestimonialsSection />
+        <FAQSection />
         <section className="py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-8 items-start">

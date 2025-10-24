@@ -16,6 +16,12 @@ const skills = [
 
 export function HeroSection() {
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
+  
+  useEffect(() => {
+    // Preload critical images
+    const img = new Image();
+    img.src = logoImage;
+  }, []);
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 

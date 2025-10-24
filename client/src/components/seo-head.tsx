@@ -202,14 +202,59 @@ export const getArticleSchema = (title: string, description: string, datePublish
 
 export const getProjectSchema = (project: { title: string; description: string; technologies: string[] }) => ({
   "@context": "https://schema.org",
-  "@type": "CreativeWork",
+  "@type": "SoftwareApplication",
   name: project.title,
   description: project.description,
+  applicationCategory: "BusinessApplication",
   creator: {
     "@type": "Person",
     name: "Fasih ur Rehman"
   },
-  keywords: project.technologies.join(", ")
+  keywords: project.technologies.join(", "),
+  operatingSystem: "Web Browser"
+});
+
+export const getServiceSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  serviceType: "Product Management & Development",
+  provider: {
+    "@type": "Person",
+    name: "Fasih ur Rehman",
+    jobTitle: "FinTech Product Manager",
+    url: typeof window !== "undefined" ? window.location.origin : "https://fasih.com.pk"
+  },
+  areaServed: ["UAE", "Saudi Arabia", "Middle East", "Global"],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Product Management Services",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "FinTech Product Development",
+          description: "Islamic finance solutions, BNPL, digital banking"
+        }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "AI & AGI Integration",
+          description: "Machine learning solutions and AI-powered automation"
+        }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "EdTech Solutions",
+          description: "Learning management systems and educational platforms"
+        }
+      }
+    ]
+  }
 });
 
 export const getBreadcrumbSchema = (items: Array<{ name: string; url: string }>) => ({
