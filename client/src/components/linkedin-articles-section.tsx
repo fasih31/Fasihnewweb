@@ -86,15 +86,15 @@ export function LinkedInArticlesSection() {
               <Card
                 key={index}
                 className="group hover-elevate transition-all duration-300 hover:shadow-xl cursor-pointer border-card-border"
-                onClick={() => window.open(article.link, '_blank')}
+                onClick={() => window.open(article.link, '_blank', 'noopener,noreferrer')}
               >
                 <CardContent className="p-6 space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-2">
                       <Badge variant="secondary" className="bg-[#0077b5]/10 text-[#0077b5] hover:bg-[#0077b5]/20">
-                        LinkedIn
+                        {article.category || "LinkedIn"}
                       </Badge>
-                      <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                      <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-[#0077b5] transition-colors" />
                     </div>
 
                     <h3 className="text-xl font-bold text-foreground group-hover:text-[#0077b5] transition-colors line-clamp-2">
@@ -120,7 +120,11 @@ export function LinkedInArticlesSection() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-[#0077b5] hover:text-[#0077b5] w-full justify-start px-0"
+                    className="text-[#0077b5] hover:text-[#0077b5] hover:bg-[#0077b5]/5 w-full justify-start px-0"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(article.link, '_blank', 'noopener,noreferrer');
+                    }}
                   >
                     Read on LinkedIn →
                   </Button>

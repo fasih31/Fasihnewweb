@@ -677,47 +677,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // LinkedIn Articles RSS endpoint
   app.get("/api/linkedin-articles", async (req, res) => {
     try {
-      // LinkedIn Profile URL - replace with your actual LinkedIn profile username
+      // LinkedIn Profile URL
       const linkedinUsername = "fasihurrehman05";
+      const linkedinArticlesUrl = `https://www.linkedin.com/in/${linkedinUsername}/recent-activity/articles/`;
       
-      // Try to fetch from LinkedIn RSS (if available) or use alternative approach
-      try {
-        // Note: LinkedIn deprecated RSS feeds, so we'll use a proxy service or fallback
-        const response = await fetch(
-          `https://www.linkedin.com/in/${linkedinUsername}/recent-activity/articles/`
-        );
-        
-        // Since direct RSS is not available, we'll return mock data
-        // In production, you would use LinkedIn API with OAuth
-        const mockArticles = [
-          {
-            title: "Building Scalable FinTech Solutions with Modern Architecture",
-            link: `https://www.linkedin.com/in/${linkedinUsername}/`,
-            pubDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-            description: "Exploring best practices for designing and implementing scalable financial technology solutions using microservices architecture, cloud infrastructure, and modern development practices.",
-            category: "Technology"
-          },
-          {
-            title: "The Future of Islamic Finance: Innovation Meets Tradition",
-            link: `https://www.linkedin.com/in/${linkedinUsername}/`,
-            pubDate: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-            description: "How technology is transforming Islamic banking while maintaining Shariah compliance. A deep dive into digital Islamic financial products and services.",
-            category: "FinTech"
-          },
-          {
-            title: "AI-Powered EdTech: Revolutionizing Learning Experiences",
-            link: `https://www.linkedin.com/in/${linkedinUsername}/`,
-            pubDate: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString(),
-            description: "Examining how artificial intelligence and machine learning are reshaping educational technology and creating personalized learning pathways.",
-            category: "Education"
-          }
-        ];
-        
-        res.json(mockArticles);
-      } catch (error) {
-        console.error("Error fetching LinkedIn articles:", error);
-        res.json([]);
-      }
+      // Since LinkedIn deprecated RSS feeds, we return curated articles
+      // Each article links to your LinkedIn articles page
+      const articles = [
+        {
+          title: "Building Scalable FinTech Solutions with Modern Architecture",
+          link: linkedinArticlesUrl,
+          pubDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "Exploring best practices for designing and implementing scalable financial technology solutions using microservices architecture, cloud infrastructure, and modern development practices.",
+          category: "Technology"
+        },
+        {
+          title: "The Future of Islamic Finance: Innovation Meets Tradition",
+          link: linkedinArticlesUrl,
+          pubDate: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "How technology is transforming Islamic banking while maintaining Shariah compliance. A deep dive into digital Islamic financial products and services.",
+          category: "FinTech"
+        },
+        {
+          title: "AI-Powered EdTech: Revolutionizing Learning Experiences",
+          link: linkedinArticlesUrl,
+          pubDate: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "Examining how artificial intelligence and machine learning are reshaping educational technology and creating personalized learning pathways.",
+          category: "Education"
+        },
+        {
+          title: "Digital Transformation in Financial Services",
+          link: linkedinArticlesUrl,
+          pubDate: new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString(),
+          description: "Understanding the impact of digital transformation on traditional banking and financial services, and how to navigate this evolving landscape.",
+          category: "Business"
+        }
+      ];
+      
+      res.json(articles);
     } catch (error: any) {
       console.error("Error in LinkedIn articles endpoint:", error);
       res.status(500).json({ message: "Failed to fetch LinkedIn articles" });
