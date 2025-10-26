@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "./theme-toggle";
 import { AuthButton } from "./auth-dialog";
-import logoImage from "@assets/generated_images/Fasih_ur_Rehman_professional_logo_824d90b3.png";
+import logoImage from "@/assets/generated_images/Fasih_ur_Rehman_professional_logo_824d90b3.png";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
