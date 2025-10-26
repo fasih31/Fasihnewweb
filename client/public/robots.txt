@@ -1,0 +1,29 @@
+# Robots.txt for Fasih ur Rehman Portfolio
+# Professional Product Manager - FinTech, AI & Islamic Finance Expert
+
+User-agent: *
+Allow: /
+Allow: /solutions/
+Allow: /tools
+Allow: /career
+Allow: /islamic-fintech
+
+Disallow: /admin
+Disallow: /api/
+Disallow: /*.json$
+
+# Preferred Crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap Location
+Sitemap: https://fasih.com.pk/sitemap.xml
+
+# Crawl Delay (optional, helps prevent server overload)
+Crawl-delay: 1
