@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "./theme-toggle";
 import { AuthButton } from "./auth-dialog";
-import logoImage from "@/assets/generated_images/Fasih_ur_Rehman_professional_logo_824d90b3.png";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -95,7 +94,9 @@ export function Navigation() {
               className="flex items-center gap-3 hover-elevate active-elevate-2 rounded-md px-2 py-1 -ml-2"
               data-testid="button-logo"
             >
-              <img src={logoImage} alt="Fasih ur Rehman" className="h-10 w-10" />
+              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-primary-foreground font-bold text-lg">
+                FR
+              </div>
               <span className="text-xl font-bold text-foreground hidden sm:block">
                 Fasih ur Rehman
               </span>
