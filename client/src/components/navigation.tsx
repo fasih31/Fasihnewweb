@@ -59,31 +59,24 @@ export function Navigation() {
     }
   };
 
-  const navLinks = [
+  const navLinks: Array<{ name: string; id: string; isPage?: boolean }> = [
     { name: "Home", id: "hero" },
     { name: "About", id: "about" },
     { name: "Services", id: "services" },
     { name: "Solutions", id: "solutions" },
     { name: "Portfolio", id: "portfolio" },
-    { name: "Blog", id: "blog" },
+    { name: "Blog", id: "blog", isPage: true },
     { name: "Contact", id: "contact" },
   ];
 
-  // Update navLinks to reflect the change from "Blog" to "Articles" and update the ID
-  const updatedNavLinks = navLinks.map(link => {
-    if (link.id === "blog") {
-      return { name: "Blog", id: "blog", isPage: true };
-    }
-    return link;
-  });
+  const updatedNavLinks = navLinks;
 
 
   const professionalTools = [
-    { name: "Calculators", path: "/calculators" },
-    { name: "Tools", path: "/tools" },
-    { name: "Code IDE", path: "/ide" },
-    { name: "Islamic FinTech", path: "/islamic-fintech" },
-    { name: "Career", path: "/career" },
+    { name: "Islamic FinTech Solutions", path: "/islamic-fintech" },
+    { name: "Financial Calculators", path: "/calculators" },
+    { name: "Professional Tools", path: "/tools" },
+    { name: "Career Opportunities", path: "/career" },
   ];
 
   return (

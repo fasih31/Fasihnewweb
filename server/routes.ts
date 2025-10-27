@@ -156,81 +156,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // LinkedIn Recommendations endpoint
   app.get("/api/linkedin-recommendations", async (req, res) => {
     try {
-      // Curated LinkedIn recommendations
-      const recommendations = [
-        {
-          id: "1",
-          name: "Ahmed Al Mansouri",
-          role: "Head of Digital Banking",
-          company: "Emirates NBD",
-          image: "/attached_assets/IMG_8070_1761553568369.jpeg",
-          content: "Fasih is an exceptional Product Manager who delivered our Islamic Banking platform ahead of schedule. His expertise in Shariah-compliant FinTech solutions and attention to detail ensured our product met all regulatory requirements while exceeding user expectations.",
-          rating: 5,
-          date: "2024-10",
-          linkedinUrl: "https://www.linkedin.com/in/fasihurrehman05",
-          featured: true,
-        },
-        {
-          id: "2",
-          name: "Sarah Johnson",
-          role: "VP of Engineering",
-          company: "Global Tech Solutions",
-          image: "/attached_assets/IMG_8070_1761553568369.jpeg",
-          content: "Working with Fasih on our EdTech platform was a pleasure. He brought deep technical knowledge and business acumen, bridging the gap between stakeholders and development teams seamlessly. His AI-powered learning recommendations increased engagement by 45%.",
-          rating: 5,
-          date: "2024-09",
-          linkedinUrl: "https://www.linkedin.com/in/fasihurrehman05",
-          featured: true,
-        },
-        {
-          id: "3",
-          name: "Mohammed bin Khalid",
-          role: "CTO",
-          company: "Dubai Smart City Initiative",
-          image: "/attached_assets/IMG_8070_1761553568369.jpeg",
-          content: "Fasih's leadership on our telecom 5G integration project was outstanding. He coordinated multiple teams, managed complex technical requirements, and delivered a solution that serves millions of users across the UAE. Highly recommended!",
-          rating: 5,
-          date: "2024-08",
-          linkedinUrl: "https://www.linkedin.com/in/fasihurrehman05",
-          featured: true,
-        },
-        {
-          id: "4",
-          name: "Lisa Chen",
-          role: "Product Director",
-          company: "E-commerce Innovations Inc",
-          image: "/attached_assets/IMG_8070_1761553568369.jpeg",
-          content: "Fasih transformed our e-commerce platform with his innovative approach to multi-vendor marketplaces. His implementation of Shariah-compliant payment solutions opened new markets for us in the Middle East. ROI increased by 60% within 6 months.",
-          rating: 5,
-          date: "2024-07",
-          linkedinUrl: "https://www.linkedin.com/in/fasihurrehman05",
-          featured: false,
-        },
-        {
-          id: "5",
-          name: "Rashid Al Maktoum",
-          role: "Director of Innovation",
-          company: "Abu Dhabi Investment Authority",
-          image: "/attached_assets/IMG_8070_1761553568369.jpeg",
-          content: "Exceptional product management skills combined with deep knowledge of blockchain and Web3 technologies. Fasih led our DeFi platform development with professionalism and delivered results that exceeded our expectations.",
-          rating: 5,
-          date: "2024-06",
-          linkedinUrl: "https://www.linkedin.com/in/fasihurrehman05",
-          featured: false,
-        },
-        {
-          id: "6",
-          name: "Dr. Fatima Hassan",
-          role: "CEO",
-          company: "Islamic Finance Academy",
-          image: "/attached_assets/IMG_8070_1761553568369.jpeg",
-          content: "Fasih's understanding of Islamic finance principles and modern technology is unparalleled. He helped us digitize our curriculum and build an LMS that serves thousands of students globally. His work ethic and expertise are commendable.",
-          rating: 5,
-          date: "2024-05",
-          linkedinUrl: "https://www.linkedin.com/in/fasihurrehman05",
-          featured: false,
-        }
-      ];
+      // Return empty array - user needs to add their real testimonials via admin panel
+      const recommendations: any[] = [];
       
       res.json({
         success: true,
@@ -248,57 +175,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // LinkedIn Recent Activity endpoint
   app.get("/api/linkedin-activity", async (req, res) => {
     try {
-      const activities = [
-        {
-          id: "1",
-          type: "post",
-          content: "Excited to share insights on how AI is revolutionizing Islamic FinTech compliance. Our latest platform uses machine learning to ensure Shariah compliance in real-time transactions.",
-          likes: 342,
-          comments: 28,
-          shares: 15,
-          date: "2024-10-25",
-          url: "https://www.linkedin.com/in/fasihurrehman05/recent-activity/",
-        },
-        {
-          id: "2",
-          type: "article",
-          title: "The Future of BNPL in the Middle East",
-          excerpt: "Exploring how Buy Now Pay Later solutions are transforming retail across GCC markets while maintaining Shariah compliance...",
-          likes: 567,
-          comments: 45,
-          date: "2024-10-20",
-          url: "https://www.linkedin.com/in/fasihurrehman05/recent-activity/articles/",
-        },
-        {
-          id: "3",
-          type: "post",
-          content: "Proud to announce that our EdTech platform has reached 100,000 active learners! Grateful to the amazing team that made this possible. #EdTech #Innovation",
-          likes: 891,
-          comments: 67,
-          shares: 34,
-          date: "2024-10-15",
-          url: "https://www.linkedin.com/in/fasihurrehman05/recent-activity/",
-        },
-        {
-          id: "4",
-          type: "post",
-          content: "Speaking at Dubai FinTech Summit next week on 'Blockchain in Islamic Finance'. Looking forward to connecting with industry leaders!",
-          likes: 423,
-          comments: 32,
-          date: "2024-10-10",
-          url: "https://www.linkedin.com/in/fasihurrehman05/recent-activity/",
-        },
-        {
-          id: "5",
-          type: "article",
-          title: "5G's Impact on Telecom Product Strategy",
-          excerpt: "How 5G technology is reshaping product management in telecommunications and creating new opportunities...",
-          likes: 389,
-          comments: 28,
-          date: "2024-10-05",
-          url: "https://www.linkedin.com/in/fasihurrehman05/recent-activity/articles/",
-        }
-      ];
+      // Return empty array - user needs to add their real activities
+      const activities: any[] = [];
       
       res.json({
         success: true,
@@ -1162,42 +1040,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // LinkedIn Articles RSS endpoint
   app.get("/api/linkedin-articles", async (req, res) => {
     try {
-      // LinkedIn Profile URL
-      const linkedinUsername = "fasihurrehman05";
-      const linkedinArticlesUrl = `https://www.linkedin.com/in/${linkedinUsername}/recent-activity/articles/`;
-      
-      // Since LinkedIn deprecated RSS feeds, we return curated articles
-      // Each article links to your LinkedIn articles page
-      const articles = [
-        {
-          title: "Building Scalable FinTech Solutions with Modern Architecture",
-          link: linkedinArticlesUrl,
-          pubDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-          description: "Exploring best practices for designing and implementing scalable financial technology solutions using microservices architecture, cloud infrastructure, and modern development practices.",
-          category: "Technology"
-        },
-        {
-          title: "The Future of Islamic Finance: Innovation Meets Tradition",
-          link: linkedinArticlesUrl,
-          pubDate: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-          description: "How technology is transforming Islamic banking while maintaining Shariah compliance. A deep dive into digital Islamic financial products and services.",
-          category: "FinTech"
-        },
-        {
-          title: "AI-Powered EdTech: Revolutionizing Learning Experiences",
-          link: linkedinArticlesUrl,
-          pubDate: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString(),
-          description: "Examining how artificial intelligence and machine learning are reshaping educational technology and creating personalized learning pathways.",
-          category: "Education"
-        },
-        {
-          title: "Digital Transformation in Financial Services",
-          link: linkedinArticlesUrl,
-          pubDate: new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString(),
-          description: "Understanding the impact of digital transformation on traditional banking and financial services, and how to navigate this evolving landscape.",
-          category: "Business"
-        }
-      ];
+      // Return empty array - user needs to add their real articles
+      const articles: any[] = [];
       
       res.json(articles);
     } catch (error: any) {

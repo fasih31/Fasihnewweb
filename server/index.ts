@@ -131,6 +131,9 @@ app.use((req, res, next) => {
 
   // Serve static files from client/public (for sitemap.xml, robots.txt, etc.)
   app.use(express.static(path.join(import.meta.dirname, '..', 'client', 'public')));
+  
+  // Serve attached assets
+  app.use('/attached_assets', express.static(path.join(import.meta.dirname, '..', 'attached_assets')));
 
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
