@@ -8,28 +8,9 @@ import { ThemeProvider } from "@/lib/theme-provider";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { HelmetProvider } from "react-helmet-async";
 import Home from "@/pages/home";
-import Blog from "@/pages/blog";
-import BlogArticle from "@/pages/blog-article";
-import ProjectDetail from "@/pages/project-detail";
-import SolutionDetail from "@/pages/solution-detail";
-import Career from "@/pages/career";
-import IslamicFintech from "@/pages/islamic-fintech";
-import Calculators from "@/pages/calculators";
-import Tools from "@/pages/tools";
-import WebsiteScanner from "@/pages/website-scanner-tool";
-import SEOAnalyzer from "@/pages/seo-analyzer-tool";
-import CodePlayground from "@/pages/code-playground-tool";
-import IDE from "@/pages/ide";
-import Admin from "@/pages/admin";
 import NotFound from "@/pages/not-found";
-import Expertise from "@/pages/expertise";
-import FinTech from "@/pages/domains/fintech";
-import EdTech from "@/pages/domains/edtech";
-import ECommerce from "@/pages/domains/ecommerce";
-import CryptoWeb3 from "@/pages/domains/crypto-web3";
-import AIMLPage from "@/pages/domains/ai-ml";
-import Telecom from "@/pages/domains/telecom";
 
 const AdminDashboard = lazy(() => import("@/pages/admin"));
 const BlogArticle = lazy(() => import("@/pages/blog-article"));
@@ -37,6 +18,7 @@ const ProjectDetail = lazy(() => import("@/pages/project-detail"));
 const SolutionDetail = lazy(() => import("@/pages/solution-detail"));
 const Career = lazy(() => import("@/pages/career"));
 const Tools = lazy(() => import("@/pages/tools"));
+const Calculators = lazy(() => import("@/pages/calculators"));
 const IslamicFinTech = lazy(() => import("@/pages/islamic-fintech"));
 const SEOAnalyzerTool = lazy(() => import("@/pages/seo-analyzer-tool"));
 const WebsiteScannerTool = lazy(() => import("@/pages/website-scanner-tool"));
@@ -73,11 +55,11 @@ function Router() {
         <Route path="/project/:id" component={ProjectDetail} />
         <Route path="/career" component={Career} />
         <Route path="/tools" component={Tools} />
+        <Route path="/calculators" component={Calculators} />
         <Route path="/tools/seo-analyzer" component={SEOAnalyzerTool} />
         <Route path="/tools/website-scanner" component={WebsiteScannerTool} />
         <Route path="/tools/code-playground" component={CodePlaygroundTool} />
         <Route path="/expertise" component={ExpertisePage} />
-
         <Route path="/islamic-fintech" component={IslamicFinTech} />
         <Route path="/domains/fintech" component={FinTechDomain} />
         <Route path="/domains/edtech" component={EdTechDomain} />
