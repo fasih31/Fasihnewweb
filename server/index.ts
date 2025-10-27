@@ -32,14 +32,39 @@ app.use((req, res, next) => {
   } else {
     res.setHeader('X-Frame-Options', 'DENY');
   }
+  
   // Prevent MIME type sniffing
   res.setHeader('X-Content-Type-Options', 'nosniff');
+  
   // Enable XSS protection
   res.setHeader('X-XSS-Protection', '1; mode=block');
+  
   // Referrer policy
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
   // Permissions policy
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+  
+  // Content Security Policy
+  const cspDirectives = [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com data:",
+    "img-src 'self' data: https: http:",
+    "connect-src 'self' https://www.google-analytics.com https://api.coingecko.com https://finnhub.io https://newsapi.org https://api.exchangerate-api.com https://*.linkedin.com",
+    "frame-ancestors 'self' https://*.replit.dev https://*.replit.app https://*.repl.co",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join('; ');
+  
+  res.setHeader('Content-Security-Policy', cspDirectives);
+  
+  // Strict Transport Security (HTTPS only)
+  if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
+  
   next();
 });
 
