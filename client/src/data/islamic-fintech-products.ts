@@ -271,5 +271,195 @@ export const islamicFinTechProducts: IslamicProduct[] = [
     ],
     features: ["Auto calculator", "Verified recipients", "Blockchain tracking", "Impact reports"],
     benefits: ["Fulfill obligation", "Transparent giving", "Direct impact", "Tax benefits"]
+  },
+  {
+    id: "sukuk-investment",
+    title: "Digital Sukuk Platform",
+    subtitle: "Islamic Bonds Investment",
+    description: "Invest in Shariah-compliant bonds with fractional ownership and real-time tracking",
+    contractType: "Sukuk",
+    icon: "banknote",
+    color: "from-indigo-500 to-purple-600",
+    steps: [
+      {
+        title: "Account Setup",
+        description: "Complete investor profile and risk assessment",
+        actions: ["KYC verification", "Risk tolerance assessment", "Investment goals setup"]
+      },
+      {
+        title: "Browse Sukuk",
+        description: "Explore available Shariah-compliant bonds",
+        actions: ["Filter by risk/return", "View project details", "Check Shariah certification"]
+      },
+      {
+        title: "Investment",
+        description: "Purchase sukuk with flexible amounts",
+        actions: ["Fractional ownership from AED 100", "Automated diversification", "Instant confirmation"]
+      },
+      {
+        title: "Portfolio Management",
+        description: "Track your investments in real-time",
+        actions: ["Live NAV updates", "Profit distribution tracking", "Secondary market trading"]
+      },
+      {
+        title: "Redemption",
+        description: "Maturity and early exit options",
+        actions: ["Maturity notifications", "Early exit marketplace", "Profit settlement"]
+      }
+    ],
+    features: ["Fractional ownership", "Shariah certified", "Secondary market", "Auto diversification"],
+    benefits: ["Low entry barrier", "Fixed returns", "Asset-backed", "Liquidity options"]
+  },
+  {
+    id: "islamic-robo-advisor",
+    title: "Halal Robo-Advisor",
+    subtitle: "AI-Powered Islamic Wealth Management",
+    description: "Automated Shariah-compliant portfolio management using AI and machine learning",
+    contractType: "Wakalah / Mudarabah",
+    icon: "shield",
+    color: "from-cyan-500 to-blue-600",
+    steps: [
+      {
+        title: "Onboarding",
+        description: "Define your financial goals and risk profile",
+        actions: ["Financial goals questionnaire", "Risk assessment", "Shariah preference settings"]
+      },
+      {
+        title: "Portfolio Creation",
+        description: "AI generates personalized Shariah portfolio",
+        actions: ["Halal stocks screening", "Sukuk allocation", "Real estate fund mix", "Islamic commodities"]
+      },
+      {
+        title: "Investment",
+        description: "Start with minimum amount",
+        actions: ["Initial deposit from AED 500", "Recurring investment setup", "Auto-rebalancing enabled"]
+      },
+      {
+        title: "Monitoring & Rebalancing",
+        description: "AI continuously optimizes your portfolio",
+        actions: ["Daily halal screening", "Automatic rebalancing", "Tax-loss harvesting (halal)"]
+      },
+      {
+        title: "Reporting",
+        description: "Comprehensive performance tracking",
+        actions: ["Real-time performance", "Zakat reporting", "ESG impact metrics"]
+      }
+    ],
+    features: ["AI-powered", "Halal screening", "Auto-rebalancing", "Low fees"],
+    benefits: ["Professional management", "Shariah compliant", "Tax efficient", "Accessible"]
+  },
+  {
+    id: "micro-finance",
+    title: "Islamic Microfinance",
+    subtitle: "Qard Hasan for Small Businesses",
+    description: "Interest-free micro-loans for entrepreneurs and small businesses based on Qard Hasan",
+    contractType: "Qard Hasan / Murabaha",
+    icon: "heart-handshake",
+    color: "from-amber-500 to-orange-600",
+    steps: [
+      {
+        title: "Business Registration",
+        description: "Register your small business or startup",
+        actions: ["Business profile creation", "Upload business plan", "Financial statements"]
+      },
+      {
+        title: "Loan Application",
+        description: "Apply for interest-free financing",
+        actions: ["Specify loan amount (AED 5K-50K)", "Select purpose", "Provide collateral alternative"]
+      },
+      {
+        title: "Community Vetting",
+        description: "Peer review and endorsement",
+        actions: ["Community members vouch", "Business viability assessment", "Character references"]
+      },
+      {
+        title: "Approval & Disbursement",
+        description: "Quick approval with transparent terms",
+        actions: ["Shariah board approval", "Interest-free loan agreement", "Funds disbursement"]
+      },
+      {
+        title: "Repayment & Support",
+        description: "Flexible repayment with mentorship",
+        actions: ["Monthly installments", "Grace period options", "Business mentorship program"]
+      }
+    ],
+    features: ["Zero interest", "Community backed", "Mentorship included", "Flexible terms"],
+    benefits: ["Empower entrepreneurs", "Social impact", "Shariah compliant", "Build credit"]
+  },
+  {
+    id: "green-sukuk",
+    title: "Green Sukuk Platform",
+    subtitle: "Sustainable Islamic Investment",
+    description: "Invest in environmentally sustainable projects through Shariah-compliant green bonds",
+    contractType: "Sukuk (Green)",
+    icon: "shield",
+    color: "from-green-600 to-teal-500",
+    steps: [
+      {
+        title: "Impact Registration",
+        description: "Set your sustainability preferences",
+        actions: ["Environmental goals", "Impact categories", "ESG criteria selection"]
+      },
+      {
+        title: "Project Discovery",
+        description: "Browse certified green projects",
+        actions: ["Renewable energy projects", "Sustainable infrastructure", "Green real estate", "Impact metrics"]
+      },
+      {
+        title: "Investment",
+        description: "Invest in sustainable future",
+        actions: ["Minimum AED 1,000", "Direct project selection", "Shariah & sustainability certified"]
+      },
+      {
+        title: "Impact Tracking",
+        description: "Monitor environmental impact",
+        actions: ["Carbon offset tracking", "Energy saved metrics", "Real-time project updates"]
+      },
+      {
+        title: "Returns & Reporting",
+        description: "Financial and impact returns",
+        actions: ["Profit distributions", "Impact certificates", "Annual sustainability report"]
+      }
+    ],
+    features: ["ESG certified", "Impact tracking", "Shariah compliant", "Transparent projects"],
+    benefits: ["Environmental impact", "Ethical returns", "Future-focused", "Sustainable growth"]
+  },
+  {
+    id: "peer-to-peer",
+    title: "Islamic P2P Financing",
+    subtitle: "Mudarabah-Based Lending",
+    description: "Connect investors with borrowers through Shariah-compliant peer-to-peer financing",
+    contractType: "Mudarabah / Musharakah",
+    icon: "banknote",
+    color: "from-rose-500 to-pink-600",
+    steps: [
+      {
+        title: "Platform Registration",
+        description: "Join as investor or borrower",
+        actions: ["Account type selection", "KYC verification", "Profile completion"]
+      },
+      {
+        title: "Listing/Browsing",
+        description: "Create loan request or browse opportunities",
+        actions: ["Borrower: Create proposal", "Investor: Browse listings", "Risk ratings displayed"]
+      },
+      {
+        title: "Matching & Agreement",
+        description: "AI-powered matching with Shariah contract",
+        actions: ["Auto-matching algorithm", "Profit-sharing agreement", "Risk disclosure"]
+      },
+      {
+        title: "Funding & Disbursement",
+        description: "Secure fund transfer",
+        actions: ["Escrow account", "Fund verification", "Instant disbursement"]
+      },
+      {
+        title: "Profit Sharing",
+        description: "Transparent profit distribution",
+        actions: ["Monthly profit sharing", "Loss sharing mechanism", "Auto reinvestment option"]
+      }
+    ],
+    features: ["Peer-to-peer", "AI matching", "Profit sharing", "Diversification"],
+    benefits: ["Higher returns", "Direct impact", "Shariah compliant", "Transparent"]
   }
 ];

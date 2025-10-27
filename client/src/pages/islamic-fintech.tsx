@@ -87,30 +87,32 @@ export default function IslamicFinTech() {
             </div>
 
             {/* Products Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
               {islamicFinTechProducts.map((product) => {
                 const Icon = iconMap[product.icon as keyof typeof iconMap];
                 return (
                   <Card
                     key={product.id}
-                    className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-primary/50"
+                    className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-primary/50 flex flex-col h-full"
                     onClick={() => startJourney(product)}
                   >
-                    <CardHeader className="pb-4">
-                      <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br ${product.color} flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}>
+                    <CardHeader className="pb-3 sm:pb-4 flex-shrink-0">
+                      <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br ${product.color} flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform shadow-lg`}>
                         <Icon className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
                       </div>
-                      <CardTitle className="text-lg sm:text-xl md:text-2xl mb-2">{product.title}</CardTitle>
-                      <CardDescription className="text-sm sm:text-base leading-relaxed">{product.subtitle}</CardDescription>
+                      <CardTitle className="text-base sm:text-lg md:text-xl mb-1 sm:mb-2 leading-tight">{product.title}</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm leading-snug">{product.subtitle}</CardDescription>
                     </CardHeader>
-                    <CardContent className="pt-0">
-                      <p className="text-sm sm:text-base text-muted-foreground mb-4 leading-relaxed">
-                        {product.description}
-                      </p>
-                      <Badge variant="outline" className="mb-4 text-xs sm:text-sm">{product.contractType}</Badge>
-                      <Button className="w-full gap-2 group-hover:gap-3 transition-all text-sm sm:text-base">
+                    <CardContent className="pt-0 flex-grow flex flex-col justify-between">
+                      <div>
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 leading-relaxed line-clamp-3">
+                          {product.description}
+                        </p>
+                        <Badge variant="outline" className="mb-3 sm:mb-4 text-xs">{product.contractType}</Badge>
+                      </div>
+                      <Button className="w-full gap-2 group-hover:gap-3 transition-all text-xs sm:text-sm md:text-base h-9 sm:h-10">
                         Start Journey
-                        <ArrowRight className="h-4 w-4" />
+                        <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
                       </Button>
                     </CardContent>
                   </Card>

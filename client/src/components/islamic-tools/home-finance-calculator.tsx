@@ -1,12 +1,13 @@
 
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Home } from "lucide-react";
+import { CalculatorCard } from "@/components/ui/calculator-card";
+import { Card, CardContent } from "@/components/ui/card";
 
 export function HomeFinanceCalculator() {
   const [propertyPrice, setPropertyPrice] = useState(500000);
@@ -19,11 +20,9 @@ export function HomeFinanceCalculator() {
   const monthlyRate = profitRate / 100 / 12;
   const numberOfPayments = tenure * 12;
   
-  // Ijarah monthly rent
   const ijarahMonthly = (financedAmount * monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
     (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
   
-  // Diminishing Musharakah
   const ownershipShare = downPayment / 100;
   const bankShare = 1 - ownershipShare;
   const monthlyRent = (financedAmount * profitRate) / 100 / 12;
@@ -31,145 +30,146 @@ export function HomeFinanceCalculator() {
   const musharakahMonthly = monthlyRent + monthlyPurchase;
 
   return (
-    <Card className="border-purple-200 dark:border-purple-800">
-      <CardHeader className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
-            <Home className="h-6 w-6 text-white" />
-          </div>
-          <div>
-            <CardTitle className="text-xl">Islamic Home Finance Calculator</CardTitle>
-            <CardDescription>Ijarah & Diminishing Musharakah</CardDescription>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-6 pt-6">
-        <div className="grid md:grid-cols-2 gap-4">
+    <CalculatorCard
+      title="Islamic Home Finance Calculator"
+      description="Ijarah & Diminishing Musharakah"
+      icon={Home}
+      gradientFrom="from-purple-50"
+      gradientTo="to-pink-50 dark:from-purple-950 dark:to-pink-950"
+      borderColor="border-purple-200 dark:border-purple-800"
+    >
+      <div className="space-y-4 sm:space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <div className="space-y-2">
-            <Label>Property Price (AED)</Label>
+            <Label className="text-sm sm:text-base">Property Price (AED)</Label>
             <Input
               type="number"
               value={propertyPrice}
               onChange={(e) => setPropertyPrice(parseFloat(e.target.value) || 0)}
-              className="text-lg h-12"
+              className="text-base sm:text-lg h-11 sm:h-12"
             />
           </div>
 
           <div className="space-y-2">
-            <Label>Down Payment: {downPayment}%</Label>
+            <Label className="text-sm sm:text-base">Down Payment: {downPayment}%</Label>
             <Slider
               value={[downPayment]}
               onValueChange={([value]) => setDownPayment(value)}
               min={10}
               max={50}
               step={5}
+              className="py-2"
             />
-            <p className="text-sm text-muted-foreground">
-              Amount: AED {downPaymentAmount.toLocaleString()}
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              AED {downPaymentAmount.toLocaleString()}
             </p>
           </div>
-        </div>
 
-        <div className="grid md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label>Tenure: {tenure} years</Label>
+            <Label className="text-sm sm:text-base">Tenure: {tenure} years</Label>
             <Slider
               value={[tenure]}
               onValueChange={([value]) => setTenure(value)}
               min={5}
-              max={25}
+              max={30}
               step={5}
+              className="py-2"
             />
           </div>
 
           <div className="space-y-2">
-            <Label>Profit Rate: {profitRate}%</Label>
+            <Label className="text-sm sm:text-base">Profit Rate: {profitRate}%</Label>
             <Slider
               value={[profitRate]}
               onValueChange={([value]) => setProfitRate(value)}
-              min={4}
-              max={12}
+              min={3}
+              max={15}
               step={0.5}
+              className="py-2"
             />
           </div>
         </div>
 
         <Tabs defaultValue="ijarah" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="ijarah">Ijarah (Lease)</TabsTrigger>
-            <TabsTrigger value="musharakah">Diminishing Musharakah</TabsTrigger>
+            <TabsTrigger value="ijarah" className="text-xs sm:text-sm">Ijarah (Lease)</TabsTrigger>
+            <TabsTrigger value="musharakah" className="text-xs sm:text-sm">Diminishing Musharakah</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="ijarah" className="space-y-4 mt-4">
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               <Card className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950">
-                <CardContent className="p-4">
-                  <p className="text-sm text-muted-foreground mb-1">Monthly Rent</p>
-                  <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                <CardContent className="p-3 sm:p-4">
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-1">Monthly Rent</p>
+                  <p className="text-xl sm:text-2xl font-bold text-purple-600 dark:text-purple-400">
                     AED {ijarahMonthly.toFixed(2)}
                   </p>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardContent className="p-4">
-                  <p className="text-sm text-muted-foreground mb-1">Total Payments</p>
-                  <p className="text-xl font-bold">
-                    AED {(ijarahMonthly * numberOfPayments).toLocaleString(undefined, {maximumFractionDigits: 0})}
+              <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950">
+                <CardContent className="p-3 sm:p-4">
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Payments</p>
+                  <p className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    AED {(ijarahMonthly * numberOfPayments).toLocaleString()}
                   </p>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardContent className="p-4">
-                  <p className="text-sm text-muted-foreground mb-1">Financed Amount</p>
-                  <p className="text-xl font-bold">
+              <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950">
+                <CardContent className="p-3 sm:p-4">
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-1">Financed Amount</p>
+                  <p className="text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400">
                     AED {financedAmount.toLocaleString()}
                   </p>
                 </CardContent>
               </Card>
             </div>
 
-            <div className="p-4 bg-purple-50 dark:bg-purple-950 rounded-lg border border-purple-200 dark:border-purple-800">
-              <h4 className="font-semibold mb-2">How Ijarah Works:</h4>
-              <ul className="text-sm space-y-1 text-muted-foreground">
+            <div className="p-3 sm:p-4 bg-purple-50 dark:bg-purple-950 rounded-lg border border-purple-200 dark:border-purple-800">
+              <h4 className="font-semibold mb-2 text-sm sm:text-base">How Ijarah Works:</h4>
+              <ul className="text-xs sm:text-sm space-y-1 text-muted-foreground leading-relaxed">
                 <li>• Bank purchases the property</li>
-                <li>• You lease the property and pay monthly rent</li>
+                <li>• You lease it with fixed monthly rent</li>
                 <li>• Option to purchase at end of term</li>
-                <li>• Ownership transfers after full payment</li>
+                <li>• Ownership transfers upon completion</li>
               </ul>
             </div>
           </TabsContent>
 
           <TabsContent value="musharakah" className="space-y-4 mt-4">
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               <Card className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950">
-                <CardContent className="p-4">
-                  <p className="text-sm text-muted-foreground mb-1">Monthly Payment</p>
-                  <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                <CardContent className="p-3 sm:p-4">
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-1">Monthly Payment</p>
+                  <p className="text-xl sm:text-2xl font-bold text-purple-600 dark:text-purple-400">
                     AED {musharakahMonthly.toFixed(2)}
                   </p>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardContent className="p-4">
-                  <p className="text-sm text-muted-foreground mb-1">Your Share</p>
-                  <Badge variant="outline" className="text-lg">{downPayment}%</Badge>
+              <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950">
+                <CardContent className="p-3 sm:p-4">
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-1">Your Ownership</p>
+                  <p className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    {downPayment}%
+                  </p>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardContent className="p-4">
-                  <p className="text-sm text-muted-foreground mb-1">Bank Share</p>
-                  <Badge variant="secondary" className="text-lg">{100 - downPayment}%</Badge>
+              <Card className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950 dark:to-red-950">
+                <CardContent className="p-3 sm:p-4">
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-1">Bank Share</p>
+                  <p className="text-xl sm:text-2xl font-bold text-orange-600 dark:text-orange-400">
+                    {100 - downPayment}%
+                  </p>
                 </CardContent>
               </Card>
             </div>
 
-            <div className="p-4 bg-purple-50 dark:bg-purple-950 rounded-lg border border-purple-200 dark:border-purple-800">
-              <h4 className="font-semibold mb-2">How Diminishing Musharakah Works:</h4>
-              <ul className="text-sm space-y-1 text-muted-foreground">
+            <div className="p-3 sm:p-4 bg-purple-50 dark:bg-purple-950 rounded-lg border border-purple-200 dark:border-purple-800">
+              <h4 className="font-semibold mb-2 text-sm sm:text-base">How Diminishing Musharakah Works:</h4>
+              <ul className="text-xs sm:text-sm space-y-1 text-muted-foreground leading-relaxed">
                 <li>• You and bank co-own the property</li>
                 <li>• You pay rent on bank's share</li>
                 <li>• You gradually purchase bank's share</li>
@@ -178,7 +178,7 @@ export function HomeFinanceCalculator() {
             </div>
           </TabsContent>
         </Tabs>
-      </CardContent>
-    </Card>
+      </div>
+    </CalculatorCard>
   );
 }
