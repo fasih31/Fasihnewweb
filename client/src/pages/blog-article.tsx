@@ -90,7 +90,13 @@ export default function BlogArticle() {
         ogImage={article.ogImage || article.featuredImage}
         article={true}
         canonicalUrl={`https://fasih.com.pk/blog/${slug}`}
-        schema={getArticleSchema(article.title, article.metaDescription || article.excerpt, article.publishedAt || article.createdAt)}
+        schema={getArticleSchema({
+          title: article.title,
+          description: article.metaDescription || article.excerpt,
+          datePublished: article.publishedAt || article.createdAt,
+          author: article.authorName || 'Fasih ur Rehman',
+          image: article.featuredImage
+        })}
       />
       <Navigation />
       <main className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16">

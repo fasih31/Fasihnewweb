@@ -264,7 +264,7 @@ export const getPersonSchema = () => ({
   ]
 });
 
-function getArticleSchema(article: {
+export function getArticleSchema(article: {
   title: string;
   description: string;
   datePublished: string;
@@ -399,6 +399,64 @@ export const getOrganizationSchema = () => ({
   ],
   areaServed: ["UAE", "Saudi Arabia", "Middle East", "Global"],
   priceRange: "$$"
+});
+
+export const getServiceSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  serviceType: "Product Management & Technology Consulting",
+  provider: {
+    "@type": "Person",
+    name: "Fasih ur Rehman",
+    url: typeof window !== "undefined" ? window.location.origin : "https://fasih.com.pk"
+  },
+  areaServed: ["UAE", "Saudi Arabia", "Middle East", "Global"],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Product Management Services",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "FinTech Product Management",
+          description: "End-to-end product management for financial technology solutions including Islamic finance, BNPL, digital banking"
+        }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "E-commerce Platform Development",
+          description: "Shariah-compliant e-commerce platforms, multi-vendor marketplaces, and payment solutions"
+        }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "EdTech Solutions",
+          description: "Learning management systems, virtual classrooms, and educational technology platforms"
+        }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "AI & Blockchain Solutions",
+          description: "Artificial intelligence research, machine learning, Web3 applications, and blockchain development"
+        }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Telecom & SaaS",
+          description: "Telecommunications product management, DaaS, and SaaS platform development"
+        }
+      }
+    ]
+  }
 });
 
 export const getFAQSchema = () => ({

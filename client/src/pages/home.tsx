@@ -13,7 +13,7 @@ import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
 import { StockTicker } from "@/components/stock-ticker";
 import { NewsFeed } from "@/components/news-feed";
-import { SEOHead, getPersonSchema, getOrganizationSchema, getScholarlyArticleSchema } from "@/components/seo-head";
+import { SEOHead, getPersonSchema, getOrganizationSchema, getServiceSchema, getFAQSchema, getScholarlyArticleSchema } from "@/components/seo-head";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { StatsSection } from "@/components/stats-section";
 
