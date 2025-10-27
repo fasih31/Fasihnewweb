@@ -73,6 +73,7 @@ export function Navigation() {
 
 
   const professionalTools = [
+    { name: "Calculators", path: "/calculators" },
     { name: "Tools", path: "/tools" },
     { name: "Islamic FinTech", path: "/islamic-fintech" },
     { name: "Career", path: "/career" },
