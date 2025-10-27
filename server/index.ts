@@ -4,12 +4,14 @@ import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { logger } from "./utils/logger";
+import { randomUUID } from "crypto";
 
 const app = express();
 
 declare module 'http' {
   interface IncomingMessage {
-    rawBody: unknown
+    rawBody: unknown;
+    id: string; // Added for request ID
   }
 }
 
@@ -22,9 +24,30 @@ app.use(compression({
     return compression.filter(req, res);
   },
   threshold: 1024,
+  level: 6 // Added for compression level
 }));
 
-// Security middleware - add headers to prevent common attacks
+// Request tracking middleware
+app.use((req, res, next) => {
+  req.id = randomUUID();
+  res.setHeader('X-Request-ID', req.id);
+  const start = Date.now();
+
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    if (duration > 1000) {
+      console.warn(`Slow request [${req.id}]: ${req.method} ${req.path} - ${duration}ms`);
+    }
+  });
+
+  next();
+});
+
+
+// Trust proxy (important for rate limiting behind reverse proxies)
+app.set('trust proxy', 1);
+
+// Comprehensive Security Headers
 app.use((req, res, next) => {
   // Allow iframe embedding for Replit environment, prevent clickjacking elsewhere
   if (process.env.REPL_ID) {
@@ -32,39 +55,47 @@ app.use((req, res, next) => {
   } else {
     res.setHeader('X-Frame-Options', 'DENY');
   }
-  
+
   // Prevent MIME type sniffing
   res.setHeader('X-Content-Type-Options', 'nosniff');
-  
+
   // Enable XSS protection
   res.setHeader('X-XSS-Protection', '1; mode=block');
-  
+
   // Referrer policy
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
+
   // Permissions policy
-  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
-  
+  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=(), payment=(), usb=()');
+  res.setHeader('X-DNS-Prefetch-Control', 'on');
+  res.setHeader('X-Download-Options', 'noopen');
+  res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
+
   // Content Security Policy - updated for better security
-  const cspDirectives = [
-    "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com data:",
-    "img-src 'self' data: https: http:",
-    "connect-src 'self' https://www.google-analytics.com https://api.coingecko.com https://finnhub.io https://newsapi.org https://api.exchangerate-api.com https://*.linkedin.com",
-    "frame-ancestors 'self' https://*.replit.dev https://*.replit.app https://*.repl.co",
-    "base-uri 'self'",
-    "form-action 'self'",
-  ].join('; ');
-  
-  res.setHeader('Content-Security-Policy', cspDirectives);
-  
-  // Strict Transport Security (HTTPS only)
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+    "font-src 'self' https://fonts.gstatic.com; " +
+    "img-src 'self' data: https: blob:; " +
+    "connect-src 'self' https://api.coingecko.com https://api.exchangerate-api.com https://finnhub.io https://newsapi.org https://api.alquran.cloud https://random-hadith-generator.vercel.app; " +
+    "frame-ancestors 'none'; " +
+    "base-uri 'self'; " +
+    "form-action 'self'"
+  );
+
+  // HSTS for HTTPS
   if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
-    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   }
-  
+
+  // Security headers for cache control
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.setHeader('Surrogate-Control', 'no-store');
+
   next();
 });
 
@@ -81,7 +112,7 @@ const CONTACT_RATE_WINDOW = 300000; // 5 minutes
 app.use((req, res, next) => {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
   const now = Date.now();
-  
+
   // Stricter rate limiting for contact form submissions
   if (req.path === '/api/contact' && req.method === 'POST') {
     if (!contactRateLimitStore.has(ip)) {
@@ -99,7 +130,7 @@ app.use((req, res, next) => {
       }
     }
   }
-  
+
   // General rate limiting for all requests
   if (!rateLimitStore.has(ip)) {
     rateLimitStore.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
@@ -176,7 +207,7 @@ app.use((req, res, next) => {
 
   // Serve static files from client/public (for sitemap.xml, robots.txt, etc.)
   app.use(express.static(path.join(import.meta.dirname, '..', 'client', 'public')));
-  
+
   // Serve attached assets
   app.use('/attached_assets', express.static(path.join(import.meta.dirname, '..', 'attached_assets')));
 

@@ -3,14 +3,19 @@
 
 User-agent: *
 Allow: /
+Allow: /domains/
 Allow: /solutions/
-Allow: /tools
+Allow: /tools/
+Allow: /calculators
 Allow: /career
 Allow: /islamic-fintech
+Allow: /blog
 
 Disallow: /admin
 Disallow: /api/
 Disallow: /*.json$
+Disallow: /auth/
+Disallow: /*.pdf$ # Resume download tracking
 
 # Preferred Crawlers
 User-agent: Googlebot

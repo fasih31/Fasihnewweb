@@ -109,6 +109,16 @@ export function SEOHead({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Fasih ur Rehman" />
         <meta name="application-name" content="Fasih ur Rehman - FinTech Portfolio" />
+        
+        {/* DNS Prefetch & Preconnect for Performance */}
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="preload" href="/favicon.png" as="image" />
+        
+        {/* Webmaster Verification Tags */}
+        <meta name="google-site-verification" content="GOOGLE_VERIFICATION_CODE_PLACEHOLDER" />
+        <meta name="msvalidate.01" content="BING_VERIFICATION_CODE_PLACEHOLDER" />
+        <meta name="yandex-verification" content="YANDEX_VERIFICATION_CODE_PLACEHOLDER" />
 
         {/* Rich Snippet Enhancement */}
         <meta name="page-topic" content="FinTech Product Management and Islamic Finance Solutions" />
