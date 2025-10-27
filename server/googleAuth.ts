@@ -1,20 +1,22 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as LocalStrategy } from "passport-local";
-import type { Express } from "express";
 import session from "express-session";
+import connectPg from "connect-pg-simple";
+import bcrypt from "bcrypt";
+import type { Express } from "express";
 import type { RequestHandler } from "express";
 import { storage } from "./storage";
-import connectPg from "connect-pg-simple";
-import { db } from "./db";
-import bcrypt from "bcrypt";
+import type { User } from "@shared/schema";
+
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "Fasih31@gmail.com"; // Default to Fasih31@gmail.com if not set
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   console.warn("Google OAuth not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET");
 }
 
 if (!process.env.ADMIN_EMAIL) {
-  console.warn("ADMIN_EMAIL not set. No one will have admin access.");
+  console.warn("ADMIN_EMAIL not set. Using default admin email: Fasih31@gmail.com. For production, set ADMIN_EMAIL environment variable.");
 }
 
 export function getSession() {
@@ -44,11 +46,14 @@ export async function setupAuth(app: Express) {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  // Initialize admin user with a default password if it doesn't exist
+  await initializeAdminUser();
+
   if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     return;
   }
 
-  const callbackURL = process.env.NODE_ENV === "production" 
+  const callbackURL = process.env.NODE_ENV === "production"
     ? `https://${process.env.REPLIT_DOMAINS?.split(",")[0]}/api/auth/google/callback`
     : "http://localhost:5000/api/auth/google/callback";
 
@@ -69,6 +74,11 @@ export async function setupAuth(app: Express) {
             return done(new Error("No email from Google"));
           }
 
+          // Only allow the admin email via Google OAuth
+          if (email !== ADMIN_EMAIL) {
+            return done(null, false, { message: "Unauthorized access. Only admin can log in." });
+          }
+
           const user = await storage.upsertUser({
             id: profile.id,
             email,
@@ -84,7 +94,7 @@ export async function setupAuth(app: Express) {
     )
   );
 
-  // Add Local Strategy
+  // Add Local Strategy for admin login
   passport.use(
     new LocalStrategy(
       {
@@ -95,13 +105,14 @@ export async function setupAuth(app: Express) {
         try {
           const user = await storage.getUserByEmail(email);
 
-          if (!user) {
-            return done(null, false, { message: "Incorrect email." });
+          // Check if the user is the admin and if the password matches
+          if (!user || user.email !== ADMIN_EMAIL || !user.passwordHash) {
+            return done(null, false, { message: "Invalid credentials." });
           }
 
-          const isMatch = await bcrypt.compare(password, user.password_hash);
+          const isMatch = await bcrypt.compare(password, user.passwordHash);
           if (!isMatch) {
-            return done(null, false, { message: "Incorrect password." });
+            return done(null, false, { message: "Invalid credentials." });
           }
 
           return done(null, user);
@@ -167,15 +178,44 @@ export const isAdmin: RequestHandler = (req, res, next) => {
   }
 
   const user = req.user as any;
-  const adminEmail = process.env.ADMIN_EMAIL;
 
-  if (!adminEmail) {
-    return res.status(403).json({ message: "Admin not configured" });
+  if (!process.env.ADMIN_EMAIL && user.email !== ADMIN_EMAIL) {
+    return res.status(403).json({ message: "Admin not configured or incorrect user" });
   }
 
-  if (user.email === adminEmail) {
+  if (user.email === ADMIN_EMAIL) {
     return next();
   }
 
   res.status(403).json({ message: "Forbidden: Admin access required" });
 };
+
+async function initializeAdminUser() {
+  try {
+    const adminUser = await storage.getUserByEmail(ADMIN_EMAIL);
+
+    if (!adminUser) {
+      // If admin user does not exist, create one with a default password
+      const defaultPassword = "Fasih31@"; // This should be a strong, unique password
+      const passwordHash = await bcrypt.hash(defaultPassword, 10);
+      await storage.upsertUser({
+        id: `admin-${Date.now()}`, // Simple unique ID
+        email: ADMIN_EMAIL,
+        name: "Fasih ur Rehman", // Default admin name
+        passwordHash,
+      });
+      console.log(`Admin user initialized with email: ${ADMIN_EMAIL}`);
+    } else if (!adminUser.passwordHash) {
+      // If admin user exists but has no password hash, update it
+      const defaultPassword = "Fasih31@"; // This should be a strong, unique password
+      const passwordHash = await bcrypt.hash(defaultPassword, 10);
+      await storage.upsertUser({
+        ...adminUser,
+        passwordHash,
+      });
+      console.log(`Admin user password updated for email: ${ADMIN_EMAIL}`);
+    }
+  } catch (error) {
+    console.error("Error initializing admin user:", error);
+  }
+}

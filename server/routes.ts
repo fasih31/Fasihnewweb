@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import passport from "passport";
 import { storage } from "./storage";
 import { 
   insertContactMessageSchema, 
@@ -41,13 +42,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
   await setupAuth(app);
 
   // Local login endpoint
-  app.post("/api/auth/login", passport.authenticate("local"), (req: any, res) => {
-    const user = req.user;
-    res.json({
-      ...user,
-      isAdmin: user.email === "Fasih31@gmail.com",
-      passwordHash: undefined, // Never send password hash to client
-    });
+  app.post("/api/auth/login", (req, res, next) => {
+    passport.authenticate("local", (err: any, user: any, info: any) => {
+      if (err) {
+        return res.status(500).json({ message: "Authentication error" });
+      }
+      if (!user) {
+        return res.status(401).json({ message: info?.message || "Invalid credentials" });
+      }
+      
+      req.logIn(user, (err) => {
+        if (err) {
+          return res.status(500).json({ message: "Login failed" });
+        }
+        
+        res.json({
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          picture: user.picture,
+          isAdmin: user.email === "Fasih31@gmail.com",
+        });
+      });
+    })(req, res, next);
   });
 
   // Logout endpoint
@@ -65,9 +82,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const user = req.user;
       const isUserAdmin = user.email === "Fasih31@gmail.com";
       res.json({
-        ...user,
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        picture: user.picture,
         isAdmin: isUserAdmin,
-        passwordHash: undefined, // Never send password hash to client
       });
     } catch (error) {
       console.error("Error fetching user:", error);
