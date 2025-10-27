@@ -87,33 +87,33 @@ export default function IslamicFinTech() {
             </div>
 
             {/* Products Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
               {islamicFinTechProducts.map((product) => {
                 const Icon = iconMap[product.icon as keyof typeof iconMap];
                 return (
                   <Card
                     key={product.id}
-                    className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-primary/50 flex flex-col h-full"
+                    className="group hover:shadow-2xl transition-all duration-300 cursor-pointer border-2 hover:border-primary/60 hover:-translate-y-1 flex flex-col h-full bg-gradient-to-br from-background to-muted/20"
                     onClick={() => startJourney(product)}
                   >
-                    <CardHeader className="pb-3 sm:pb-4 flex-shrink-0">
-                      <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br ${product.color} flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform shadow-lg`}>
-                        <Icon className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white" />
+                    <CardHeader className="pb-4 flex-shrink-0">
+                      <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br ${product.color} flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all shadow-lg`}>
+                        <Icon className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
                       </div>
-                      <CardTitle className="text-base sm:text-lg md:text-xl mb-1 sm:mb-2 leading-tight">{product.title}</CardTitle>
-                      <CardDescription className="text-xs sm:text-sm leading-snug">{product.subtitle}</CardDescription>
+                      <CardTitle className="text-lg sm:text-xl mb-2 leading-tight group-hover:text-primary transition-colors">{product.title}</CardTitle>
+                      <CardDescription className="text-sm leading-snug">{product.subtitle}</CardDescription>
                     </CardHeader>
-                    <CardContent className="pt-0 flex-grow flex flex-col justify-between">
-                      <div>
-                        <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 leading-relaxed line-clamp-3">
-                          {product.description}
-                        </p>
-                        <Badge variant="outline" className="mb-3 sm:mb-4 text-xs">{product.contractType}</Badge>
+                    <CardContent className="pt-0 flex-grow flex flex-col justify-between gap-4">
+                      <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
+                        {product.description}
+                      </p>
+                      <div className="space-y-3">
+                        <Badge variant="outline" className="text-xs font-medium">{product.contractType}</Badge>
+                        <Button className="w-full gap-2 group-hover:gap-3 transition-all text-sm h-10 shadow-sm group-hover:shadow-md">
+                          Explore Product
+                          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
                       </div>
-                      <Button className="w-full gap-2 group-hover:gap-3 transition-all text-xs sm:text-sm md:text-base h-9 sm:h-10">
-                        Start Journey
-                        <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
-                      </Button>
                     </CardContent>
                   </Card>
                 );
@@ -225,26 +225,40 @@ export default function IslamicFinTech() {
               )}
             </div>
 
-            {/* Interactive Calculator */}
-            {(selectedProduct.id === "bnpl" || selectedProduct.id === "home-finance") && (
-              <div className="mt-12">
-                <Card className="bg-gradient-to-br from-primary/5 to-chart-2/5 border-primary/20">
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <Calculator className="h-5 w-5 text-primary" />
-                      <CardTitle>Interactive Calculator</CardTitle>
+            {/* Interactive Calculator - Now Available for All Products */}
+            <div className="mt-8 sm:mt-12">
+              <Card className="bg-gradient-to-br from-primary/5 to-chart-2/5 border-primary/20">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <Calculator className="h-5 w-5 text-primary" />
+                    <CardTitle className="text-lg sm:text-xl">Interactive Calculator & Demo</CardTitle>
+                  </div>
+                  <CardDescription className="text-sm sm:text-base">
+                    Try out the calculator to see how {selectedProduct.title} works in real-time
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {selectedProduct.id === "bnpl" && <BNPLCalculator />}
+                  {selectedProduct.id === "home-finance" && <HomeFinanceCalculator />}
+                  {!["bnpl", "home-finance"].includes(selectedProduct.id) && (
+                    <div className="p-6 sm:p-8 text-center bg-muted/50 rounded-lg">
+                      <Calculator className="h-12 w-12 sm:h-16 sm:w-16 mx-auto mb-4 text-primary" />
+                      <h3 className="text-lg sm:text-xl font-semibold mb-2">Calculator Coming Soon</h3>
+                      <p className="text-sm sm:text-base text-muted-foreground max-w-md mx-auto">
+                        Interactive calculator for {selectedProduct.title} is under development. 
+                        Contact us for a personalized demo.
+                      </p>
+                      <Button className="mt-4" onClick={() => {
+                        setLocation("/#contact");
+                        resetJourney();
+                      }}>
+                        Request Demo
+                      </Button>
                     </div>
-                    <CardDescription>
-                      Try out the calculator to see how {selectedProduct.title} works
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {selectedProduct.id === "bnpl" && <BNPLCalculator />}
-                    {selectedProduct.id === "home-finance" && <HomeFinanceCalculator />}
-                  </CardContent>
-                </Card>
-              </div>
-            )}
+                  )}
+                </CardContent>
+              </Card>
+            </div>
 
             {/* Product Info Tabs */}
             <div className="mt-12">
