@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Briefcase, Calendar, ChevronDown, ChevronUp } from "lucide-react";
 import { timeline } from "@/data/portfolio-data";
@@ -54,7 +55,7 @@ export function AboutSection() {
               I excel in Agile/Scrum methodologies, PMP-certified project management, cross-functional team leadership across distributed teams, 
               and leveraging AI, automation (RPA-as-a-Service), and emerging technologies to solve complex business challenges. My research 
               contributions to IEEE and MDPI on AI ethics and FinTech security underscore my commitment to responsible innovation in Islamic finance.
-            </p></div>
+            </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-4">
               <Button
