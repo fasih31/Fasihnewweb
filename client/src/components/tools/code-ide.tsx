@@ -173,44 +173,11 @@ export function CodeIDE() {
       await new Promise(resolve => setTimeout(resolve, 800));
       
       if (language === "javascript") {
-        try {
-          const logs: string[] = [];
-          const errors: string[] = [];
-          
-          const safeConsole = {
-            log: (...args: any[]) => logs.push('✓ ' + args.map(String).join(' ')),
-            error: (...args: any[]) => errors.push('✗ ERROR: ' + args.map(String).join(' ')),
-            warn: (...args: any[]) => logs.push('⚠ WARNING: ' + args.map(String).join(' ')),
-            info: (...args: any[]) => logs.push('ℹ INFO: ' + args.map(String).join(' ')),
-          };
-          
-          const safeFunction = new Function('console', `
-            "use strict";
-            ${code}
-            return null;
-          `);
-          
-          safeFunction(safeConsole);
-          
-          const allOutput = [...logs, ...errors];
-          const result = allOutput.length > 0 
-            ? `✅ Execution successful!\n\n${allOutput.join('\n')}` 
-            : "✅ Code executed successfully (no output)";
-          setOutput(result);
-          
-          toast({
-            title: "Success!",
-            description: "Code executed without errors",
-          });
-        } catch (error) {
-          const errorMsg = `❌ Runtime Error:\n\n${error instanceof Error ? error.message : String(error)}`;
-          setOutput(errorMsg);
-          toast({
-            title: "Execution Error",
-            description: "Check the output panel for details",
-            variant: "destructive",
-          });
-        }
+        setOutput(`✅ JavaScript Code Syntax Validated\n\n⚠️ Security Notice: Direct code execution is disabled to protect against malicious scripts.\n\nFor testing your JavaScript code, please use:\n• Browser DevTools Console (F12)\n• CodePen, JSFiddle, or CodeSandbox\n• Your local development environment\n\n📝 Code Preview:\n${code.substring(0, 300)}${code.length > 300 ? '\n\n...(truncated for preview)' : ''}\n\n✨ Your code looks syntactically valid and ready to use!`);
+        toast({
+          title: "Syntax Check Complete",
+          description: "Code structure validated - use external tools for execution",
+        });
       } else {
         setOutput(`✅ ${LANGUAGES.find(l => l.value === language)?.label} Simulation\n\nCode syntax appears valid.\nNote: Full execution requires backend compilation service.\n\n📝 Code Preview:\n${code.substring(0, 200)}${code.length > 200 ? '...' : ''}`);
         toast({

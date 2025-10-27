@@ -45,10 +45,10 @@ app.use((req, res, next) => {
   // Permissions policy
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
   
-  // Content Security Policy
+  // Content Security Policy - updated for better security
   const cspDirectives = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
+    "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: https: http:",
@@ -163,8 +163,15 @@ app.use((req, res, next) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
-    res.status(status).json({ message });
-    throw err;
+    logger.error('Express error handler caught:', {
+      status,
+      message,
+      stack: err.stack,
+    });
+
+    if (!res.headersSent) {
+      res.status(status).json({ message });
+    }
   });
 
   // Serve static files from client/public (for sitemap.xml, robots.txt, etc.)
