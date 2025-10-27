@@ -48,12 +48,69 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Islamic FinTech - Medium-High Priority -->
+  <!-- Islamic FinTech - High Priority -->
   <url>
     <loc>https://iamfasih.com/islamic-fintech</loc>
     <lastmod>2025-01-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- Islamic Finance Products - High Priority -->
+  <url>
+    <loc>https://iamfasih.com/islamic-fintech#bnpl</loc>
+    <lastmod>2025-01-26</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://iamfasih.com/islamic-fintech#murabaha</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://iamfasih.com/islamic-fintech#ijarah</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://iamfasih.com/islamic-fintech#home-finance</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://iamfasih.com/islamic-fintech#car-finance</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://iamfasih.com/islamic-fintech#takaful</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://iamfasih.com/islamic-fintech#salary-advance</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://iamfasih.com/islamic-fintech#p2p-lending</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <!-- Tools & Career Pages - Medium Priority -->

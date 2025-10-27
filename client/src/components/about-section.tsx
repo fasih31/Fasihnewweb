@@ -34,22 +34,27 @@ export function AboutSection() {
           {/* Left: Content */}
           <div className="space-y-6">
             <p className="text-lg text-foreground leading-relaxed">
-              I'm Fasih ur Rehman, an experienced Product Manager with 9+ years of 
-              dynamic experience delivering innovative, user-centric solutions across 
-              FinTech, EdTech, eCommerce, and ICT sectors.
+              I'm Fasih ur Rehman, a seasoned FinTech Product Manager and Islamic Finance Expert with 9+ years of 
+              transformative experience delivering cutting-edge Shariah-compliant solutions across multiple domains including 
+              FinTech, Islamic Banking, EdTech, E-commerce, Telecom, AI/AGI, DaaS, SaaS, and Web3 technologies.
             </p>
             <p className="text-base text-muted-foreground leading-relaxed">
-              Currently serving as Project Manager at Etisalat Dubai, I specialize in 
-              leading end-to-end product development, driving digital transformation, 
-              and achieving measurable business growth. My track record includes 
-              delivering 80% revenue growth, transforming products to Shariah compliance, 
-              and managing portfolios generating millions in annual revenue.
+              Currently serving as Senior Project Manager at Etisalat Dubai, I've pioneered innovative Islamic financial products 
+              including <strong>BNPL (Buy Now Pay Later)</strong> using Murabaha contracts, <strong>Ijarah leasing solutions</strong> for housing and car finance, 
+              <strong>Qard Hasan</strong> salary advance programs, <strong>Takaful insurance</strong> platforms, and comprehensive <strong>P2P lending</strong> ecosystems. 
+              My expertise spans the complete spectrum of Islamic finance contracts: Murabaha, Ijarah, Musharakah, Mudarabah, Salam, Istisna, and Sukuk structuring.
             </p>
             <p className="text-base text-muted-foreground leading-relaxed">
-              I excel in Agile methodologies, cross-functional team leadership, and 
-              leveraging cutting-edge technologies including AI to solve complex 
-              challenges and drive impactful outcomes across diverse industries.
+              As founder of <strong>VirtualIEC</strong> (AI & Blockchain innovation ecosystem) and co-founder of <strong>Labs360.io</strong> (Web3 growth marketing agency), 
+              I've successfully delivered 80% revenue growth, transformed conventional products to full Shariah compliance, and managed 
+              multi-million dollar portfolios across UAE, Saudi Arabia, and GCC markets. My technical mastery includes React, Flutter, 
+              Node.js, Azure DevOps, AI/ML integration, and quantum-resistant blockchain architecture.
             </p>
+            <p className="text-base text-muted-foreground leading-relaxed">
+              I excel in Agile/Scrum methodologies, PMP-certified project management, cross-functional team leadership across distributed teams, 
+              and leveraging AI, automation (RPA-as-a-Service), and emerging technologies to solve complex business challenges. My research 
+              contributions to IEEE and MDPI on AI ethics and FinTech security underscore my commitment to responsible innovation in Islamic finance.
+            </p></div>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-4">
               <Button
