@@ -172,9 +172,7 @@ export default function Tools() {
                       key={tool.id} 
                       className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-primary/50"
                       onClick={() => {
-                        if (tool.openAsPage && tool.pagePath) {
-                          window.location.href = tool.pagePath;
-                        } else {
+                        if (!tool.openAsPage) {
                           setSelectedTool(tool);
                         }
                       }}
@@ -206,7 +204,7 @@ export default function Tools() {
                           onClick={(e) => {
                             e.stopPropagation();
                             if (tool.openAsPage && tool.pagePath) {
-                              window.location.href = tool.pagePath;
+                              window.open(tool.pagePath, '_self');
                             } else {
                               setSelectedTool(tool);
                             }

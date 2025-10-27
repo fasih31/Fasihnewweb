@@ -1,15 +1,10 @@
 
-import { useEffect } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { SEOHead } from "@/components/seo-head";
 import { SEOChecker } from "@/components/tools/seo-checker";
 
 export default function SEOAnalyzerTool() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <div className="min-h-screen bg-background">
       <SEOHead

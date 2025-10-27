@@ -1,15 +1,10 @@
 
-import { useEffect } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { SEOHead } from "@/components/seo-head";
 import { CodeIDE } from "@/components/tools/code-ide";
 
 export default function CodePlaygroundTool() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
