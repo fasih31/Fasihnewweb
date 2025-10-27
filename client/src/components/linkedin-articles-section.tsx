@@ -86,7 +86,16 @@ export function LinkedInArticlesSection() {
               <Card
                 key={index}
                 className="group hover-elevate transition-all duration-300 hover:shadow-xl cursor-pointer border-card-border"
-                onClick={() => window.open(article.link, '_blank', 'noopener,noreferrer')}
+                onClick={() => {
+                  // Open in new tab without referrer to avoid login prompt
+                  const link = document.createElement('a');
+                  link.href = article.link;
+                  link.target = '_blank';
+                  link.rel = 'noopener noreferrer nofollow';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
               >
                 <CardContent className="p-6 space-y-4">
                   <div className="space-y-3">
@@ -123,7 +132,14 @@ export function LinkedInArticlesSection() {
                     className="text-[#0077b5] hover:text-[#0077b5] hover:bg-[#0077b5]/5 w-full justify-start px-0"
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.open(article.link, '_blank', 'noopener,noreferrer');
+                      // Open without referrer to avoid login prompt
+                      const link = document.createElement('a');
+                      link.href = article.link;
+                      link.target = '_blank';
+                      link.rel = 'noopener noreferrer nofollow';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
                     }}
                   >
                     Read on LinkedIn →
@@ -138,18 +154,20 @@ export function LinkedInArticlesSection() {
           <Button
             variant="outline"
             size="lg"
-            asChild
             className="hover-elevate active-elevate-2 border-[#0077b5] text-[#0077b5] hover:bg-[#0077b5]/10"
+            onClick={() => {
+              // Open without referrer to avoid login prompt
+              const link = document.createElement('a');
+              link.href = 'https://www.linkedin.com/in/fasihurrehman05/recent-activity/articles/';
+              link.target = '_blank';
+              link.rel = 'noopener noreferrer nofollow';
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }}
           >
-            <a
-              href="https://www.linkedin.com/in/fasihurrehman05/recent-activity/articles/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2"
-            >
-              <Linkedin className="h-5 w-5" />
-              View All Articles on LinkedIn
-            </a>
+            <Linkedin className="h-5 w-5 mr-2" />
+            View All Articles on LinkedIn
           </Button>
         </div>
       </div>
