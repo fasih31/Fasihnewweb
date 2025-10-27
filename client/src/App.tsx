@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/lib/theme-provider";
 import { GoogleAnalytics } from "@/components/google-analytics";
+import { ScrollToTop } from "@/components/scroll-to-top";
 import Home from "@/pages/home";
 import AdminDashboard from "@/pages/admin";
 import BlogArticle from "@/pages/blog-article";
@@ -13,6 +14,9 @@ import SolutionDetail from "@/pages/solution-detail";
 import Career from "@/pages/career";
 import Tools from "@/pages/tools";
 import IslamicFinTech from "@/pages/islamic-fintech";
+import SEOAnalyzerTool from "@/pages/seo-analyzer-tool";
+import WebsiteScannerTool from "@/pages/website-scanner-tool";
+import CodePlaygroundTool from "@/pages/code-playground-tool";
 
 import NotFound from "@/pages/not-found";
 import { HelmetProvider } from "react-helmet-async";
@@ -36,6 +40,9 @@ function Router() {
       <Route path="/project/:id" component={ProjectDetail} />
       <Route path="/career" component={Career} />
       <Route path="/tools" component={Tools} />
+      <Route path="/tools/seo-analyzer" component={SEOAnalyzerTool} />
+      <Route path="/tools/website-scanner" component={WebsiteScannerTool} />
+      <Route path="/tools/code-playground" component={CodePlaygroundTool} />
       
       <Route path="/islamic-fintech" component={IslamicFinTech} />
       <Route path="/domains/fintech" component={FinTechDomain} />
@@ -56,6 +63,7 @@ function App() {
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <QueryClientProvider client={queryClient}>
           <GoogleAnalytics />
+          <ScrollToTop />
           <TooltipProvider>
             <Toaster />
             <Router />

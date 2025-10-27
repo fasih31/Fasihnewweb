@@ -38,6 +38,19 @@ interface Tool {
   category: string;
 }
 
+interface Tool {
+  id: string;
+  title: string;
+  description: string;
+  icon: any;
+  features: string[];
+  component?: any;
+  gradient: string;
+  category: string;
+  openAsPage?: boolean;
+  pagePath?: string;
+}
+
 const tools: Tool[] = [
   {
     id: "crypto",
@@ -47,7 +60,8 @@ const tools: Tool[] = [
     features: ["Live Price Updates", "Market Cap Data", "24h Price Changes", "Multiple Cryptocurrencies"],
     component: CryptoTracker,
     gradient: "from-orange-500 to-pink-500",
-    category: "Finance"
+    category: "Finance",
+    openAsPage: false
   },
   {
     id: "currency",
@@ -57,7 +71,8 @@ const tools: Tool[] = [
     features: ["150+ Currencies", "Real-time Rates", "Instant Conversion", "Historical Data"],
     component: CurrencyConverter,
     gradient: "from-green-500 to-emerald-500",
-    category: "Finance"
+    category: "Finance",
+    openAsPage: false
   },
   {
     id: "converter",
@@ -67,7 +82,8 @@ const tools: Tool[] = [
     features: ["Multiple Units", "Precise Calculations", "Various Categories", "Easy to Use"],
     component: UnitConverter,
     gradient: "from-blue-500 to-cyan-500",
-    category: "Utilities"
+    category: "Utilities",
+    openAsPage: false
   },
   {
     id: "seo",
@@ -75,9 +91,10 @@ const tools: Tool[] = [
     description: "Analyze website SEO performance and get optimization recommendations",
     icon: Zap,
     features: ["SEO Score", "Meta Tag Analysis", "Performance Insights", "Recommendations"],
-    component: SEOChecker,
     gradient: "from-purple-500 to-indigo-500",
-    category: "Marketing"
+    category: "Marketing",
+    openAsPage: true,
+    pagePath: "/tools/seo-analyzer"
   },
   {
     id: "scanner",
@@ -85,9 +102,10 @@ const tools: Tool[] = [
     description: "Scan websites for security, performance, and technical SEO issues",
     icon: Search,
     features: ["Security Check", "Performance Audit", "SEO Analysis", "Detailed Reports"],
-    component: WebsiteScanner,
     gradient: "from-red-500 to-rose-500",
-    category: "Security"
+    category: "Security",
+    openAsPage: true,
+    pagePath: "/tools/website-scanner"
   },
   {
     id: "loan",
@@ -97,7 +115,8 @@ const tools: Tool[] = [
     features: ["Payment Calculation", "Interest Analysis", "Amortization Schedule", "Multiple Scenarios"],
     component: LoanCalculator,
     gradient: "from-yellow-500 to-orange-500",
-    category: "Finance"
+    category: "Finance",
+    openAsPage: false
   },
   {
     id: "ide",
@@ -105,9 +124,10 @@ const tools: Tool[] = [
     description: "Write, test, and run code in multiple programming languages online",
     icon: Code,
     features: ["Multiple Languages", "Syntax Highlighting", "Live Execution", "Code Sharing"],
-    component: CodeIDE,
     gradient: "from-teal-500 to-green-500",
-    category: "Development"
+    category: "Development",
+    openAsPage: true,
+    pagePath: "/tools/code-playground"
   }
 ];
 
@@ -151,7 +171,13 @@ export default function Tools() {
                     <Card 
                       key={tool.id} 
                       className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-primary/50"
-                      onClick={() => setSelectedTool(tool)}
+                      onClick={() => {
+                        if (tool.openAsPage && tool.pagePath) {
+                          window.location.href = tool.pagePath;
+                        } else {
+                          setSelectedTool(tool);
+                        }
+                      }}
                     >
                       <CardHeader>
                         <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}>
@@ -179,7 +205,11 @@ export default function Tools() {
                           variant="outline"
                           onClick={(e) => {
                             e.stopPropagation();
-                            setSelectedTool(tool);
+                            if (tool.openAsPage && tool.pagePath) {
+                              window.location.href = tool.pagePath;
+                            } else {
+                              setSelectedTool(tool);
+                            }
                           }}
                         >
                           Launch Tool
