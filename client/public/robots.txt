@@ -23,7 +23,7 @@ User-agent: Bingbot
 Allow: /
 
 # Sitemap Location
-Sitemap: https://fasih.com.pk/sitemap.xml
+Sitemap: https://iamfasih.com/sitemap.xml
 
 # Crawl Delay (optional, helps prevent server overload)
 Crawl-delay: 1

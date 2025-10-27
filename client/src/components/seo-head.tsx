@@ -26,7 +26,7 @@ export function SEOHead({
   schema,
 }: SEOHeadProps) {
   const currentUrl = canonicalUrl || (typeof window !== "undefined" ? window.location.href : "");
-  const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://fasih.com.pk";
+  const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://iamfasih.com";
 
   return (
     <HelmetProvider>

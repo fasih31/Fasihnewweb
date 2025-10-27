@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -7,12 +8,12 @@
 
   <!-- Homepage - Highest Priority -->
   <url>
-    <loc>https://fasih.com.pk/</loc>
+    <loc>https://iamfasih.com/</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://fasih.com.pk/og-image.png</image:loc>
+      <image:loc>https://iamfasih.com/og-image.png</image:loc>
       <image:title>Fasih ur Rehman - FinTech Product Manager and Islamic Finance Expert</image:title>
       <image:caption>Professional Product Manager specializing in FinTech, AI, and Islamic Finance solutions</image:caption>
     </image:image>
@@ -20,28 +21,28 @@
 
   <!-- Solution Pages - High Priority -->
   <url>
-    <loc>https://fasih.com.pk/solutions/fintech</loc>
+    <loc>https://iamfasih.com/solutions/fintech</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://fasih.com.pk/solutions/edtech</loc>
+    <loc>https://iamfasih.com/solutions/edtech</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://fasih.com.pk/solutions/ecommerce</loc>
+    <loc>https://iamfasih.com/solutions/ecommerce</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://fasih.com.pk/solutions/daas</loc>
+    <loc>https://iamfasih.com/solutions/daas</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -49,7 +50,7 @@
 
   <!-- Islamic FinTech - Medium-High Priority -->
   <url>
-    <loc>https://fasih.com.pk/islamic-fintech</loc>
+    <loc>https://iamfasih.com/islamic-fintech</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -57,14 +58,14 @@
 
   <!-- Tools & Career Pages - Medium Priority -->
   <url>
-    <loc>https://fasih.com.pk/tools</loc>
+    <loc>https://iamfasih.com/tools</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://fasih.com.pk/career</loc>
+    <loc>https://iamfasih.com/career</loc>
     <lastmod>2025-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
