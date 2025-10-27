@@ -9,6 +9,7 @@ import { CurrencyConverter } from "@/components/tools/currency-converter";
 import { UnitConverter } from "@/components/tools/unit-converter";
 import { WebsiteScanner } from "@/components/tools/website-scanner";
 import { LoanCalculator } from "@/components/tools/loan-calculator";
+import { SEOChecker } from "@/components/tools/seo-checker";
 import {
   TrendingUp,
   DollarSign,
@@ -45,7 +46,7 @@ export default function Tools() {
 
           {/* Tools Tabs */}
           <Tabs defaultValue="crypto" className="space-y-4 sm:space-y-6">
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 h-auto gap-2">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 h-auto gap-2">
               <TabsTrigger value="crypto" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3">
                 <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="text-xs sm:text-sm">Crypto</span>
@@ -57,6 +58,10 @@ export default function Tools() {
               <TabsTrigger value="converter" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3">
                 <Ruler className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="text-xs sm:text-sm">Units</span>
+              </TabsTrigger>
+              <TabsTrigger value="seo" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3">
+                <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="text-xs sm:text-sm">SEO</span>
               </TabsTrigger>
               <TabsTrigger value="scanner" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-3">
                 <Search className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -78,6 +83,10 @@ export default function Tools() {
 
             <TabsContent value="converter" className="space-y-4">
               <UnitConverter />
+            </TabsContent>
+
+            <TabsContent value="seo" className="space-y-4">
+              <SEOChecker />
             </TabsContent>
 
             <TabsContent value="scanner" className="space-y-4">
