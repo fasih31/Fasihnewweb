@@ -19,30 +19,23 @@
     </image:image>
   </url>
 
-  <!-- Solution Pages - High Priority -->
+  <!-- Domain/Solution Pages - High Priority -->
   <url>
-    <loc>https://iamfasih.com/solutions/fintech</loc>
+    <loc>https://iamfasih.com/domains/fintech</loc>
     <lastmod>2025-01-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://iamfasih.com/solutions/edtech</loc>
+    <loc>https://iamfasih.com/domains/edtech</loc>
     <lastmod>2025-01-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://iamfasih.com/solutions/ecommerce</loc>
-    <lastmod>2025-01-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://iamfasih.com/solutions/daas</loc>
+    <loc>https://iamfasih.com/domains/ecommerce</loc>
     <lastmod>2025-01-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -116,6 +109,13 @@
   <!-- Tools & Career Pages - Medium Priority -->
   <url>
     <loc>https://iamfasih.com/tools</loc>
+    <lastmod>2025-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://iamfasih.com/calculators</loc>
     <lastmod>2025-01-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
