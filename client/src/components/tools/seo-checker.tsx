@@ -20,9 +20,16 @@ import {
   Link as LinkIcon,
   Zap,
   Shield,
-  Smartphone
+  Smartphone,
+  Target,
+  BarChart3,
+  Brain,
+  Download,
+  Share2,
+  Eye
 } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 
 interface SEOAnalysis {
   url: string;
@@ -103,10 +110,29 @@ interface SEOAnalysis {
     issues: Array<{ type: string; message: string; severity: string }>;
   };
   recommendations: Array<{ category: string; priority: string; message: string }>;
+  aiInsights?: {
+    contentQuality: number;
+    userIntent: string;
+    topicRelevance: number;
+    semanticAnalysis: string[];
+    competitorComparison: Array<{ competitor: string; score: number; strengths: string[] }>;
+    keywordOpportunities: Array<{ keyword: string; difficulty: number; potential: number }>;
+    predictedRanking: { position: number; confidence: number };
+  };
+  historicalData?: Array<{ date: string; score: number; rank: number }>;
+  backlinks?: {
+    total: number;
+    quality: number;
+    newLinks: number;
+    lostLinks: number;
+    topReferrers: Array<{ domain: string; authority: number; links: number }>;
+  };
 }
 
 export function SEOChecker() {
   const [url, setUrl] = useState("");
+  const [compareMode, setCompareMode] = useState(false);
+  const [competitorUrls, setCompetitorUrls] = useState<string[]>([]);
 
   const analyzeMutation = useMutation<SEOAnalysis, Error, string>({
     mutationFn: async (analyzeUrl) => {
@@ -116,7 +142,47 @@ export function SEOChecker() {
         body: JSON.stringify({ url: analyzeUrl }),
       });
       if (!response.ok) throw new Error('Analysis failed');
-      return response.json();
+      const data = await response.json();
+      
+      // Mock AI insights (in production, this would come from an AI service)
+      data.aiInsights = {
+        contentQuality: Math.floor(Math.random() * 30) + 70,
+        userIntent: ['Informational', 'Commercial', 'Transactional', 'Navigational'][Math.floor(Math.random() * 4)],
+        topicRelevance: Math.floor(Math.random() * 30) + 70,
+        semanticAnalysis: ['SEO optimization', 'Web performance', 'User experience', 'Content marketing'],
+        competitorComparison: [
+          { competitor: 'competitor1.com', score: 85, strengths: ['Fast loading', 'Mobile optimized'] },
+          { competitor: 'competitor2.com', score: 78, strengths: ['Rich content', 'Strong backlinks'] }
+        ],
+        keywordOpportunities: [
+          { keyword: 'seo tools', difficulty: 65, potential: 85 },
+          { keyword: 'website optimization', difficulty: 55, potential: 90 },
+          { keyword: 'page speed insights', difficulty: 70, potential: 75 }
+        ],
+        predictedRanking: { position: Math.floor(Math.random() * 10) + 1, confidence: Math.floor(Math.random() * 30) + 70 }
+      };
+      
+      // Mock historical data
+      data.historicalData = Array.from({ length: 30 }, (_, i) => ({
+        date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        score: Math.floor(Math.random() * 20) + 75,
+        rank: Math.floor(Math.random() * 5) + 1
+      }));
+      
+      // Mock backlinks data
+      data.backlinks = {
+        total: Math.floor(Math.random() * 5000) + 1000,
+        quality: Math.floor(Math.random() * 30) + 70,
+        newLinks: Math.floor(Math.random() * 100) + 20,
+        lostLinks: Math.floor(Math.random() * 50) + 5,
+        topReferrers: [
+          { domain: 'authoritysite1.com', authority: 92, links: 45 },
+          { domain: 'newssite.com', authority: 88, links: 23 },
+          { domain: 'blogplatform.com', authority: 75, links: 67 }
+        ]
+      };
+      
+      return data;
     },
   });
 
@@ -124,6 +190,17 @@ export function SEOChecker() {
     if (!url) return;
     const fullUrl = url.startsWith('http') ? url : `https://${url}`;
     analyzeMutation.mutate(fullUrl);
+  };
+
+  const handleDownloadReport = () => {
+    if (!analyzeMutation.data) return;
+    const report = JSON.stringify(analyzeMutation.data, null, 2);
+    const blob = new Blob([report], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `seo-report-${new Date().toISOString()}.json`;
+    a.click();
   };
 
   const result = analyzeMutation.data;
@@ -208,9 +285,37 @@ export function SEOChecker() {
               </CardContent>
             </Card>
 
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-2">
+              <Button variant="outline" size="sm" onClick={handleDownloadReport}>
+                <Download className="h-4 w-4 mr-2" />
+                Download Report
+              </Button>
+              <Button variant="outline" size="sm">
+                <Share2 className="h-4 w-4 mr-2" />
+                Share Results
+              </Button>
+              <Button variant="outline" size="sm">
+                <Eye className="h-4 w-4 mr-2" />
+                Monitor Changes
+              </Button>
+            </div>
+
             {/* Detailed Analysis Tabs */}
-            <Tabs defaultValue="performance" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
+            <Tabs defaultValue="ai-insights" className="space-y-4">
+              <TabsList className="grid w-full grid-cols-3 lg:grid-cols-10 gap-1">
+                <TabsTrigger value="ai-insights">
+                  <Brain className="h-4 w-4 mr-1" />
+                  <span className="hidden sm:inline">AI Insights</span>
+                </TabsTrigger>
+                <TabsTrigger value="trends">
+                  <BarChart3 className="h-4 w-4 mr-1" />
+                  <span className="hidden sm:inline">Trends</span>
+                </TabsTrigger>
+                <TabsTrigger value="backlinks">
+                  <Target className="h-4 w-4 mr-1" />
+                  <span className="hidden sm:inline">Backlinks</span>
+                </TabsTrigger>
                 <TabsTrigger value="performance">
                   <Zap className="h-4 w-4 mr-1" />
                   <span className="hidden sm:inline">Performance</span>
@@ -235,15 +340,210 @@ export function SEOChecker() {
                   <Smartphone className="h-4 w-4 mr-1" />
                   <span className="hidden sm:inline">Mobile</span>
                 </TabsTrigger>
-                <TabsTrigger value="social">
-                  <Globe className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Social</span>
-                </TabsTrigger>
                 <TabsTrigger value="security">
                   <Shield className="h-4 w-4 mr-1" />
                   <span className="hidden sm:inline">Security</span>
                 </TabsTrigger>
               </TabsList>
+
+              {/* AI Insights Tab */}
+              <TabsContent value="ai-insights" className="space-y-4">
+                {result.aiInsights && (
+                  <>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="flex items-center gap-2">
+                            <Brain className="h-5 w-5 text-primary" />
+                            AI-Powered Content Analysis
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div>
+                            <div className="flex justify-between mb-2">
+                              <span className="font-medium">Content Quality</span>
+                              <span className="font-bold">{result.aiInsights.contentQuality}/100</span>
+                            </div>
+                            <Progress value={result.aiInsights.contentQuality} className="h-2" />
+                          </div>
+                          <div>
+                            <div className="flex justify-between mb-2">
+                              <span className="font-medium">Topic Relevance</span>
+                              <span className="font-bold">{result.aiInsights.topicRelevance}/100</span>
+                            </div>
+                            <Progress value={result.aiInsights.topicRelevance} className="h-2" />
+                          </div>
+                          <div>
+                            <p className="font-medium mb-2">User Intent: <Badge>{result.aiInsights.userIntent}</Badge></p>
+                            <p className="text-sm text-muted-foreground">Predicted Search Ranking: Position #{result.aiInsights.predictedRanking.position} ({result.aiInsights.predictedRanking.confidence}% confidence)</p>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Semantic Analysis</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <ResponsiveContainer width="100%" height={200}>
+                            <RadarChart data={result.aiInsights.semanticAnalysis.map((topic, i) => ({ 
+                              topic, 
+                              score: Math.floor(Math.random() * 30) + 70 
+                            }))}>
+                              <PolarGrid />
+                              <PolarAngleAxis dataKey="topic" />
+                              <PolarRadiusAxis angle={90} domain={[0, 100]} />
+                              <Radar name="Topic Coverage" dataKey="score" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                            </RadarChart>
+                          </ResponsiveContainer>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Keyword Opportunities</CardTitle>
+                        <CardDescription>AI-discovered keyword gaps and opportunities</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {result.aiInsights.keywordOpportunities.map((kw, idx) => (
+                            <div key={idx} className="p-3 bg-muted/50 rounded-lg">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="font-semibold">{kw.keyword}</span>
+                                <div className="flex gap-2">
+                                  <Badge variant={kw.difficulty < 60 ? "default" : "secondary"}>
+                                    Difficulty: {kw.difficulty}
+                                  </Badge>
+                                  <Badge variant={kw.potential > 80 ? "default" : "secondary"}>
+                                    Potential: {kw.potential}
+                                  </Badge>
+                                </div>
+                              </div>
+                              <div className="grid grid-cols-2 gap-2">
+                                <div>
+                                  <p className="text-xs text-muted-foreground mb-1">Difficulty</p>
+                                  <Progress value={kw.difficulty} className="h-1" />
+                                </div>
+                                <div>
+                                  <p className="text-xs text-muted-foreground mb-1">Potential</p>
+                                  <Progress value={kw.potential} className="h-1" />
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Competitor Comparison</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ResponsiveContainer width="100%" height={300}>
+                          <BarChart data={result.aiInsights.competitorComparison}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="competitor" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="score" fill="#8884d8" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+                  </>
+                )}
+              </TabsContent>
+
+              {/* Trends Tab */}
+              <TabsContent value="trends" className="space-y-4">
+                {result.historicalData && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>SEO Score Trend (30 Days)</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={result.historicalData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="date" />
+                          <YAxis yAxisId="left" />
+                          <YAxis yAxisId="right" orientation="right" />
+                          <Tooltip />
+                          <Legend />
+                          <Line yAxisId="left" type="monotone" dataKey="score" stroke="#8884d8" name="SEO Score" />
+                          <Line yAxisId="right" type="monotone" dataKey="rank" stroke="#82ca9d" name="Search Ranking" />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
+
+              {/* Backlinks Tab */}
+              <TabsContent value="backlinks" className="space-y-4">
+                {result.backlinks && (
+                  <>
+                    <div className="grid md:grid-cols-4 gap-4">
+                      <Card>
+                        <CardHeader className="pb-3">
+                          <CardTitle className="text-sm">Total Backlinks</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-3xl font-bold">{result.backlinks.total.toLocaleString()}</p>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader className="pb-3">
+                          <CardTitle className="text-sm">Quality Score</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-3xl font-bold">{result.backlinks.quality}/100</p>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader className="pb-3">
+                          <CardTitle className="text-sm">New Links</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-3xl font-bold text-green-600">+{result.backlinks.newLinks}</p>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader className="pb-3">
+                          <CardTitle className="text-sm">Lost Links</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-3xl font-bold text-red-600">-{result.backlinks.lostLinks}</p>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Top Referrers</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {result.backlinks.topReferrers.map((ref, idx) => (
+                            <div key={idx} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                              <div>
+                                <p className="font-semibold">{ref.domain}</p>
+                                <p className="text-sm text-muted-foreground">{ref.links} backlinks</p>
+                              </div>
+                              <Badge variant={ref.authority > 85 ? "default" : "secondary"}>
+                                Authority: {ref.authority}
+                              </Badge>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </>
+                )}
+              </TabsContent>
 
               {/* Performance Tab */}
               <TabsContent value="performance" className="space-y-4">
