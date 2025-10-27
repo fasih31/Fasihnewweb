@@ -21,11 +21,11 @@ export default function Home() {
   return (
     <>
       <SEOHead
-        title="Fasih ur Rehman | FinTech Product Manager & AI Expert"
-        description="Expert Product Manager with 9+ years in FinTech, AI & EdTech. Specializing in Islamic Finance, digital transformation, and AI-powered solutions."
-        keywords="Fasih ur Rehman, Product Manager, FinTech, AI, Web3, EdTech, Islamic Finance, Dubai"
-        canonicalUrl="https://fasih.com.pk"
-        schema={[getPersonSchema(), getOrganizationSchema(), ...getScholarlyArticleSchema()]}
+        title="Fasih ur Rehman | Product Manager - FinTech, E-commerce, EdTech, Telecom, AI & Crypto"
+        description="Versatile Product Manager with 9+ years in FinTech, Islamic Finance, Shariah E-commerce, EdTech, DaaS, SaaS, Telecom, AI research & Crypto. Delivering digital transformation across UAE, Saudi Arabia & Middle East."
+        keywords="Fasih ur Rehman, Product Manager Dubai, FinTech, Islamic Finance, E-commerce, EdTech, Telecom, DaaS, SaaS, AI, Crypto, Web3, Blockchain, Dubai UAE"
+        canonicalUrl="https://iamfasih.com"
+        schema={[getPersonSchema(), getOrganizationSchema(), getServiceSchema(), getFAQSchema(), ...getScholarlyArticleSchema()]}
       />
       <ScrollProgress />
       <Navigation />

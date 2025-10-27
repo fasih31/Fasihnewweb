@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Calendar, ExternalLink, Linkedin, Search } from "lucide-react";

@@ -17,9 +17,9 @@ interface SEOHeadProps {
 }
 
 export function SEOHead({
-  title = "Fasih ur Rehman - FinTech Product Manager | Islamic Finance & AI Expert Dubai",
-  description = "Senior FinTech Product Manager with 9+ years expertise in Shariah-compliant digital banking, BNPL, AI solutions & blockchain. PMP-certified professional driving innovation across UAE, Saudi Arabia & Middle East markets.",
-  keywords = "Fasih ur Rehman, FinTech Product Manager Dubai, Islamic Finance Expert UAE, Shariah Compliant Banking Solutions, BNPL Buy Now Pay Later Middle East, Digital Banking Innovation Dubai, AI Product Manager Saudi Arabia, PMP Certified Professional, Blockchain Web3 Development, EdTech Platform Solutions, Ijarah Islamic Leasing, Murabaha Finance Products, Salary Advance Solutions, Housing Finance UAE, Car Finance Islamic, KYC Digital Onboarding, Agile Scrum Product Management, DevOps CI CD Integration, React Native Flutter Development, Node.js Backend Architecture, Azure Cloud Solutions, Machine Learning AI Integration, AGI Artificial General Intelligence, Quantum Resistant Security, Decentralized Identity DID, RPA Automation Services, Data as a Service DaaS, E-commerce Product Design, Growth Marketing Strategy, Crypto Web3 Marketing, Payment Gateway Integration, Financial Technology Consulting, Digital Transformation Middle East, Fintech Regulatory Compliance AAOIFI, Central Bank UAE Saudi Compliance, Islamic Banking Technology, Neobank Digital Wallet, Mobile Banking App Development, API Integration Microservices, Cloud Infrastructure AWS Azure, Database PostgreSQL MongoDB, TypeScript JavaScript Expert, Full Stack Development, Product Strategy Roadmap, User Experience UX Design, Customer Journey Optimization, Conversion Rate Optimization, A B Testing Analytics, Data Driven Decision Making, Stakeholder Management, Cross Functional Team Leadership, Technical Product Owner, Business Analysis Requirements, Market Research Competitive Analysis, Go To Market Strategy, Product Launch Management, Feature Prioritization, Risk Management Mitigation, Security Privacy Compliance, GDPR Data Protection, Cybersecurity Best Practices, Penetration Testing QA, Performance Optimization, Scalability Architecture, High Availability Systems, Disaster Recovery Planning, Business Continuity, Innovation Digital Strategy, Emerging Technology Trends, AI Ethics Governance, Sustainable Finance ESG, Financial Inclusion, Customer Acquisition Retention, Revenue Growth Strategies, Cost Optimization, ROI Measurement, KPI Metrics Tracking, Dashboard Reporting Analytics, Predictive Analytics Forecasting, Natural Language Processing NLP, Computer Vision Applications, Deep Learning Neural Networks, TensorFlow PyTorch Frameworks, Open Source Contribution, IEEE Research Publications, Technical Writing Documentation, Presentation Public Speaking, Workshop Training Facilitation, Mentorship Coaching, Remote Team Management, Distributed Systems, Asynchronous Communication, Collaboration Tools, Project Planning Execution, Budget Management, Vendor Management, Contract Negotiation, Partnership Development, Ecosystem Building, Community Engagement, Thought Leadership, Innovation Labs R&D, Proof of Concept POC, Minimum Viable Product MVP, Lean Startup Methodology, Design Thinking, Human Centered Design, Accessibility WCAG Standards, Internationalization i18n, Localization Arabic English, Multi Currency Support, Cross Border Payments, Remittance Solutions, Foreign Exchange FX, Trading Platform Development, Investment Portfolio Management, Wealth Management Digital Advisory, Robo Advisory Services, Personal Finance Management PFM, Budgeting Tools, Expense Tracking, Credit Scoring Alternative Data, Fraud Detection Prevention, Anti Money Laundering AML, Know Your Customer KYC, Identity Verification, Biometric Authentication, Two Factor Authentication 2FA, Passwordless Login, Single Sign On SSO, OAuth OpenID Connect, API Security Token Management, Encryption Data Security, Blockchain Smart Contracts, DeFi Decentralized Finance, NFT Digital Assets, Tokenization Asset Management, Cryptocurrency Exchange, Stablecoin Development, Layer 2 Scaling Solutions, Consensus Mechanisms, Distributed Ledger Technology DLT, Supply Chain Finance, Trade Finance Solutions, Invoice Factoring, Working Capital Management, Cash Flow Optimization, Treasury Management, Risk Analytics, Credit Risk Assessment, Market Risk Management, Operational Risk Controls, Compliance Monitoring Reporting, Audit Trail Logging, Regulatory Technology RegTech, InsurTech Insurance Technology, PropTech Real Estate Technology, HealthTech Medical Finance, Embedded Finance, Banking as a Service BaaS, Platform as a Service PaaS, Software as a Service SaaS, Infrastructure as Code IaC, Continuous Integration Deployment, Test Automation Framework, Code Review Best Practices, Version Control Git GitHub, Agile Ceremonies Sprint Planning, Backlog Grooming Refinement, Daily Standup Retrospective, Kanban Board Management, Jira Confluence Tools, Slack Microsoft Teams, Documentation Knowledge Base, API Documentation Swagger, Technical Specifications, Architecture Decision Records, System Design Patterns, Microservices Architecture, Event Driven Architecture, RESTful API GraphQL, WebSocket Real Time, Server Sent Events SSE, Message Queue RabbitMQ Kafka, Redis Caching Layer, CDN Content Delivery, Load Balancing Auto Scaling, Container Orchestration Kubernetes, Docker Containerization, Serverless Lambda Functions, Edge Computing, Progressive Web Apps PWA, Mobile First Responsive Design, Cross Platform Development, Native Mobile iOS Android, Hybrid App Frameworks, React Vue Angular, State Management Redux MobX, Component Libraries Design Systems, Storybook Component Documentation, Unit Testing Integration Testing, End to End Testing Cypress, Performance Testing Load Testing, Security Testing Penetration, Accessibility Testing ARIA, Browser Compatibility Testing, Mobile Device Testing, Analytics Implementation Google Analytics, Tag Manager Data Layer, Conversion Tracking Pixels, Heatmap Session Recording, User Feedback Surveys, Customer Support Helpdesk, Live Chat Chatbot Integration, Voice of Customer VoC, Net Promoter Score NPS, Customer Satisfaction CSAT, Customer Effort Score CES, Retention Cohort Analysis, Churn Prediction Prevention, Lifetime Value LTV Calculation, Customer Acquisition Cost CAC, Marketing Attribution Modeling, SEO Search Engine Optimization, Content Marketing Strategy, Social Media Marketing, Email Marketing Automation, CRM Customer Relationship Management, Sales Funnel Optimization, Lead Generation Nurturing, Account Based Marketing ABM, Influencer Partnership Management, Brand Positioning Strategy, Corporate Communications, Crisis Management, Reputation Management, LinkedIn Thought Leadership, Twitter Social Engagement, Medium Blog Publishing, YouTube Video Content, Podcast Guest Speaking, Webinar Hosting, Conference Speaking, Networking Events, Professional Development, Continuous Learning, Online Courses Certifications, Industry Associations Membership, Volunteer Community Service, Diversity Equity Inclusion, Ethical AI Responsible Innovation, Privacy by Design, Transparency Accountability, Sustainability Green Technology, Social Impact Measurement, Corporate Social Responsibility CSR, VirtualIEC Founder CEO, Labs360 Co-founder CMO, Etisalat Senior Project Manager, Digital Transformation Leader, Product Innovation Expert, Technology Evangelist, Strategic Advisor Consultant, Board Member Advisory, Startup Mentor Angel Investor, Entrepreneurship Ecosystem Builder, Dubai UAE Based, Saudi Arabia Market Expert, Middle East MENA Focus, GCC Gulf Cooperation Council, Global International Experience, Multilingual Arabic English, Cultural Intelligence Awareness, Remote First Distributed Teams, Hybrid Work Model, Work Life Balance, Growth Mindset Adaptability, Problem Solving Critical Thinking, Creative Innovation, Results Driven Achievement Oriented, Stakeholder Influence, Executive Presence, Strategic Vision, Long Term Planning, Short Term Execution, Metrics Driven Data Informed, Customer Centric User Focused, Business Value Delivery, Technical Excellence, Quality Assurance Standards, Process Improvement Optimization, Change Management Adoption, Training Development Programs, Knowledge Sharing Culture, Documentation Best Practices, Lessons Learned Retrospectives, Continuous Improvement Kaizen, Six Sigma Lean Principles, ITIL Service Management, PRINCE2 Project Management, SAFe Scaled Agile Framework, OKR Objectives Key Results, SMART Goals Setting, Performance Management Reviews, Career Development Pathways, Talent Acquisition Hiring, Onboarding Integration, Team Building Culture, Motivation Engagement, Recognition Rewards, Compensation Benefits, Work Environment Satisfaction, Employee Experience EX, Organizational Design Structure, Reporting Lines Governance, Decision Making Authority, Escalation Procedures, Issue Resolution, Conflict Management Mediation, Negotiation Compromise, Win Win Solutions, Partnership Collaboration, Vendor Selection Procurement, Contract Management SLA, Service Level Agreements, Quality Metrics Monitoring, Incident Management Response, Problem Management Root Cause, Change Request Process, Release Management Deployment, Configuration Management Database CMDB, Asset Management Inventory, License Management Compliance, Cost Control Optimization, Budget Forecasting Planning, Financial Reporting Analysis, Profitability Revenue Growth, Market Share Expansion, Competitive Advantage Differentiation, Value Proposition Unique Selling Point, Target Market Segmentation, Buyer Persona Development, Customer Journey Mapping, Touchpoint Optimization, Omnichannel Experience, Personalization Customization, Recommendation Engines, Predictive Modeling, Data Science Analytics, Business Intelligence Dashboards, Reporting Visualization Tableau Power BI, SQL Database Queries, Python R Programming, Statistical Analysis, Hypothesis Testing, Experimentation Framework, Feature Flags Testing, Gradual Rollout Deployment, Blue Green Deployment, Canary Release Strategy, Rollback Procedures, Monitoring Observability, Logging Tracing Metrics, APM Application Performance, Infrastructure Monitoring, Alert Management Incident, On Call Rotation Support, Post Mortem Analysis, Blameless Culture Learning, Documentation Runbooks Playbooks, Disaster Recovery Testing, Business Continuity Planning, Backup Restore Procedures, Data Retention Policies, Archive Strategy Compliance, GDPR CCPA Regulations, Privacy Shield Framework, Data Sovereignty Residency, Cross Border Data Transfer, Encryption at Rest Transit, Key Management HSM, Certificate Management PKI, Secure Coding Practices, OWASP Top 10 Vulnerabilities, Code Scanning SAST DAST, Dependency Management Patching, Vulnerability Management Remediation, Threat Modeling Analysis, Security Architecture Review, Compliance Audit Preparation, SOC 2 ISO 27001 PCI DSS, Industry Standards Frameworks, Best Practices Guidelines, Reference Architecture Patterns, Technology Radar Evaluation, Build vs Buy Decisions, Proof of Value POV, Pilot Testing Validation, Phased Implementation Approach, Stakeholder Communication Plan, Change Management Strategy, Training Materials Development, User Documentation Guides, Video Tutorials Walkthroughs, FAQ Knowledge Base, Support Ticket System, Escalation Matrix Procedures, Customer Success Management, Adoption Metrics Tracking, Usage Analytics Insights, Feature Adoption Rates, User Engagement Metrics, Retention Curves Cohorts, Activation Funnel Optimization, Onboarding Experience Design, First Time User Experience FTUE, Time to Value Reduction, Aha Moment Discovery, Habit Formation Triggers, Notification Strategy Push Email SMS, In App Messaging Tooltips, Contextual Help Guidance, Progressive Disclosure Complexity, Information Architecture IA, Navigation Design Patterns, Search Functionality Filters, Sorting Ordering Options, Pagination Infinite Scroll, Lazy Loading Performance, Image Optimization Compression, Video Streaming Adaptive Bitrate, Audio Podcast Integration, File Upload Download Management, Form Design Validation, Error Handling Messages, Success Confirmation Feedback, Loading States Skeletons, Empty States Illustrations, 404 Error Pages, Maintenance Mode Pages, Offline Mode Support, Service Worker PWA, Push Notification API, Background Sync, IndexedDB Local Storage, Session Storage Cookies, OAuth Social Login, Email Verification Workflows, Password Reset Recovery, Account Management Settings, Profile Customization Preferences, Privacy Controls Permissions, Notification Preferences Center, Language Selection Switching, Currency Selection Display, Timezone Handling Conversion, Date Time Formatting Localization, Number Formatting Internationalization, RTL Right to Left Support, Accessibility Screen Readers, Keyboard Navigation Focus, Color Contrast Ratios, Text Alternatives Images, Semantic HTML Structure, ARIA Attributes Labels, Skip Links Navigation, Focus Management Modals, Form Labels Instructions, Error Announcements, Status Messages Alerts, Live Regions Updates, Mobile Touch Targets, Gesture Support Swipe, Haptic Feedback Vibration, Dark Mode Light Mode, System Theme Detection, Custom Theme Editor, Brand Guidelines Consistency, Design Tokens Variables, Component Library Maintenance, Version Control Changelog, Deprecation Strategy Migration, Breaking Changes Communication, Backward Compatibility Support, Feature Toggles Configuration, Environment Management Dev Staging Prod, Configuration Management Secrets, Infrastructure Provisioning Terraform, Cloud Cost Optimization FinOps, Reserved Instances Savings Plans, Spot Instances Preemptible, Auto Scaling Policies Rules, Resource Tagging Organization, Cost Allocation Reporting, Budget Alerts Notifications, Resource Utilization Optimization, Right Sizing Recommendations, Performance Benchmarking Testing, Capacity Planning Forecasting, Traffic Pattern Analysis, Peak Load Management, Geographic Distribution Multi Region, CDN Edge Locations, DNS Management Route 53, SSL TLS Certificate Management, WAF Web Application Firewall, DDoS Protection CloudFlare, Rate Limiting Throttling, IP Whitelisting Blacklisting, Geo Blocking Restrictions, Bot Detection Prevention, CAPTCHA reCAPTCHA Integration, Fraud Scoring Risk Rules, Transaction Monitoring Alerts, Suspicious Activity Detection, Customer Verification Enhanced Due Diligence, Sanctions Screening PEP Checks, Adverse Media Screening, Document Verification OCR, Liveness Detection Biometrics, Face Recognition Matching, Voice Biometrics Authentication, Behavioral Biometrics Analytics, Device Fingerprinting Tracking, Location Based Services GPS, Geofencing Proximity Marketing, Beacon Technology Integration, QR Code Generation Scanning, NFC Near Field Communication, Contactless Payments Tap to Pay, Digital Wallet Integration Apple Pay Google Pay, Payment Method Tokenization, PCI Compliance Level 1, Card Not Present CNP Transactions, 3D Secure Authentication, Strong Customer Authentication SCA, Open Banking PSD2 Compliance, Account Aggregation Data Sharing, Consent Management Revocation, API Rate Limiting Quotas, Developer Portal Documentation, SDK Library Maintenance, Code Samples Examples, Postman Collections Testing, Webhook Event Notifications, Retry Logic Idempotency, API Versioning Strategy, Backward Compatible Changes, Sunset Deprecated Endpoints, Migration Guides Documentation, Client Library Updates, Status Page Uptime Monitoring, Incident Communication Transparency, SLA Credits Compensation, Service Credits Policy, Terms of Service Agreement, Privacy Policy GDPR Compliant, Cookie Consent Banner, Data Processing Agreement DPA, Subprocessor Transparency List, Security Whitepaper Documentation, Compliance Certifications Badges, Trust Center Transparency Reports, Bug Bounty Program Security Researchers, Responsible Disclosure Policy, Coordinated Vulnerability Disclosure CVD, Patch Management Timeline, Security Advisory Notifications, Third Party Security Assessments, Vendor Risk Management Due Diligence, Supply Chain Security Software Bill of Materials SBOM, Open Source License Compliance, Dependency Vulnerability Scanning, Container Image Scanning, Infrastructure as Code Security, Cloud Security Posture Management CSPM, Identity Access Management IAM, Role Based Access Control RBAC, Attribute Based Access Control ABAC, Just in Time Access JIT, Privileged Access Management PAM, Multi Factor Authentication MFA, Single Sign On Federation, SAML OpenID Connect, Directory Services LDAP Active Directory, User Provisioning Deprovisioning, Access Review Certification, Segregation of Duties SOD, Least Privilege Principle, Zero Trust Security Model, Network Segmentation Microsegmentation, Virtual Private Cloud VPC, Security Groups Network ACLs, Firewall Rules Policies, Intrusion Detection Prevention IDS IPS, Security Information Event Management SIEM, Log Aggregation Centralization, Threat Intelligence Feeds, Indicators of Compromise IOC, Security Orchestration Automation Response SOAR, Incident Response Playbooks, Forensics Investigation Tools, Evidence Collection Preservation, Chain of Custody Documentation, Legal Hold eDiscovery, Compliance Reporting Dashboards, Audit Trail Immutable Logs, Blockchain Audit Ledger, Smart Contract Audit Security, Code Review Security Focus, Static Application Security Testing, Dynamic Application Security Testing, Interactive Application Security Testing IAST, Runtime Application Self Protection RASP, Software Composition Analysis SCA, Infrastructure Vulnerability Scanning, Penetration Testing Ethical Hacking, Red Team Blue Team Exercises, Security Awareness Training Phishing Simulations, Social Engineering Defense, Password Hygiene Best Practices, Security Champions Program, DevSecOps Integration Culture, Shift Left Security Early Testing, Security as Code Automation, Policy as Code Enforcement, Compliance as Code Validation, Security Metrics Reporting KPIs, Mean Time to Detect MTTD, Mean Time to Respond MTTR, Mean Time to Remediate, Security Debt Management Prioritization, Risk Based Vulnerability Management, Threat Modeling STRIDE DREAD, Attack Surface Reduction, Defense in Depth Layered Security, Security by Design Architecture, Privacy by Design GDPR Principles, Data Minimization Collection, Purpose Limitation Usage, Storage Limitation Retention, Accuracy Data Quality, Integrity Confidentiality Security, Availability Resilience Business Continuity, Accountability Governance Oversight",
+  title = "Fasih ur Rehman - FinTech PM | Islamic Finance, E-commerce, EdTech, Telecom & AI Expert",
+  description = "Senior Product Manager with 9+ years expertise in FinTech, Islamic Finance, Shariah-compliant E-commerce, EdTech platforms, DaaS, SaaS, Telecom solutions, AI/Crypto research & Web3. PMP-certified driving digital transformation across UAE, Saudi Arabia & Middle East.",
+  keywords = "Fasih ur Rehman, FinTech Product Manager Dubai UAE, Islamic Finance Expert Saudi Arabia, Shariah Compliant E-commerce Solutions, Islamic Banking Digital Transformation, BNPL Buy Now Pay Later Middle East, Halal E-commerce Platform Development, EdTech Education Technology Solutions, Learning Management System LMS, DaaS Device as a Service, SaaS Software as a Service, Telecom Telecommunications Product Management, AI Artificial Intelligence Research, Crypto Cryptocurrency Blockchain, Web3 Decentralized Applications, Digital Banking Innovation Dubai, AI Product Manager Saudi Arabia, PMP Certified Professional, Blockchain Web3 Development, EdTech Platform Solutions, Islamic Leasing Ijarah, Murabaha Finance Products, Salary Advance Solutions, Housing Finance UAE, Car Finance Islamic, E-commerce Product Design, Shopify WooCommerce Expert, Payment Gateway Integration, Multi-vendor Marketplace, Subscription E-commerce Models, Digital Wallet Solutions, Mobile Commerce mCommerce, Conversion Rate Optimization CRO, Shopping Cart Optimization, Product Recommendation Engines, Inventory Management Systems, Order Fulfillment Logistics, Dropshipping Solutions, Affiliate Marketing Programs, Customer Retention Strategies, Personalization AI Driven, Omnichannel Retail Strategy, Point of Sale POS Integration, Augmented Reality AR Shopping, Virtual Try-On Technology, Voice Commerce Alexa Google, Social Commerce Instagram Facebook, Live Shopping Streaming, Influencer E-commerce Partnerships, Customer Reviews Management, Trust Badges Security Seals, Abandoned Cart Recovery, Email Marketing Automation, SMS Marketing Campaigns, Push Notification Strategy, Loyalty Programs Rewards, Referral Marketing Systems, Flash Sales Limited Offers, Dynamic Pricing Strategies, Cross-selling Upselling Tactics, Product Bundling Strategies, Gift Cards Vouchers Management, Wishlist Favorites Features, Size Guides Fit Finders, Shipping Cost Calculator, Return Policy Management, Customer Service Chatbots, Live Chat Support, FAQ Knowledge Base, Product Comparison Tools, Advanced Search Filters, Faceted Navigation, Category Management, Product Catalog Design, SEO Optimized Listings, Rich Snippets Schema Markup, Google Shopping Feed, Facebook Pixel Integration, Google Analytics E-commerce, Heatmap User Behavior, A/B Testing Experimentation, Landing Page Optimization, Mobile App Development, Progressive Web App PWA, App Store Optimization ASO, In-App Purchases, Mobile Wallet Integration, QR Code Payments, Contactless Payment Solutions, Buy Online Pickup in Store BOPIS, Ship from Store Fulfillment, Same-Day Delivery Services, Subscription Box Services, Membership E-commerce, B2B E-commerce Portals, Wholesale Trading Platforms, White Label Solutions, Multi-language Support, Multi-currency Payment, International Shipping, Cross-Border E-commerce, Tax Compliance VAT GST, GDPR Privacy Compliance, PCI DSS Security Standards, SSL Certificate HTTPS, Two-Factor Authentication 2FA, Fraud Detection Prevention, Chargeback Management, Payment Reconciliation, Financial Reporting Dashboard, Supplier Management Portal, Vendor Performance Metrics, Procurement Automation, Contract Management System, Educational Technology EdTech, Online Learning Platforms, Virtual Classroom Software, Student Information Systems SIS, Course Management Systems, Assessment Testing Tools, Gamification Learning, Adaptive Learning AI, Microlearning Platforms, Corporate Training LMS, Compliance Training Systems, Certification Programs, Video Conferencing Integration, Screen Sharing Collaboration, Interactive Whiteboard Tools, Discussion Forums Community, Assignment Submission Grading, Progress Tracking Analytics, Learning Analytics Dashboard, Student Engagement Metrics, Attendance Management, Grade Book Systems, Parent Portal Communication, Mobile Learning Apps, Offline Learning Support, SCORM LTI Standards, Content Authoring Tools, Question Bank Management, Automated Grading Systems, Plagiarism Detection, Proctoring Solutions Remote, Certificate Generation, Badge Credential Systems, Learning Path Recommendations, Personalized Learning Plans, Skill Gap Analysis, Career Development Tools, Job Placement Services, Alumni Network Platform, Telecom Product Management, Network Infrastructure Solutions, 5G Technology Implementation, IoT Internet of Things, M2M Machine to Machine, VoIP Voice over IP, Unified Communications UC, Contact Center Solutions, Call Center Software, IVR Interactive Voice Response, SMS Gateway Services, Messaging Platforms WhatsApp, Mobile Virtual Network Operator MVNO, eSIM Digital SIM, Mobile Device Management MDM, Network Security Solutions, SD-WAN Software Defined WAN, Cloud Communications, CPaaS Communication Platform, API Integration Services, Number Portability Management, Billing Rating Systems, Revenue Assurance, Fraud Management Telecom, Customer Relationship Management CRM, Order Management Provisioning, Service Activation Automation, Network Monitoring Tools, Quality of Service QoS, Service Level Agreement SLA, Disaster Recovery Planning, Business Continuity Telecom, Regulatory Compliance Telecom, Spectrum Management, License Management, Interconnection Agreements, Roaming Agreements, Number Management, Emergency Services E911, Caller ID Management, Call Recording Compliance, Data Privacy Regulations, Device as a Service DaaS, Hardware as a Service HaaS, Endpoint Management, Asset Lifecycle Management, Device Procurement, Configuration Management, Remote Monitoring Management RMM, Patch Management Automation, Antivirus Endpoint Protection, Data Backup Recovery, Cloud Storage Solutions, Desktop Virtualization VDI, Application Virtualization, Zero Trust Security, Identity Access Management IAM, Single Sign-On SSO, Multi-Factor Authentication MFA, Privileged Access Management PAM, Security Operations Center SOC, Incident Response Management, Threat Intelligence Platform, Vulnerability Management, Compliance Automation, IT Service Management ITSM, Help Desk Ticketing, Knowledge Management System, Change Management ITIL, Problem Management, Service Catalog, Asset Discovery Inventory, Software License Optimization, Cost Allocation Chargeback, FinOps Cloud Cost Management, Cryptocurrency Trading Platforms, Blockchain Smart Contracts, DeFi Decentralized Finance, NFT Non-Fungible Tokens, Tokenization Asset Management, Crypto Wallet Development, Exchange Platform Development, Liquidity Pool Management, Yield Farming Staking, DAO Decentralized Autonomous Organizations, Web3 Identity Solutions, Metaverse Virtual Worlds, Play-to-Earn Gaming, GameFi Blockchain Gaming, Social Tokens Creator Economy, Layer 2 Scaling Solutions, Ethereum Polygon Solana, Binance Smart Chain BSC, Cross-Chain Bridges, Consensus Mechanisms Proof of Stake, Mining Pool Management, Crypto Payment Gateway, Merchant Services Crypto, Regulatory Compliance Crypto, AML KYC Crypto, Tax Reporting Crypto, Portfolio Management Crypto, Trading Bots Algorithms, Technical Analysis Indicators, Market Making Strategies, Arbitrage Opportunities, Derivatives Futures Options, Margin Trading Leverage, Stop Loss Take Profit, Risk Management Trading, AI Machine Learning, Natural Language Processing NLP, Computer Vision Recognition, Deep Learning Neural Networks, Reinforcement Learning, Generative AI ChatGPT, Large Language Models LLM, AI Model Training Deployment, MLOps Machine Learning Operations, Data Science Analytics, Predictive Analytics Forecasting, Sentiment Analysis, Recommendation Systems, Anomaly Detection, Time Series Analysis, Statistical Modeling, Python R Programming, TensorFlow PyTorch Keras, Scikit-learn XGBoost, Data Preprocessing Cleaning, Feature Engineering Selection, Model Evaluation Metrics, Hyperparameter Tuning, Cross-Validation Techniques, Ensemble Methods, AutoML Automated ML, Explainable AI XAI, AI Ethics Bias Mitigation, Responsible AI Governance, Data Privacy AI, Federated Learning, Edge AI Computing, AI Hardware GPU TPU, AI Research Publications IEEE, KYC Digital Onboarding, Agile Scrum Product Management, DevOps CI CD Integration, React Native Flutter Development, Node.js Backend Architecture, Azure AWS Cloud Solutions, Docker Kubernetes Containerization, Microservices Architecture, API Development RESTful GraphQL, Database Design PostgreSQL MongoDB, Redis Caching Optimization, Message Queue Kafka RabbitMQ, Serverless Lambda Functions, Infrastructure as Code Terraform, Monitoring Observability Grafana, Log Management ELK Stack, Performance Testing JMeter, Security Testing Penetration, Code Review Best Practices, Version Control Git GitHub, Agile Ceremonies Sprint Planning, Kanban Scrum Methodologies, Jira Confluence Atlassian, Product Roadmap Strategy, Stakeholder Management, User Experience UX Design, User Interface UI Design, Design Thinking Workshops, Customer Journey Mapping, Personas User Stories, Wireframing Prototyping Figma, Usability Testing Research, Accessibility WCAG Compliance, Internationalization i18n, Localization Arabic English, Growth Marketing Strategy, SEO Search Engine Optimization, Content Marketing Strategy, Social Media Marketing, LinkedIn Thought Leadership, Twitter Engagement, Medium Blog Publishing, YouTube Video Content, Influencer Marketing, Brand Positioning Strategy, Corporate Communications, Crisis Management PR, Reputation Management Online, Customer Acquisition CAC, Lifetime Value LTV, Retention Cohort Analysis, Churn Prediction Prevention, Revenue Growth Strategies, Cost Optimization Efficiency, ROI Measurement KPIs, OKR Objectives Key Results, Performance Management Reviews, Team Leadership Management, Remote Team Collaboration, Cross-Functional Coordination, Vendor Management Procurement, Contract Negotiation, Partnership Development, Ecosystem Building, Community Engagement, Thought Leadership, Innovation Labs R&D, Proof of Concept POC, Minimum Viable Product MVP, Lean Startup Methodology, VirtualIEC Founder CEO, Labs360 Co-founder CMO, Etisalat Senior Project Manager, Digital Transformation Leader, Product Innovation Expert, Technology Evangelist, Strategic Advisor Consultant, Startup Mentor Investor, Entrepreneurship Ecosystem Builder, Dubai UAE Based Professional, Saudi Arabia Market Expert, Middle East MENA Region, GCC Gulf Cooperation Council, Global International Experience, Multilingual Arabic English, Cultural Intelligence Awareness, Professional Certifications PMP, IEEE Member Researcher, Published Research Papers, Conference Speaker, Workshop Facilitator, Mentorship Coaching Programs",
   ogImage = "/og-image.png",
   canonicalUrl,
   article = false,
@@ -150,8 +150,8 @@ export const getPersonSchema = () => ({
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Fasih ur Rehman",
-  jobTitle: "FinTech Product Manager & Islamic Finance Advisor",
-  description: "Expert Product Manager with 9+ years in FinTech, AI & EdTech. Specializing in Islamic Finance, digital transformation, and AI-powered solutions.",
+  jobTitle: "Senior Product Manager - FinTech, E-commerce, EdTech, Telecom, AI & Crypto",
+  description: "Versatile Product Manager with 9+ years delivering innovative solutions across FinTech, Islamic Finance, Shariah-compliant E-commerce, EdTech platforms, DaaS, SaaS, Telecom, AI research, and Crypto/Web3. Driving digital transformation and business growth across Middle East and global markets.",
   url: typeof window !== "undefined" ? window.location.origin : "",
   image: "/og-image.png",
   sameAs: [
@@ -170,37 +170,67 @@ export const getPersonSchema = () => ({
   },
   knowsAbout: [
     "FinTech Product Management",
-    "Islamic Finance",
-    "Shariah-Compliant Banking",
+    "Islamic Finance & Banking",
+    "Shariah-Compliant Solutions",
+    "E-commerce Platform Development",
+    "Halal E-commerce Marketplaces",
+    "Digital Commerce Strategy",
+    "Multi-vendor Marketplaces",
+    "Payment Gateway Integration",
+    "Shopping Cart Optimization",
+    "EdTech Education Technology",
+    "Learning Management Systems (LMS)",
+    "Virtual Classroom Platforms",
+    "Online Course Development",
+    "Student Engagement Tools",
+    "Educational Assessment Systems",
+    "DaaS (Device as a Service)",
+    "SaaS (Software as a Service)",
+    "Telecom Product Management",
+    "Telecommunications Solutions",
+    "5G Network Technology",
+    "VoIP & Cloud Communications",
+    "Mobile Network Solutions",
+    "IoT & M2M Connectivity",
     "AI & Machine Learning",
-    "Web3 & Blockchain",
-    "EdTech Solutions",
-    "E-commerce Design",
+    "Artificial Intelligence Research",
+    "Natural Language Processing (NLP)",
+    "Computer Vision",
+    "Deep Learning & Neural Networks",
+    "Generative AI & LLMs",
+    "Cryptocurrency & Blockchain",
+    "Web3 Decentralized Applications",
+    "DeFi (Decentralized Finance)",
+    "NFT & Digital Assets",
+    "Smart Contract Development",
+    "Crypto Trading Platforms",
+    "Buy Now Pay Later (BNPL)",
+    "Digital Banking Solutions",
+    "Mobile Banking Apps",
+    "Salary Advance Products",
+    "Ijarah (Islamic Leasing)",
+    "Murabaha Financing",
+    "Housing & Car Finance",
+    "KYC & Digital Onboarding",
     "Project Management Professional (PMP)",
     "Agile & Scrum Methodologies",
     "DevOps & CI/CD",
-    "Buy Now Pay Later (BNPL)",
-    "Salary Advance Solutions",
-    "Ijarah (Islamic Leasing)",
-    "Housing Finance",
-    "Car Finance",
-    "KYC & Digital Onboarding",
-    "AGI Research",
-    "Blockchain Architecture",
-    "Quantum-Resistant Design",
-    "AI-as-a-Service (AIaaS)",
-    "RPA-as-a-Service (RPAaaS)",
-    "Decentralized Identity (DID)",
     "React & Flutter Development",
     "Node.js Backend Systems",
-    "Azure DevOps",
-    "Docker & Cloud Deployment",
-    "Digital Marketing & SEO",
-    "Web3 Growth Marketing",
-    "Crypto Marketing",
-    "AI Ethics & Governance",
-    "FinTech Security & Privacy",
-    "Data Protection & Compliance"
+    "Azure & AWS Cloud Solutions",
+    "Docker & Kubernetes",
+    "Microservices Architecture",
+    "API Development & Integration",
+    "Database Design & Management",
+    "Security & Compliance",
+    "Data Privacy & Protection",
+    "Digital Transformation",
+    "Product Strategy & Roadmapping",
+    "User Experience (UX) Design",
+    "Growth Marketing & SEO",
+    "Stakeholder Management",
+    "Team Leadership",
+    "Innovation & R&D"
   ],
   hasCredential: [
     {
@@ -284,40 +314,80 @@ export const getProjectSchema = (project: { title: string; description: string; 
 export const getServiceSchema = () => ({
   "@context": "https://schema.org",
   "@type": "Service",
-  serviceType: "Product Management & Development",
+  serviceType: "Product Management & Digital Solutions",
   provider: {
     "@type": "Person",
     name: "Fasih ur Rehman",
-    jobTitle: "FinTech Product Manager",
-    url: typeof window !== "undefined" ? window.location.origin : "https://fasih.com.pk"
+    jobTitle: "Senior Product Manager - FinTech, E-commerce, EdTech, Telecom & AI",
+    url: typeof window !== "undefined" ? window.location.origin : "https://iamfasih.com"
   },
   areaServed: ["UAE", "Saudi Arabia", "Middle East", "Global"],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Product Management Services",
+    name: "Comprehensive Product Management Services",
     itemListElement: [
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "FinTech Product Development",
-          description: "Islamic finance solutions, BNPL, digital banking"
+          name: "FinTech & Islamic Finance Solutions",
+          description: "Digital banking, BNPL, Shariah-compliant products, salary advance, housing & car finance"
         }
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "AI & AGI Integration",
-          description: "Machine learning solutions and AI-powered automation"
+          name: "E-commerce Platform Development",
+          description: "Halal marketplaces, multi-vendor platforms, payment gateways, conversion optimization"
         }
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "EdTech Solutions",
-          description: "Learning management systems and educational platforms"
+          name: "EdTech Learning Platforms",
+          description: "Learning management systems, virtual classrooms, student engagement tools"
+        }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "DaaS & SaaS Solutions",
+          description: "Device management, software services, cloud infrastructure, subscription models"
+        }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Telecom Product Management",
+          description: "5G solutions, VoIP, cloud communications, IoT connectivity, mobile networks"
+        }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "AI & Machine Learning Integration",
+          description: "NLP, computer vision, generative AI, predictive analytics, ML automation"
+        }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Crypto & Web3 Development",
+          description: "Blockchain platforms, DeFi protocols, NFT marketplaces, smart contracts, crypto trading"
+        }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Research & Innovation",
+          description: "AI ethics research, FinTech security, emerging technology consulting"
         }
       }
     ]
@@ -416,42 +486,50 @@ export const getFAQSchema = () => ({
   mainEntity: [
     {
       "@type": "Question",
-      name: "What FinTech services does Fasih ur Rehman specialize in?",
+      name: "What industries and domains does Fasih ur Rehman specialize in?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Fasih specializes in Shariah-compliant financial technology solutions including BNPL (Buy Now Pay Later) systems, digital banking platforms, Islamic leasing (Ijarah), salary advance solutions, and housing finance products tailored for Middle Eastern markets."
+        text: "Fasih specializes in multiple domains including FinTech, Islamic Finance, E-commerce (especially Shariah-compliant marketplaces), EdTech learning platforms, DaaS (Device as a Service), SaaS solutions, Telecommunications, AI research, and Cryptocurrency/Web3 development. He delivers comprehensive product management and development services across all these sectors."
       }
     },
     {
       "@type": "Question",
-      name: "What is Fasih ur Rehman's experience in Islamic Finance?",
+      name: "What FinTech and Islamic Finance solutions does Fasih offer?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "With 9+ years of experience, Fasih has led multiple Islamic finance product initiatives across UAE and Saudi Arabia, developing Shariah-compliant BNPL solutions, digital banking platforms, and ensuring full regulatory compliance with AAOIFI and local central bank guidelines."
+        text: "Fasih develops Shariah-compliant financial products including BNPL (Buy Now Pay Later), digital banking platforms, Islamic leasing (Ijarah), Murabaha financing, salary advance solutions, housing finance, car finance, KYC/digital onboarding systems, and mobile banking applications - all compliant with AAOIFI and regional central bank regulations."
       }
     },
     {
       "@type": "Question",
-      name: "Which industries does Fasih ur Rehman serve?",
+      name: "What E-commerce expertise does Fasih ur Rehman have?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Fasih serves multiple industries including FinTech, EdTech, eCommerce, Web3, AI/AGI, and Data-as-a-Service (DaaS). Primary focus areas are financial services, educational technology platforms, and AI-powered business solutions across Middle East and global markets."
+        text: "Fasih specializes in building Halal e-commerce platforms, multi-vendor marketplaces, payment gateway integrations, shopping cart optimization, product recommendation engines, conversion rate optimization, mobile commerce solutions, and Shariah-compliant payment systems for online retail businesses."
       }
     },
     {
       "@type": "Question",
-      name: "What certifications and credentials does Fasih hold?",
+      name: "What EdTech and learning solutions does Fasih provide?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Fasih is a PMP (Project Management Professional) certified product manager with extensive training in Agile/Scrum methodologies, DevOps practices, and published research in AI ethics and FinTech security through IEEE and MDPI publications."
+        text: "Fasih develops comprehensive EdTech solutions including Learning Management Systems (LMS), virtual classroom platforms, student information systems, online course management, assessment tools, gamification features, mobile learning apps, and AI-powered adaptive learning platforms."
       }
     },
     {
       "@type": "Question",
-      name: "What technologies does Fasih ur Rehman work with?",
+      name: "What Telecom and DaaS services does Fasih offer?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Fasih has expertise in React, Flutter, Node.js, Azure DevOps, Docker, blockchain architecture, AI/ML frameworks, quantum-resistant security systems, and decentralized identity (DID) solutions. Technical stack includes modern cloud infrastructure and CI/CD pipelines."
+        text: "Fasih provides telecom product management including 5G solutions, VoIP/cloud communications, IoT connectivity, mobile network solutions, and Device as a Service (DaaS) offerings with endpoint management, asset lifecycle management, and cloud infrastructure services."
+      }
+    },
+    {
+      "@type": "Question",
+      name: "What AI and Crypto expertise does Fasih bring?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Fasih conducts AI research and develops machine learning solutions (NLP, computer vision, generative AI). In crypto/Web3, he builds blockchain platforms, DeFi protocols, NFT marketplaces, smart contracts, cryptocurrency trading platforms, and decentralized applications. He also publishes research on AI ethics and FinTech security."
       }
     }
   ]
