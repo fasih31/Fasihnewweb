@@ -197,6 +197,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: true,
         data: updated,
       });
+
+
+// LinkedIn Article Import
+app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, res) => {
+  try {
+    const { url } = req.body;
+    
+    if (!url || !url.includes('linkedin.com')) {
+      return res.status(400).json({ message: "Invalid LinkedIn URL" });
+    }
+
+    // Extract article ID from URL
+    const urlParts = url.split('/');
+    const articleId = urlParts[urlParts.length - 1] || urlParts[urlParts.length - 2];
+
+    // Create a placeholder article with LinkedIn URL reference
+    // Note: Actual LinkedIn scraping requires authentication and may violate TOS
+    // This is a placeholder implementation
+    const article = await storage.createArticle({
+      title: "Imported from LinkedIn",
+      slug: `linkedin-${articleId}-${Date.now()}`,
+      excerpt: "This article was imported from LinkedIn. Please edit to add full content.",
+      content: `# Imported from LinkedIn\n\nOriginal URL: ${url}\n\nPlease edit this article to add the full content from your LinkedIn post.`,
+      category: "technology",
+      authorId: req.user!.id,
+      published: false,
+      readTime: 5,
+      metaTitle: "Imported LinkedIn Article",
+      metaDescription: "Article imported from LinkedIn",
+    });
+
+    res.json({ 
+      success: true, 
+      data: article,
+      message: "Article template created. Please edit to add full content from LinkedIn."
+    });
+  } catch (error: any) {
+    console.error("LinkedIn import error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
     } catch (error: any) {
       console.error("Error updating testimonial:", error);
       res.status(500).json({

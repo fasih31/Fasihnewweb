@@ -55,6 +55,7 @@ export const articles = pgTable("articles", {
   metaDescription: text("meta_description"),
   metaKeywords: text("meta_keywords"),
   ogImage: text("og_image"),
+  tags: text("tags").array(),
   
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
