@@ -152,9 +152,9 @@ Preferred communication style: Simple, everyday language.
 - Server-side rendering not implemented (client-side SPA)
 
 **Deployment Configuration:**
-- Autoscale/serverless deployment on Replit
-- Environment variables managed through Replit Secrets
-- PostgreSQL provisioned as native Replit database
+- Autoscale/serverless deployment supported
+- Environment variables managed through secure secrets management
+- PostgreSQL database required for production
 
 ### Content Management
 

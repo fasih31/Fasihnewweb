@@ -6,6 +6,7 @@ import { SkillsSection } from "@/components/skills-section";
 import { SolutionsSection } from "@/components/solutions-section";
 import { PortfolioSection } from "@/components/portfolio-section";
 import { LinkedInArticlesSection } from "@/components/linkedin-articles-section";
+import { LinkedInActivitySection } from "@/components/linkedin-activity-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { FAQSection } from "@/components/faq-section";
 import { NewsletterForm } from "@/components/newsletter-form";
@@ -38,6 +39,7 @@ export default function Home() {
         <SolutionsSection />
         <PortfolioSection />
         <LinkedInArticlesSection />
+        <LinkedInActivitySection />
         <TestimonialsSection />
         <FAQSection />
         <section className="py-16 md:py-24">

@@ -18,7 +18,7 @@ const skills = [
 export function HeroSection() {
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
 
-  
+
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -142,27 +142,19 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* Right: Visual Element */}
-          <motion.div
-            className="relative lg:block hidden"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.7 }}
-          >
-            <div className="relative w-full aspect-square max-w-md mx-auto">
-              {/* Animated circles */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-chart-2/20 animate-pulse"></div>
-              <div className="absolute inset-8 rounded-full bg-gradient-to-tr from-primary/30 to-chart-2/30 animate-pulse delay-75"></div>
-              <div className="absolute inset-16 rounded-full bg-gradient-to-bl from-primary/40 to-chart-2/40 animate-pulse delay-150"></div>
-
-              {/* Center icon/logo area */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-8xl font-bold bg-gradient-to-br from-primary to-chart-2 bg-clip-text text-transparent">
-                  FR
-                </div>
+          {/* Right: Professional Photo */}
+          <div className="relative">
+            <div className="relative w-full max-w-lg mx-auto">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary to-chart-2 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+              <div className="relative aspect-square rounded-full overflow-hidden border-4 border-border shadow-2xl">
+                <img 
+                  src="/attached_assets/IMG_8070_1761553568369.jpeg" 
+                  alt="Fasih ur Rehman - Professional Photo"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
 

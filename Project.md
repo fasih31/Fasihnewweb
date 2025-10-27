@@ -10,20 +10,20 @@ The portfolio features a single-page application with smooth scrolling navigatio
 
 Preferred communication style: Simple, everyday language.
 
-## Replit Environment Setup
+## Environment Setup
 
-**Date**: October 22, 2025 (GitHub Import Completed)
+**Date**: October 22, 2025 (Initial Setup Completed)
 
-This project has been successfully imported from GitHub and set up in the Replit environment with the following configuration:
+This project is configured as a full-stack web application with the following setup:
 
 ### Environment Configuration
-- **Database**: PostgreSQL (Replit native database)
-  - Tables created: `contact_messages`, `users`, `articles`, `session`
+- **Database**: PostgreSQL
+  - Tables: `contact_messages`, `users`, `articles`, `testimonials`, `newsletter_subscribers`, `career_inquiries`, `lead_captures`, `calculator_results`, `page_analytics`, `session`
   - Migration tool: Drizzle Kit
   - Run `npm run db:push` to sync schema changes
 - **Frontend Server**: Vite dev server on port 5000
 - **Backend Server**: Express.js (integrated with Vite in development)
-- **Workflow**: Single workflow running `npm run dev` on port 5000
+- **Development**: Single command `npm run dev` starts both frontend and backend
 
 ### Required Environment Variables (Optional)
 The application runs without these, but to enable full functionality:
