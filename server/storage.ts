@@ -11,12 +11,21 @@ import {
   type InsertNewsletterSubscriber,
   type CareerInquiry,
   type InsertCareerInquiry,
+  type LeadCapture,
+  type InsertLeadCapture,
+  type CalculatorResult,
+  type InsertCalculatorResult,
+  type PageAnalytics,
+  type InsertPageAnalytics,
   contactMessages,
   users,
   articles,
   testimonials,
   newsletterSubscribers,
   careerInquiries,
+  leadCaptures,
+  calculatorResults,
+  pageAnalytics,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, sql } from "drizzle-orm";
@@ -47,6 +56,17 @@ export interface IStorage {
 
   createCareerInquiry(inquiry: InsertCareerInquiry): Promise<CareerInquiry>;
   getAllCareerInquiries(): Promise<CareerInquiry[]>;
+
+  createLeadCapture(lead: InsertLeadCapture): Promise<LeadCapture>;
+  getAllLeadCaptures(): Promise<LeadCapture[]>;
+  updateLeadStatus(id: string, status: string): Promise<LeadCapture | undefined>;
+
+  createCalculatorResult(result: InsertCalculatorResult): Promise<CalculatorResult>;
+  getAllCalculatorResults(calculatorType?: string): Promise<CalculatorResult[]>;
+  getSavedCalculatorResults(email: string): Promise<CalculatorResult[]>;
+
+  createPageAnalytics(analytics: InsertPageAnalytics): Promise<PageAnalytics>;
+  getPageAnalytics(pagePath?: string): Promise<PageAnalytics[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -209,6 +229,64 @@ export class DatabaseStorage implements IStorage {
 
   async getAllCareerInquiries(): Promise<CareerInquiry[]> {
     return await db.select().from(careerInquiries).orderBy(desc(careerInquiries.createdAt));
+  }
+
+  async createLeadCapture(insertLead: InsertLeadCapture): Promise<LeadCapture> {
+    const [lead] = await db.insert(leadCaptures).values(insertLead).returning();
+    return lead;
+  }
+
+  async getAllLeadCaptures(): Promise<LeadCapture[]> {
+    return await db.select().from(leadCaptures).orderBy(desc(leadCaptures.createdAt));
+  }
+
+  async updateLeadStatus(id: string, status: string): Promise<LeadCapture | undefined> {
+    const [updated] = await db
+      .update(leadCaptures)
+      .set({ status })
+      .where(eq(leadCaptures.id, id))
+      .returning();
+    return updated;
+  }
+
+  async createCalculatorResult(insertResult: InsertCalculatorResult): Promise<CalculatorResult> {
+    const [result] = await db.insert(calculatorResults).values(insertResult).returning();
+    return result;
+  }
+
+  async getAllCalculatorResults(calculatorType?: string): Promise<CalculatorResult[]> {
+    if (calculatorType) {
+      return await db
+        .select()
+        .from(calculatorResults)
+        .where(eq(calculatorResults.calculatorType, calculatorType))
+        .orderBy(desc(calculatorResults.createdAt));
+    }
+    return await db.select().from(calculatorResults).orderBy(desc(calculatorResults.createdAt));
+  }
+
+  async getSavedCalculatorResults(email: string): Promise<CalculatorResult[]> {
+    return await db
+      .select()
+      .from(calculatorResults)
+      .where(eq(calculatorResults.email, email))
+      .orderBy(desc(calculatorResults.createdAt));
+  }
+
+  async createPageAnalytics(insertAnalytics: InsertPageAnalytics): Promise<PageAnalytics> {
+    const [analytics] = await db.insert(pageAnalytics).values(insertAnalytics).returning();
+    return analytics;
+  }
+
+  async getPageAnalytics(pagePath?: string): Promise<PageAnalytics[]> {
+    if (pagePath) {
+      return await db
+        .select()
+        .from(pageAnalytics)
+        .where(eq(pageAnalytics.pagePath, pagePath))
+        .orderBy(desc(pageAnalytics.viewedAt));
+    }
+    return await db.select().from(pageAnalytics).orderBy(desc(pageAnalytics.viewedAt));
   }
 }
 

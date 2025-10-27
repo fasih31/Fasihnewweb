@@ -203,3 +203,94 @@ export const insertCareerInquirySchema = createInsertSchema(careerInquiries).omi
 
 export type CareerInquiry = typeof careerInquiries.$inferSelect;
 export type InsertCareerInquiry = z.infer<typeof insertCareerInquirySchema>;
+
+// Lead captures table - for multi-step forms and consultation requests
+export const leadCaptures = pgTable("lead_captures", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  company: text("company"),
+  position: text("position"),
+  industry: text("industry"),
+  projectType: text("project_type"),
+  budget: text("budget"),
+  timeline: text("timeline"),
+  message: text("message"),
+  source: text("source").notNull(),
+  status: text("status").default("new").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertLeadCaptureSchema = createInsertSchema(leadCaptures).omit({
+  id: true,
+  createdAt: true,
+  status: true,
+}).extend({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  phone: z.string().optional(),
+  company: z.string().optional(),
+  position: z.string().optional(),
+  industry: z.string().optional(),
+  projectType: z.string().optional(),
+  budget: z.string().optional(),
+  timeline: z.string().optional(),
+  message: z.string().min(10, "Message must be at least 10 characters").optional(),
+  source: z.string().min(1, "Source is required"),
+});
+
+export type LeadCapture = typeof leadCaptures.$inferSelect;
+export type InsertLeadCapture = z.infer<typeof insertLeadCaptureSchema>;
+
+// Calculator results table - to track calculator usage and save results
+export const calculatorResults = pgTable("calculator_results", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  calculatorType: text("calculator_type").notNull(),
+  inputs: text("inputs").notNull(),
+  results: text("results").notNull(),
+  email: text("email"),
+  saved: boolean("saved").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertCalculatorResultSchema = createInsertSchema(calculatorResults).omit({
+  id: true,
+  createdAt: true,
+}).extend({
+  calculatorType: z.enum(["bnpl", "murabaha", "ijarah", "roi", "takaful", "profit-sharing"], {
+    errorMap: () => ({ message: "Please select a valid calculator type" }),
+  }),
+  inputs: z.string().min(1, "Inputs are required"),
+  results: z.string().min(1, "Results are required"),
+  email: z.string().email("Please enter a valid email address").optional(),
+  saved: z.boolean().default(false),
+});
+
+export type CalculatorResult = typeof calculatorResults.$inferSelect;
+export type InsertCalculatorResult = z.infer<typeof insertCalculatorResultSchema>;
+
+// Page analytics table - to track page views and engagement
+export const pageAnalytics = pgTable("page_analytics", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  pagePath: text("page_path").notNull(),
+  pageTitle: text("page_title"),
+  domain: text("domain"),
+  referrer: text("referrer"),
+  sessionDuration: integer("session_duration"),
+  viewedAt: timestamp("viewed_at").defaultNow().notNull(),
+});
+
+export const insertPageAnalyticsSchema = createInsertSchema(pageAnalytics).omit({
+  id: true,
+  viewedAt: true,
+}).extend({
+  pagePath: z.string().min(1, "Page path is required"),
+  pageTitle: z.string().optional(),
+  domain: z.string().optional(),
+  referrer: z.string().optional(),
+  sessionDuration: z.number().min(0).optional(),
+});
+
+export type PageAnalytics = typeof pageAnalytics.$inferSelect;
+export type InsertPageAnalytics = z.infer<typeof insertPageAnalyticsSchema>;
