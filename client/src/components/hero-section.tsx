@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, Shield, TrendingUp, Briefcase, Users } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ResumeDownloadButton } from "@/components/resume-download-tracker";
 import { motion } from "framer-motion";
@@ -120,42 +120,7 @@ export function HeroSection() {
               </Button>
             </div>
 
-            {/* Trust Indicators with Animated Counters */}
-            <motion.div
-              className="flex flex-wrap gap-6 items-center justify-center pt-8 border-t border-border/50"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.7 }}
-            >
-              <div className="flex items-center gap-2 text-sm">
-                <Shield className="h-5 w-5 text-primary animate-pulse" />
-                <div>
-                  <div className="font-bold text-lg text-primary">100%</div>
-                  <div className="text-xs text-muted-foreground">Certified</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <TrendingUp className="h-5 w-5 text-chart-2" />
-                <div>
-                  <div className="font-bold text-lg text-chart-2">9+</div>
-                  <div className="text-xs text-muted-foreground">Years Exp</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Briefcase className="h-5 w-5 text-chart-3" />
-                <div>
-                  <div className="font-bold text-lg text-chart-3">80+</div>
-                  <div className="text-xs text-muted-foreground">Projects</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Users className="h-5 w-5 text-chart-4" />
-                <div>
-                  <div className="font-bold text-lg text-chart-4">50K+</div>
-                  <div className="text-xs text-muted-foreground">Users</div>
-                </div>
-              </div>
-            </motion.div>
+            
           </motion.div>
         </div>
       </div>

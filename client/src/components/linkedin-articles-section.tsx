@@ -3,16 +3,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export function LinkedInArticlesSection() {
-  const openLinkedInProfile = () => {
-    const link = document.createElement('a');
-    link.href = 'https://www.linkedin.com/in/fasihurrehman05/recent-activity/articles/';
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer nofollow';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   return (
     <section
       id="articles"
@@ -53,28 +43,24 @@ export function LinkedInArticlesSection() {
               <Button
                 size="lg"
                 className="bg-[#0077b5] hover:bg-[#006399] text-white hover-elevate active-elevate-2"
-                onClick={openLinkedInProfile}
+                asChild
               >
-                <Linkedin className="h-5 w-5 mr-2" />
-                View Articles on LinkedIn
+                <a href="https://www.linkedin.com/in/fasihurrehman05/recent-activity/articles/" target="_blank" rel="noopener noreferrer">
+                  <Linkedin className="h-5 w-5 mr-2" />
+                  View Articles on LinkedIn
+                </a>
               </Button>
 
               <Button
                 variant="outline"
                 size="lg"
                 className="border-[#0077b5] text-[#0077b5] hover:bg-[#0077b5]/10"
-                onClick={() => {
-                  const link = document.createElement('a');
-                  link.href = 'https://www.linkedin.com/in/fasihurrehman05/';
-                  link.target = '_blank';
-                  link.rel = 'noopener noreferrer nofollow';
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                }}
+                asChild
               >
-                <ExternalLink className="h-5 w-5 mr-2" />
-                View Full Profile
+                <a href="https://www.linkedin.com/in/fasihurrehman05/" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="h-5 w-5 mr-2" />
+                  View Full Profile
+                </a>
               </Button>
             </div>
           </CardContent>

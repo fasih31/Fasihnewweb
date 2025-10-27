@@ -3,16 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Linkedin, ExternalLink } from "lucide-react";
 
 export function LinkedInActivitySection() {
-  const openLinkedInActivity = () => {
-    const link = document.createElement('a');
-    link.href = 'https://www.linkedin.com/in/fasihurrehman05/recent-activity/';
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   return (
     <section className="py-16 md:py-24 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,28 +36,24 @@ export function LinkedInActivitySection() {
               <Button
                 size="lg"
                 className="bg-[#0077b5] hover:bg-[#006399] text-white hover-elevate active-elevate-2"
-                onClick={openLinkedInActivity}
+                asChild
               >
-                <Linkedin className="h-5 w-5 mr-2" />
-                View Recent Activity
+                <a href="https://www.linkedin.com/in/fasihurrehman05/recent-activity/" target="_blank" rel="noopener noreferrer">
+                  <Linkedin className="h-5 w-5 mr-2" />
+                  View Recent Activity
+                </a>
               </Button>
 
               <Button
                 variant="outline"
                 size="lg"
                 className="border-[#0077b5] text-[#0077b5] hover:bg-[#0077b5]/10"
-                onClick={() => {
-                  const link = document.createElement('a');
-                  link.href = 'https://www.linkedin.com/in/fasihurrehman05/';
-                  link.target = '_blank';
-                  link.rel = 'noopener noreferrer';
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                }}
+                asChild
               >
-                <ExternalLink className="h-5 w-5 mr-2" />
-                Connect on LinkedIn
+                <a href="https://www.linkedin.com/in/fasihurrehman05/" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="h-5 w-5 mr-2" />
+                  Connect on LinkedIn
+                </a>
               </Button>
             </div>
           </CardContent>

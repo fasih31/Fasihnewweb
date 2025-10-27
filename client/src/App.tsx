@@ -9,8 +9,27 @@ import { GoogleAnalytics } from "@/components/google-analytics";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Home from "@/pages/home";
+import Blog from "@/pages/blog";
+import BlogArticle from "@/pages/blog-article";
+import ProjectDetail from "@/pages/project-detail";
+import SolutionDetail from "@/pages/solution-detail";
+import Career from "@/pages/career";
+import IslamicFintech from "@/pages/islamic-fintech";
+import Calculators from "@/pages/calculators";
+import Tools from "@/pages/tools";
+import WebsiteScanner from "@/pages/website-scanner-tool";
+import SEOAnalyzer from "@/pages/seo-analyzer-tool";
+import CodePlayground from "@/pages/code-playground-tool";
+import IDE from "@/pages/ide";
+import Admin from "@/pages/admin";
 import NotFound from "@/pages/not-found";
-import { HelmetProvider } from "react-helmet-async";
+import Expertise from "@/pages/expertise";
+import FinTech from "@/pages/domains/fintech";
+import EdTech from "@/pages/domains/edtech";
+import ECommerce from "@/pages/domains/ecommerce";
+import CryptoWeb3 from "@/pages/domains/crypto-web3";
+import AIMLPage from "@/pages/domains/ai-ml";
+import Telecom from "@/pages/domains/telecom";
 
 const AdminDashboard = lazy(() => import("@/pages/admin"));
 const BlogArticle = lazy(() => import("@/pages/blog-article"));
@@ -30,6 +49,8 @@ const AIMLDomain = lazy(() => import("@/pages/domains/ai-ml"));
 const CryptoWeb3Domain = lazy(() => import("@/pages/domains/crypto-web3"));
 const BlogPage = lazy(() => import("@/pages/blog"));
 const IDEPage = lazy(() => import("@/pages/ide"));
+const ExpertisePage = lazy(() => import("@/pages/expertise"));
+
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-background dark:bg-gray-950 flex items-center justify-center">
@@ -55,7 +76,8 @@ function Router() {
         <Route path="/tools/seo-analyzer" component={SEOAnalyzerTool} />
         <Route path="/tools/website-scanner" component={WebsiteScannerTool} />
         <Route path="/tools/code-playground" component={CodePlaygroundTool} />
-        
+        <Route path="/expertise" component={ExpertisePage} />
+
         <Route path="/islamic-fintech" component={IslamicFinTech} />
         <Route path="/domains/fintech" component={FinTechDomain} />
         <Route path="/domains/edtech" component={EdTechDomain} />
