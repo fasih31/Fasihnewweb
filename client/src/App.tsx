@@ -22,11 +22,13 @@ import EcommerceDomain from "@/pages/domains/ecommerce";
 import TelecomDomain from "@/pages/domains/telecom";
 import AIMLDomain from "@/pages/domains/ai-ml";
 import CryptoWeb3Domain from "@/pages/domains/crypto-web3";
+import BlogPage from "@/pages/blog";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/blog" component={BlogPage} />
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/solutions/:id" component={SolutionDetail} />
       <Route path="/blog/:slug" component={BlogArticle} />

@@ -39,7 +39,13 @@ export function Navigation() {
     }
   }, [location]);
 
-  const scrollToSection = (id: string) => {
+  const scrollToSection = (id: string, isPage?: boolean) => {
+    if (isPage) {
+      setLocation(`/${id}`);
+      setIsMobileMenuOpen(false);
+      return;
+    }
+    
     if (isHome) {
       const element = document.getElementById(id);
       if (element) {
@@ -66,7 +72,7 @@ export function Navigation() {
   // Update navLinks to reflect the change from "Blog" to "Articles" and update the ID
   const updatedNavLinks = navLinks.map(link => {
     if (link.id === "blog") {
-      return { name: "Articles", id: "articles" };
+      return { name: "Blog", id: "blog", isPage: true };
     }
     return link;
   });
@@ -109,7 +115,7 @@ export function Navigation() {
               <Button
                 key={link.id}
                 variant="ghost"
-                onClick={() => scrollToSection(link.id)}
+                onClick={() => scrollToSection(link.id, link.isPage)}
                 data-testid={`link-${link.id}`}
                 className="hover-elevate active-elevate-2 text-sm"
               >
@@ -184,7 +190,7 @@ export function Navigation() {
               <Button
                 key={link.id}
                 variant="ghost"
-                onClick={() => scrollToSection(link.id)}
+                onClick={() => scrollToSection(link.id, link.isPage)}
                 data-testid={`mobile-link-${link.id}`}
                 className="w-full justify-start hover-elevate active-elevate-2 h-12 text-base"
               >
