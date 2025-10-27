@@ -35,7 +35,7 @@ export interface IStorage {
   getAllContactMessages(): Promise<ContactMessage[]>;
 
   getUser(id: string): Promise<User | undefined>;
-  getUserByEmail(email: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | null>;
   upsertUser(user: InsertUser): Promise<User>;
 
   createArticle(article: InsertArticle): Promise<Article>;
@@ -85,9 +85,18 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
-  async getUserByEmail(email: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.email, email));
-    return user;
+  async getUserByEmail(email: string): Promise<User | null> {
+    try {
+      const result = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1);
+      return result?.[0] || null;
+    } catch (error) {
+      console.error('Error getting user by email:', error);
+      return null;
+    }
   }
 
   async upsertUser(userData: InsertUser): Promise<User> {
