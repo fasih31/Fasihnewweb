@@ -264,38 +264,42 @@ export const getPersonSchema = () => ({
   ]
 });
 
-export const getArticleSchema = (title: string, description: string, datePublished: string, dateModified?: string, imageUrl?: string) => ({
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: title,
-  description: description,
-  image: imageUrl || "/og-image.png",
-  author: {
-    "@type": "Person",
-    name: "Fasih ur Rehman",
-    url: typeof window !== "undefined" ? window.location.origin : "",
-    sameAs: [
-      "https://www.linkedin.com/in/fasihurrehman05",
-      "https://github.com/fasih31",
-      "https://twitter.com/Fasih31"
-    ]
-  },
-  publisher: {
-    "@type": "Person",
-    name: "Fasih ur Rehman",
-    logo: {
-      "@type": "ImageObject",
-      url: "/og-image.png"
-    }
-  },
-  datePublished: datePublished,
-  dateModified: dateModified || datePublished,
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": typeof window !== "undefined" ? window.location.href : ""
-  },
-  inLanguage: "en-US"
-});
+function getArticleSchema(article: {
+  title: string;
+  description: string;
+  datePublished: string;
+  dateModified?: string;
+  author: string;
+  image?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": article.title,
+    "description": article.description,
+    "datePublished": article.datePublished,
+    "dateModified": article.dateModified || article.datePublished,
+    "author": {
+      "@type": "Person",
+      "name": article.author,
+      "url": "https://iamfasih.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Fasih ur Rehman",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://iamfasih.com/og-image.png"
+      }
+    },
+    ...(article.image && {
+      "image": {
+        "@type": "ImageObject",
+        "url": article.image
+      }
+    })
+  };
+}
 
 export const getProjectSchema = (project: { title: string; description: string; technologies: string[] }) => ({
   "@context": "https://schema.org",
@@ -309,89 +313,6 @@ export const getProjectSchema = (project: { title: string; description: string; 
   },
   keywords: project.technologies.join(", "),
   operatingSystem: "Web Browser"
-});
-
-export const getServiceSchema = () => ({
-  "@context": "https://schema.org",
-  "@type": "Service",
-  serviceType: "Product Management & Digital Solutions",
-  provider: {
-    "@type": "Person",
-    name: "Fasih ur Rehman",
-    jobTitle: "Senior Product Manager - FinTech, E-commerce, EdTech, Telecom & AI",
-    url: typeof window !== "undefined" ? window.location.origin : "https://iamfasih.com"
-  },
-  areaServed: ["UAE", "Saudi Arabia", "Middle East", "Global"],
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    name: "Comprehensive Product Management Services",
-    itemListElement: [
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "FinTech & Islamic Finance Solutions",
-          description: "Digital banking, BNPL, Shariah-compliant products, salary advance, housing & car finance"
-        }
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "E-commerce Platform Development",
-          description: "Halal marketplaces, multi-vendor platforms, payment gateways, conversion optimization"
-        }
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "EdTech Learning Platforms",
-          description: "Learning management systems, virtual classrooms, student engagement tools"
-        }
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "DaaS & SaaS Solutions",
-          description: "Device management, software services, cloud infrastructure, subscription models"
-        }
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Telecom Product Management",
-          description: "5G solutions, VoIP, cloud communications, IoT connectivity, mobile networks"
-        }
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "AI & Machine Learning Integration",
-          description: "NLP, computer vision, generative AI, predictive analytics, ML automation"
-        }
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Crypto & Web3 Development",
-          description: "Blockchain platforms, DeFi protocols, NFT marketplaces, smart contracts, crypto trading"
-        }
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Research & Innovation",
-          description: "AI ethics research, FinTech security, emerging technology consulting"
-        }
-      }
-    ]
-  }
 });
 
 export const getBreadcrumbSchema = (items: Array<{ name: string; url: string }>) => ({
