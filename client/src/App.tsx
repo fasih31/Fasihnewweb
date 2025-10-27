@@ -23,6 +23,7 @@ import TelecomDomain from "@/pages/domains/telecom";
 import AIMLDomain from "@/pages/domains/ai-ml";
 import CryptoWeb3Domain from "@/pages/domains/crypto-web3";
 import BlogPage from "@/pages/blog";
+import IDEPage from "@/pages/ide";
 
 function Router() {
   return (
@@ -43,6 +44,7 @@ function Router() {
       <Route path="/domains/telecom" component={TelecomDomain} />
       <Route path="/domains/ai-ml" component={AIMLDomain} />
       <Route path="/domains/crypto-web3" component={CryptoWeb3Domain} />
+      <Route path="/ide" component={IDEPage} />
       <Route component={NotFound} />
     </Switch>
   );

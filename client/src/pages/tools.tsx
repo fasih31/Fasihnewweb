@@ -10,13 +10,15 @@ import { UnitConverter } from "@/components/tools/unit-converter";
 import { WebsiteScanner } from "@/components/tools/website-scanner";
 import { LoanCalculator } from "@/components/tools/loan-calculator";
 import { SEOChecker } from "@/components/tools/seo-checker";
+import { CodeIDE } from "@/components/tools/code-ide";
 import {
   TrendingUp,
   DollarSign,
   Ruler,
   Search,
   Calculator,
-  Sparkles
+  Sparkles,
+  Code
 } from "lucide-react";
 
 export default function Tools() {
@@ -46,7 +48,7 @@ export default function Tools() {
 
           {/* Tools Tabs */}
           <Tabs defaultValue="crypto" className="space-y-4 sm:space-y-6">
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 h-auto gap-1 sm:gap-2 p-1">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 h-auto gap-1 sm:gap-2 p-1">
               <TabsTrigger value="crypto" className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 py-2.5 sm:py-3 px-2 sm:px-3 text-xs sm:text-sm">
                 <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 <span className="hidden sm:inline">Crypto</span>
@@ -76,6 +78,11 @@ export default function Tools() {
                 <span className="hidden sm:inline">Loan Calc</span>
                 <span className="sm:hidden">Loan</span>
               </TabsTrigger>
+              <TabsTrigger value="ide" className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 py-2.5 sm:py-3 px-2 sm:px-3 text-xs sm:text-sm">
+                <Code className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">Code IDE</span>
+                <span className="sm:hidden">IDE</span>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="crypto" className="space-y-4">
@@ -100,6 +107,10 @@ export default function Tools() {
 
             <TabsContent value="calculator" className="space-y-4">
               <LoanCalculator />
+            </TabsContent>
+
+            <TabsContent value="ide" className="space-y-4">
+              <CodeIDE />
             </TabsContent>
           </Tabs>
 

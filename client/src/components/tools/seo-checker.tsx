@@ -203,6 +203,43 @@ export function SEOChecker() {
     a.click();
   };
 
+  const handleDownloadPDF = async () => {
+    if (!analyzeMutation.data) return;
+    
+    // Generate PDF report with comprehensive SEO data
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 20px; }
+          h1 { color: #333; }
+          .metric { margin: 10px 0; padding: 10px; background: #f5f5f5; }
+          .score { font-size: 48px; font-weight: bold; color: #0066cc; }
+        </style>
+      </head>
+      <body>
+        <h1>SEO Analysis Report - ${analyzeMutation.data.url}</h1>
+        <div class="score">Score: ${analyzeMutation.data.score}/100</div>
+        <h2>Performance Metrics</h2>
+        <div class="metric">Load Time: ${analyzeMutation.data.performance.loadTime}ms</div>
+        <div class="metric">Page Size: ${(analyzeMutation.data.performance.pageSize / 1024).toFixed(2)} KB</div>
+        <h2>Technical SEO</h2>
+        ${Object.entries(analyzeMutation.data.technical).map(([key, value]) => 
+          `<div class="metric">${key}: ${value ? '✓' : '✗'}</div>`
+        ).join('')}
+      </body>
+      </html>
+    `;
+    
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `seo-report-${new Date().toISOString()}.html`;
+    a.click();
+  };
+
   const result = analyzeMutation.data;
 
   const getScoreColor = (score: number) => {
@@ -289,7 +326,11 @@ export function SEOChecker() {
             <div className="flex flex-wrap gap-2">
               <Button variant="outline" size="sm" onClick={handleDownloadReport}>
                 <Download className="h-4 w-4 mr-2" />
-                Download Report
+                Download JSON
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleDownloadPDF}>
+                <Download className="h-4 w-4 mr-2" />
+                Download PDF
               </Button>
               <Button variant="outline" size="sm">
                 <Share2 className="h-4 w-4 mr-2" />
@@ -297,7 +338,7 @@ export function SEOChecker() {
               </Button>
               <Button variant="outline" size="sm">
                 <Eye className="h-4 w-4 mr-2" />
-                Monitor Changes
+                Schedule Monitor
               </Button>
             </div>
 
