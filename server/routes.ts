@@ -153,75 +153,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // LinkedIn Recommendations endpoint
-  app.get("/api/linkedin-recommendations", async (req, res) => {
-    try {
-      // Return empty array - user needs to add their real testimonials via admin panel
-      const recommendations: any[] = [];
-      
-      res.json({
-        success: true,
-        data: recommendations,
-      });
-    } catch (error: any) {
-      console.error("Error fetching LinkedIn recommendations:", error);
-      res.json({
-        success: true,
-        data: [],
-      });
-    }
-  });
-
-  // LinkedIn Recent Activity endpoint
-  app.get("/api/linkedin-activity", async (req, res) => {
-    try {
-      // Sample LinkedIn activities - replace with real data from LinkedIn API
-      const activities: any[] = [
-        {
-          id: "activity-1",
-          type: "post",
-          content: "Excited to share insights on building scalable FinTech platforms using Islamic finance principles. The future of ethical banking is here! 🚀",
-          date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-          likes: 234,
-          comments: 45,
-          shares: 12,
-          url: "https://www.linkedin.com/in/fasihurrehman05/"
-        },
-        {
-          id: "activity-2",
-          type: "article",
-          title: "The Rise of Sharia-Compliant Digital Banking",
-          excerpt: "Exploring how Islamic FinTech is revolutionizing the financial services industry in the Middle East and beyond...",
-          date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-          likes: 567,
-          comments: 89,
-          shares: 34,
-          url: "https://www.linkedin.com/in/fasihurrehman05/recent-activity/articles/"
-        },
-        {
-          id: "activity-3",
-          type: "post",
-          content: "Just launched a new BNPL platform that combines cutting-edge technology with Islamic finance compliance. Proud of what we've achieved! 💪",
-          date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-          likes: 445,
-          comments: 67,
-          shares: 23,
-          url: "https://www.linkedin.com/in/fasihurrehman05/"
-        }
-      ];
-      
-      res.json({
-        success: true,
-        data: activities,
-      });
-    } catch (error: any) {
-      console.error("Error fetching LinkedIn activity:", error);
-      res.json({
-        success: true,
-        data: [],
-      });
-    }
-  });
+  
 
   app.post("/api/testimonials", isAdmin, async (req, res) => {
     try {
@@ -1182,54 +1114,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // LinkedIn Articles RSS endpoint
-  app.get("/api/linkedin-articles", async (req, res) => {
-    try {
-      // Sample LinkedIn articles - replace with real RSS feed data
-      const articles: any[] = [
-        {
-          title: "Building Islamic FinTech: A Product Manager's Journey",
-          link: "https://www.linkedin.com/in/fasihurrehman05/recent-activity/articles/",
-          pubDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-          description: "In this article, I share my experience building Sharia-compliant financial products and the unique challenges of combining modern technology with Islamic finance principles.",
-          category: "FinTech"
-        },
-        {
-          title: "The Future of Buy Now Pay Later in Islamic Banking",
-          link: "https://www.linkedin.com/in/fasihurrehman05/recent-activity/articles/",
-          pubDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-          description: "Exploring how BNPL platforms can maintain Sharia compliance while providing modern payment solutions to consumers across the Middle East.",
-          category: "Islamic Finance"
-        },
-        {
-          title: "Web3 and Blockchain in Islamic Finance",
-          link: "https://www.linkedin.com/in/fasihurrehman05/recent-activity/articles/",
-          pubDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-          description: "How blockchain technology and decentralized finance can align with Islamic financial principles to create transparent, ethical financial systems.",
-          category: "Blockchain"
-        },
-        {
-          title: "Product Management in the Middle East Tech Ecosystem",
-          link: "https://www.linkedin.com/in/fasihurrehman05/recent-activity/articles/",
-          pubDate: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
-          description: "Lessons learned from building products in the UAE, Saudi Arabia, and broader GCC region, with insights on cultural considerations and market dynamics.",
-          category: "Product Management"
-        },
-        {
-          title: "From Zero to One: Launching a FinTech Startup in Dubai",
-          link: "https://www.linkedin.com/in/fasihurrehman05/recent-activity/articles/",
-          pubDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-          description: "A comprehensive guide to navigating regulatory requirements, fundraising, and team building in the Dubai startup ecosystem.",
-          category: "Startups"
-        }
-      ];
-      
-      res.json(articles);
-    } catch (error: any) {
-      console.error("Error in LinkedIn articles endpoint:", error);
-      res.status(500).json({ message: "Failed to fetch LinkedIn articles" });
-    }
-  });
+  
 
   app.get("/api/news/:category?", async (req, res) => {
     try {

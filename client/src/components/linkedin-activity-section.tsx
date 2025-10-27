@@ -1,33 +1,17 @@
-
-import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ThumbsUp, MessageCircle, Share2, ExternalLink, Linkedin } from "lucide-react";
+import { Linkedin, ExternalLink } from "lucide-react";
 
 export function LinkedInActivitySection() {
-  const { data: response, isLoading } = useQuery<{ success: boolean; data: any[] }>({
-    queryKey: ["/api/linkedin-activity"],
-  });
-
-  const activities = Array.isArray(response?.data) ? response.data : [];
-
-  if (isLoading) {
-    return (
-      <section className="py-16 md:py-24 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Recent Activity</h2>
-            <p className="text-xl text-muted-foreground">Loading...</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (activities.length === 0) {
-    return null;
-  }
+  const openLinkedInActivity = () => {
+    const link = document.createElement('a');
+    link.href = 'https://www.linkedin.com/in/fasihurrehman05/recent-activity/';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <section className="py-16 md:py-24 bg-muted/30">
@@ -42,88 +26,52 @@ export function LinkedInActivitySection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {activities.map((activity) => (
-            <Card key={activity.id} className="hover-elevate transition-all duration-300">
-              <CardHeader>
-                <div className="flex items-center justify-between mb-2">
-                  <Badge variant={activity.type === "article" ? "default" : "secondary"}>
-                    {activity.type === "article" ? "Article" : "Post"}
-                  </Badge>
-                  <span className="text-sm text-muted-foreground">
-                    {new Date(activity.date).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </span>
-                </div>
-                {activity.title && (
-                  <CardTitle className="text-lg line-clamp-2">{activity.title}</CardTitle>
-                )}
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                  {activity.excerpt || activity.content}
-                </p>
+        <Card className="max-w-2xl mx-auto hover-elevate transition-all duration-300 border-2 hover:border-[#0077b5]/50">
+          <CardContent className="p-12 text-center space-y-6">
+            <div className="flex justify-center">
+              <div className="p-4 bg-[#0077b5]/10 rounded-full">
+                <Linkedin className="h-16 w-16 text-[#0077b5]" />
+              </div>
+            </div>
 
-                <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                  <div className="flex items-center gap-1">
-                    <ThumbsUp className="h-4 w-4" />
-                    <span>{activity.likes}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <MessageCircle className="h-4 w-4" />
-                    <span>{activity.comments}</span>
-                  </div>
-                  {activity.shares && (
-                    <div className="flex items-center gap-1">
-                      <Share2 className="h-4 w-4" />
-                      <span>{activity.shares}</span>
-                    </div>
-                  )}
-                </div>
+            <h3 className="text-2xl font-bold text-foreground">
+              Follow My Journey on LinkedIn
+            </h3>
 
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="w-full text-[#0077b5] hover:text-[#0077b5] hover:bg-[#0077b5]/5"
-                  onClick={() => {
-                    const link = document.createElement('a');
-                    link.href = activity.url;
-                    link.target = '_blank';
-                    link.rel = 'noopener noreferrer';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                  }}
-                >
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  View on LinkedIn
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+            <p className="text-muted-foreground">
+              Stay updated with my latest posts, insights, and professional milestones.
+            </p>
 
-        <div className="text-center mt-12">
-          <Button
-            variant="outline"
-            size="lg"
-            className="hover-elevate border-[#0077b5] text-[#0077b5] hover:bg-[#0077b5]/10"
-            onClick={() => {
-              const link = document.createElement('a');
-              link.href = 'https://www.linkedin.com/in/fasihurrehman05/recent-activity/';
-              link.target = '_blank';
-              link.rel = 'noopener noreferrer';
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            }}
-          >
-            <Linkedin className="h-5 w-5 mr-2" />
-            View All Activity
-          </Button>
-        </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+              <Button
+                size="lg"
+                className="bg-[#0077b5] hover:bg-[#006399] text-white hover-elevate active-elevate-2"
+                onClick={openLinkedInActivity}
+              >
+                <Linkedin className="h-5 w-5 mr-2" />
+                View Recent Activity
+              </Button>
+
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[#0077b5] text-[#0077b5] hover:bg-[#0077b5]/10"
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = 'https://www.linkedin.com/in/fasihurrehman05/';
+                  link.target = '_blank';
+                  link.rel = 'noopener noreferrer';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+              >
+                <ExternalLink className="h-5 w-5 mr-2" />
+                Connect on LinkedIn
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </section>
   );
