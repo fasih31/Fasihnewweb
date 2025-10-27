@@ -1,7 +1,9 @@
 import express, { type Request, Response, NextFunction } from "express";
+import compression from "compression";
 import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { logger } from "./utils/logger";
 
 const app = express();
 
@@ -10,6 +12,17 @@ declare module 'http' {
     rawBody: unknown
   }
 }
+
+// Enable gzip compression for better performance
+app.use(compression({
+  filter: (req: any, res: any) => {
+    if (req.headers['x-no-compression']) {
+      return false;
+    }
+    return compression.filter(req, res);
+  },
+  threshold: 1024,
+}));
 
 // Security middleware - add headers to prevent common attacks
 app.use((req, res, next) => {

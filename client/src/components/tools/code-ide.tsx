@@ -175,23 +175,26 @@ export function CodeIDE() {
       if (language === "javascript") {
         try {
           const logs: string[] = [];
-          const originalLog = console.log;
-          const originalError = console.error;
-          const originalWarn = console.warn;
+          const errors: string[] = [];
           
-          console.log = (...args) => logs.push('✓ ' + args.join(' '));
-          console.error = (...args) => logs.push('✗ ERROR: ' + args.join(' '));
-          console.warn = (...args) => logs.push('⚠ WARNING: ' + args.join(' '));
+          const safeConsole = {
+            log: (...args: any[]) => logs.push('✓ ' + args.map(String).join(' ')),
+            error: (...args: any[]) => errors.push('✗ ERROR: ' + args.map(String).join(' ')),
+            warn: (...args: any[]) => logs.push('⚠ WARNING: ' + args.map(String).join(' ')),
+            info: (...args: any[]) => logs.push('ℹ INFO: ' + args.map(String).join(' ')),
+          };
           
-          // eslint-disable-next-line no-eval
-          eval(code);
+          const safeFunction = new Function('console', `
+            "use strict";
+            ${code}
+            return null;
+          `);
           
-          console.log = originalLog;
-          console.error = originalError;
-          console.warn = originalWarn;
+          safeFunction(safeConsole);
           
-          const result = logs.length > 0 
-            ? `✅ Execution successful!\n\n${logs.join('\n')}` 
+          const allOutput = [...logs, ...errors];
+          const result = allOutput.length > 0 
+            ? `✅ Execution successful!\n\n${allOutput.join('\n')}` 
             : "✅ Code executed successfully (no output)";
           setOutput(result);
           
