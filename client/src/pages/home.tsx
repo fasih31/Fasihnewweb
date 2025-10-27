@@ -35,11 +35,10 @@ export default function Home() {
       <Navigation />
       <main>
         <HeroSection />
-        <StatsSection />
         <AboutSection />
+        <StatsSection />
         <ServicesSection />
         <SkillsSection />
-        
         <SolutionsSection />
         <PortfolioSection />
         <LinkedInArticlesSection />

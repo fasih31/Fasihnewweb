@@ -1,25 +1,22 @@
 import { Linkedin, ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export function LinkedInArticlesSection() {
   return (
-    <section
-      id="articles"
-      className="py-24 md:py-32 bg-background"
-      data-testid="section-articles"
-    >
+    <section id="linkedin-articles" className="py-16 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Linkedin className="h-8 w-8 text-[#0077b5]" />
-            <h2 className="text-3xl md:text-5xl font-bold text-foreground">
-              LinkedIn Articles
-            </h2>
-          </div>
-          <div className="w-20 h-1 bg-gradient-to-r from-[#0077b5] to-chart-2 mx-auto mb-8"></div>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Explore my latest thoughts and insights on technology, business, and innovation.
+        <div className="text-center mb-8">
+          <Badge className="mb-3" variant="secondary">
+            <Linkedin className="h-4 w-4 mr-2" />
+            LinkedIn Content
+          </Badge>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">
+            Published Articles & Insights
+          </h2>
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+            Sharing knowledge on product management, fintech, and technology
           </p>
         </div>
 

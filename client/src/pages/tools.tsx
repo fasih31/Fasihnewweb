@@ -14,6 +14,7 @@ import { WebsiteScanner } from "@/components/tools/website-scanner";
 import { LoanCalculator } from "@/components/tools/loan-calculator";
 import { SEOChecker } from "@/components/tools/seo-checker";
 import { CodeIDE } from "@/components/tools/code-ide";
+import { AudioVideoConverter } from "@/components/tools/audio-video-converter";
 import {
   TrendingUp,
   DollarSign,
@@ -24,7 +25,9 @@ import {
   Code,
   Zap,
   ExternalLink,
-  CheckCircle2
+  CheckCircle2,
+  Music,
+  Video
 } from "lucide-react";
 
 interface Tool {
@@ -128,6 +131,17 @@ const tools: Tool[] = [
     category: "Development",
     openAsPage: true,
     pagePath: "/tools/code-playground"
+  },
+  {
+    id: "audio-video",
+    title: "Audio/Video Converter",
+    description: "Convert audio and video files to different formats easily",
+    icon: Video,
+    features: ["Multiple Formats", "Fast Conversion", "Audio & Video", "Easy Download"],
+    component: AudioVideoConverter,
+    gradient: "from-pink-500 to-purple-500",
+    category: "Utilities",
+    openAsPage: false
   }
 ];
 

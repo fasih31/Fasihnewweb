@@ -1,18 +1,22 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Linkedin, ExternalLink } from "lucide-react";
+import { Linkedin, ExternalLink, Activity } from "lucide-react"; // Assuming Activity is a valid icon and imported correctly
+import { Badge } from "@/components/ui/badge"; // Assuming Badge is imported correctly
 
 export function LinkedInActivitySection() {
   return (
-    <section className="py-16 md:py-24 bg-muted/30">
+    <section className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Linkedin className="h-8 w-8 text-[#0077b5]" />
-            <h2 className="text-3xl md:text-4xl font-bold">Recent Activity</h2>
-          </div>
-          <p className="text-xl text-muted-foreground">
-            Latest posts, articles, and professional updates
+        <div className="text-center mb-8">
+          <Badge className="mb-3" variant="secondary">
+            <Activity className="h-4 w-4 mr-2" />
+            Recent Activity
+          </Badge>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">
+            LinkedIn Engagement
+          </h2>
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+            Latest professional interactions and discussions
           </p>
         </div>
 
