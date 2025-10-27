@@ -7,6 +7,9 @@ import {
   insertTestimonialSchema,
   insertNewsletterSubscriberSchema,
   insertCareerInquirySchema,
+  insertLeadCaptureSchema,
+  insertCalculatorResultSchema,
+  insertPageAnalyticsSchema,
 } from "@shared/schema";
 import { fromZodError } from "zod-validation-error";
 import { setupAuth, isAuthenticated, isAdmin } from "./googleAuth";
@@ -807,8 +810,373 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Lead Capture Routes
+  app.post("/api/leads", async (req, res) => {
+    try {
+      const validatedData = insertLeadCaptureSchema.parse(req.body);
+      const lead = await storage.createLeadCapture(validatedData);
+      
+      // Send email notification
+      const emailHtml = `
+        <h2>New Lead Capture</h2>
+        <p><strong>Name:</strong> ${validatedData.name}</p>
+        <p><strong>Email:</strong> ${validatedData.email}</p>
+        <p><strong>Phone:</strong> ${validatedData.phone || 'N/A'}</p>
+        <p><strong>Company:</strong> ${validatedData.company || 'N/A'}</p>
+        <p><strong>Position:</strong> ${validatedData.position || 'N/A'}</p>
+        <p><strong>Industry:</strong> ${validatedData.industry || 'N/A'}</p>
+        <p><strong>Project Type:</strong> ${validatedData.projectType || 'N/A'}</p>
+        <p><strong>Budget:</strong> ${validatedData.budget || 'N/A'}</p>
+        <p><strong>Timeline:</strong> ${validatedData.timeline || 'N/A'}</p>
+        <p><strong>Source:</strong> ${validatedData.source}</p>
+        ${validatedData.message ? `<p><strong>Message:</strong> ${validatedData.message}</p>` : ''}
+        <hr>
+        <p><small>Captured at: ${new Date().toLocaleString()}</small></p>
+      `;
+      
+      sendEmailNotification(`New Lead from ${validatedData.name}`, emailHtml).catch(err => 
+        console.error("Email notification failed:", err)
+      );
+      
+      res.status(201).json({
+        success: true,
+        message: "Lead captured successfully",
+        data: lead,
+      });
+    } catch (error: any) {
+      console.error("Lead capture error:", error);
+      
+      if (error.name === "ZodError") {
+        const validationError = fromZodError(error);
+        return res.status(400).json({
+          success: false,
+          message: validationError.message,
+        });
+      }
+      
+      res.status(500).json({
+        success: false,
+        message: error.message || "Failed to capture lead",
+      });
+    }
+  });
+
+  app.get("/api/leads", isAdmin, async (req, res) => {
+    try {
+      const leads = await storage.getAllLeadCaptures();
+      res.json({
+        success: true,
+        data: leads,
+      });
+    } catch (error: any) {
+      console.error("Error fetching leads:", error);
+      res.status(500).json({ success: false, message: "Failed to fetch leads" });
+    }
+  });
+
+  app.patch("/api/leads/:id/status", isAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      const lead = await storage.updateLeadStatus(id, status);
+      res.json({
+        success: true,
+        data: lead,
+      });
+    } catch (error: any) {
+      console.error("Error updating lead status:", error);
+      res.status(500).json({ success: false, message: "Failed to update lead status" });
+    }
+  });
+
+  // Calculator Routes
+  app.post("/api/calculators/calculate", async (req, res) => {
+    try {
+      const { type, inputs } = req.body;
+      
+      let results;
+      
+      switch (type) {
+        case 'bnpl':
+          results = calculateBNPL(inputs);
+          break;
+        case 'murabaha':
+          results = calculateMurabaha(inputs);
+          break;
+        case 'ijarah':
+          results = calculateIjarah(inputs);
+          break;
+        case 'roi':
+          results = calculateROI(inputs);
+          break;
+        case 'takaful':
+          results = calculateTakaful(inputs);
+          break;
+        case 'profit-sharing':
+          results = calculateProfitSharing(inputs);
+          break;
+        default:
+          return res.status(400).json({ success: false, message: "Invalid calculator type" });
+      }
+      
+      res.json({
+        success: true,
+        data: results,
+      });
+    } catch (error: any) {
+      console.error("Calculator error:", error);
+      res.status(500).json({ success: false, message: error.message || "Calculation failed" });
+    }
+  });
+
+  app.post("/api/calculators/save", async (req, res) => {
+    try {
+      const validatedData = insertCalculatorResultSchema.parse(req.body);
+      const result = await storage.createCalculatorResult(validatedData);
+      
+      res.status(201).json({
+        success: true,
+        message: "Calculation saved successfully",
+        data: result,
+      });
+    } catch (error: any) {
+      console.error("Save calculator error:", error);
+      
+      if (error.name === "ZodError") {
+        const validationError = fromZodError(error);
+        return res.status(400).json({
+          success: false,
+          message: validationError.message,
+        });
+      }
+      
+      res.status(500).json({
+        success: false,
+        message: error.message || "Failed to save calculation",
+      });
+    }
+  });
+
+  app.get("/api/calculators/saved/:email", async (req, res) => {
+    try {
+      const { email } = req.params;
+      const results = await storage.getSavedCalculatorResults(email);
+      res.json({
+        success: true,
+        data: results,
+      });
+    } catch (error: any) {
+      console.error("Error fetching saved calculations:", error);
+      res.status(500).json({ success: false, message: "Failed to fetch saved calculations" });
+    }
+  });
+
+  app.get("/api/calculators/results", isAdmin, async (req, res) => {
+    try {
+      const { type } = req.query;
+      const results = await storage.getAllCalculatorResults(type as string | undefined);
+      res.json({
+        success: true,
+        data: results,
+      });
+    } catch (error: any) {
+      console.error("Error fetching calculator results:", error);
+      res.status(500).json({ success: false, message: "Failed to fetch calculator results" });
+    }
+  });
+
+  // Page Analytics Routes
+  app.post("/api/analytics/pageview", async (req, res) => {
+    try {
+      const validatedData = insertPageAnalyticsSchema.parse(req.body);
+      const analytics = await storage.createPageAnalytics(validatedData);
+      
+      res.status(201).json({
+        success: true,
+        data: analytics,
+      });
+    } catch (error: any) {
+      console.error("Analytics error:", error);
+      
+      if (error.name === "ZodError") {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid analytics data",
+        });
+      }
+      
+      res.status(500).json({
+        success: false,
+        message: "Failed to track pageview",
+      });
+    }
+  });
+
+  app.get("/api/analytics", isAdmin, async (req, res) => {
+    try {
+      const { path } = req.query;
+      const analytics = await storage.getPageAnalytics(path as string | undefined);
+      res.json({
+        success: true,
+        data: analytics,
+      });
+    } catch (error: any) {
+      console.error("Error fetching analytics:", error);
+      res.status(500).json({ success: false, message: "Failed to fetch analytics" });
+    }
+  });
 
   const httpServer = createServer(app);
 
   return httpServer;
+}
+
+// Calculator Logic Functions
+function calculateBNPL(inputs: any) {
+  const { purchaseAmount, numberOfInstallments, processingFee = 0 } = inputs;
+  
+  const totalAmount = Number(purchaseAmount) + Number(processingFee);
+  const installmentAmount = totalAmount / Number(numberOfInstallments);
+  
+  const schedule = [];
+  for (let i = 1; i <= numberOfInstallments; i++) {
+    schedule.push({
+      installmentNumber: i,
+      amount: installmentAmount.toFixed(2),
+      dueDate: new Date(Date.now() + i * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    });
+  }
+  
+  return {
+    purchaseAmount: Number(purchaseAmount),
+    processingFee: Number(processingFee),
+    totalAmount: totalAmount.toFixed(2),
+    numberOfInstallments,
+    installmentAmount: installmentAmount.toFixed(2),
+    schedule,
+  };
+}
+
+function calculateMurabaha(inputs: any) {
+  const { assetCost, profitRate, tenureMonths } = inputs;
+  
+  const cost = Number(assetCost);
+  const profit = (cost * Number(profitRate)) / 100;
+  const totalAmount = cost + profit;
+  const monthlyInstallment = totalAmount / Number(tenureMonths);
+  
+  return {
+    assetCost: cost.toFixed(2),
+    profitRate: Number(profitRate),
+    profitAmount: profit.toFixed(2),
+    totalAmount: totalAmount.toFixed(2),
+    tenureMonths: Number(tenureMonths),
+    monthlyInstallment: monthlyInstallment.toFixed(2),
+    effectiveRate: ((profit / cost) * 100).toFixed(2) + '%',
+  };
+}
+
+function calculateIjarah(inputs: any) {
+  const { assetValue, leasePeriodMonths, residualValue, profitRate } = inputs;
+  
+  const asset = Number(assetValue);
+  const residual = Number(residualValue);
+  const period = Number(leasePeriodMonths);
+  const rate = Number(profitRate) / 100 / 12;
+  
+  const depreciableAmount = asset - residual;
+  const monthlyDepreciation = depreciableAmount / period;
+  const monthlyProfit = asset * (Number(profitRate) / 100) / 12;
+  const monthlyRental = monthlyDepreciation + monthlyProfit;
+  
+  const totalRentals = monthlyRental * period;
+  const totalCost = totalRentals + residual;
+  
+  return {
+    assetValue: asset.toFixed(2),
+    residualValue: residual.toFixed(2),
+    leasePeriodMonths: period,
+    monthlyRental: monthlyRental.toFixed(2),
+    totalRentals: totalRentals.toFixed(2),
+    totalCost: totalCost.toFixed(2),
+    savingsVsPurchase: (asset - totalCost).toFixed(2),
+  };
+}
+
+function calculateROI(inputs: any) {
+  const { initialInvestment, returns, timeperiodMonths } = inputs;
+  
+  const investment = Number(initialInvestment);
+  const profit = Number(returns);
+  const roi = ((profit / investment) * 100).toFixed(2);
+  const annualizedROI = ((profit / investment) * (12 / Number(timeperiodMonths)) * 100).toFixed(2);
+  
+  return {
+    initialInvestment: investment.toFixed(2),
+    returns: profit.toFixed(2),
+    netProfit: (profit - investment).toFixed(2),
+    roi: roi + '%',
+    annualizedROI: annualizedROI + '%',
+    timeperiodMonths: Number(timeperiodMonths),
+  };
+}
+
+function calculateTakaful(inputs: any) {
+  const { sumAssured, age, term, contributionFrequency = 'monthly' } = inputs;
+  
+  const baseRate = 0.005;
+  const ageMultiplier = 1 + (Number(age) - 25) * 0.02;
+  const termMultiplier = 1 + (Number(term) - 1) * 0.01;
+  
+  const annualContribution = Number(sumAssured) * baseRate * ageMultiplier * termMultiplier;
+  let contribution;
+  let frequency;
+  
+  switch (contributionFrequency) {
+    case 'monthly':
+      contribution = annualContribution / 12;
+      frequency = 'month';
+      break;
+    case 'quarterly':
+      contribution = annualContribution / 4;
+      frequency = 'quarter';
+      break;
+    case 'semi-annual':
+      contribution = annualContribution / 2;
+      frequency = 'half-year';
+      break;
+    case 'annual':
+      contribution = annualContribution;
+      frequency = 'year';
+      break;
+    default:
+      contribution = annualContribution / 12;
+      frequency = 'month';
+  }
+  
+  return {
+    sumAssured: Number(sumAssured).toFixed(2),
+    age: Number(age),
+    term: Number(term) + ' years',
+    contributionFrequency,
+    contribution: contribution.toFixed(2) + ' per ' + frequency,
+    annualContribution: annualContribution.toFixed(2),
+    totalContributions: (annualContribution * Number(term)).toFixed(2),
+  };
+}
+
+function calculateProfitSharing(inputs: any) {
+  const { totalProfit, investorSharePercentage, partnerSharePercentage } = inputs;
+  
+  const profit = Number(totalProfit);
+  const investorShare = (profit * Number(investorSharePercentage)) / 100;
+  const partnerShare = (profit * Number(partnerSharePercentage)) / 100;
+  
+  return {
+    totalProfit: profit.toFixed(2),
+    investorSharePercentage: Number(investorSharePercentage) + '%',
+    partnerSharePercentage: Number(partnerSharePercentage) + '%',
+    investorAmount: investorShare.toFixed(2),
+    partnerAmount: partnerShare.toFixed(2),
+  };
 }
