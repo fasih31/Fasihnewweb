@@ -16,6 +16,12 @@ import IslamicFinTech from "@/pages/islamic-fintech";
 import Calculators from "@/pages/calculators";
 import NotFound from "@/pages/not-found";
 import { HelmetProvider } from "react-helmet-async";
+import FinTechDomain from "@/pages/domains/fintech";
+import EdTechDomain from "@/pages/domains/edtech";
+import EcommerceDomain from "@/pages/domains/ecommerce";
+import TelecomDomain from "@/pages/domains/telecom";
+import AIMLDomain from "@/pages/domains/ai-ml";
+import CryptoWeb3Domain from "@/pages/domains/crypto-web3";
 
 function Router() {
   return (
@@ -29,6 +35,12 @@ function Router() {
       <Route path="/tools" component={Tools} />
       <Route path="/calculators" component={Calculators} />
       <Route path="/islamic-fintech" component={IslamicFinTech} />
+      <Route path="/domains/fintech" component={FinTechDomain} />
+      <Route path="/domains/edtech" component={EdTechDomain} />
+      <Route path="/domains/ecommerce" component={EcommerceDomain} />
+      <Route path="/domains/telecom" component={TelecomDomain} />
+      <Route path="/domains/ai-ml" component={AIMLDomain} />
+      <Route path="/domains/crypto-web3" component={CryptoWeb3Domain} />
       <Route component={NotFound} />
     </Switch>
   );
