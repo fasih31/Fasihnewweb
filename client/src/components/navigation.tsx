@@ -45,7 +45,7 @@ export function Navigation() {
       setIsMobileMenuOpen(false);
       return;
     }
-    
+
     if (isHome) {
       const element = document.getElementById(id);
       if (element) {
@@ -73,10 +73,9 @@ export function Navigation() {
 
 
   const professionalTools = [
-    { name: "Islamic FinTech Solutions", path: "/islamic-fintech" },
-    { name: "Financial Calculators", path: "/calculators" },
-    { name: "Professional Tools", path: "/tools" },
-    { name: "Career Opportunities", path: "/career" },
+    { name: "Islamic FinTech Solutions", path: "/islamic-fintech", description: "Explore innovative Islamic finance solutions." },
+    { name: "Professional Tools", path: "/tools", description: "Access a suite of professional tools for productivity." },
+    { name: "Career Opportunities", path: "/career", description: "Find your next career move with us." },
   ];
 
   return (
@@ -130,10 +129,11 @@ export function Navigation() {
               <DropdownMenuContent align="end" className="w-56 z-[100]">
                 {professionalTools.map((tool) => (
                   <DropdownMenuItem key={tool.path} asChild>
-                    <Link href={tool.path}>
-                      <button className="w-full text-left px-3 py-2.5 hover:bg-accent rounded-sm transition-colors">
-                        {tool.name}
-                      </button>
+                    <Link href={tool.path} target="_blank" rel="noopener noreferrer">
+                      <div className="w-full px-3 py-2.5 hover:bg-accent rounded-sm transition-colors cursor-pointer">
+                        <div className="font-medium">{tool.name}</div>
+                        <div className="text-xs text-muted-foreground">{tool.description}</div>
+                      </div>
                     </Link>
                   </DropdownMenuItem>
                 ))}
@@ -194,14 +194,11 @@ export function Navigation() {
             <div className="pt-3 mt-2 border-t border-border/50">
               <p className="text-sm font-semibold text-muted-foreground px-3 py-2 mb-1">Professional Tools</p>
               {professionalTools.map((tool) => (
-                <Link key={tool.path} href={tool.path}>
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start hover-elevate active-elevate-2 pl-8 h-11 text-base"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {tool.name}
-                  </Button>
+                <Link key={tool.path} href={tool.path} target="_blank" rel="noopener noreferrer">
+                  <div className="w-full px-3 py-2.5 hover:bg-accent rounded-md transition-colors cursor-pointer">
+                    <div className="font-medium">{tool.name}</div>
+                    <div className="text-xs text-muted-foreground">{tool.description}</div>
+                  </div>
                 </Link>
               ))}
             </div>

@@ -13,7 +13,7 @@ import SolutionDetail from "@/pages/solution-detail";
 import Career from "@/pages/career";
 import Tools from "@/pages/tools";
 import IslamicFinTech from "@/pages/islamic-fintech";
-import Calculators from "@/pages/calculators";
+
 import NotFound from "@/pages/not-found";
 import { HelmetProvider } from "react-helmet-async";
 import FinTechDomain from "@/pages/domains/fintech";
@@ -36,7 +36,7 @@ function Router() {
       <Route path="/project/:id" component={ProjectDetail} />
       <Route path="/career" component={Career} />
       <Route path="/tools" component={Tools} />
-      <Route path="/calculators" component={Calculators} />
+      
       <Route path="/islamic-fintech" component={IslamicFinTech} />
       <Route path="/domains/fintech" component={FinTechDomain} />
       <Route path="/domains/edtech" component={EdTechDomain} />
