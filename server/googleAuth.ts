@@ -1,9 +1,13 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { Strategy as LocalStrategy } from "passport-local";
+import type { Express } from "express";
 import session from "express-session";
-import type { Express, RequestHandler } from "express";
-import connectPg from "connect-pg-simple";
+import type { RequestHandler } from "express";
 import { storage } from "./storage";
+import connectPg from "connect-pg-simple";
+import { db } from "./db";
+import bcrypt from "bcrypt";
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   console.warn("Google OAuth not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET");
@@ -80,6 +84,34 @@ export async function setupAuth(app: Express) {
     )
   );
 
+  // Add Local Strategy
+  passport.use(
+    new LocalStrategy(
+      {
+        usernameField: "email",
+        passwordField: "password",
+      },
+      async (email, password, done) => {
+        try {
+          const user = await storage.getUserByEmail(email);
+
+          if (!user) {
+            return done(null, false, { message: "Incorrect email." });
+          }
+
+          const isMatch = await bcrypt.compare(password, user.password_hash);
+          if (!isMatch) {
+            return done(null, false, { message: "Incorrect password." });
+          }
+
+          return done(null, user);
+        } catch (error) {
+          return done(error);
+        }
+      }
+    )
+  );
+
   passport.serializeUser((user: any, done) => {
     done(null, user.id);
   });
@@ -101,6 +133,15 @@ export async function setupAuth(app: Express) {
   app.get(
     "/api/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
+    (req, res) => {
+      res.redirect("/");
+    }
+  );
+
+  // Local login route
+  app.post(
+    "/api/auth/login",
+    passport.authenticate("local", { failureRedirect: "/" }),
     (req, res) => {
       res.redirect("/");
     }

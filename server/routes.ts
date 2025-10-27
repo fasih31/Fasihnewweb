@@ -40,13 +40,34 @@ async function sendEmailNotification(subject: string, html: string) {
 export async function registerRoutes(app: Express): Promise<Server> {
   await setupAuth(app);
 
+  // Local login endpoint
+  app.post("/api/auth/login", passport.authenticate("local"), (req: any, res) => {
+    const user = req.user;
+    res.json({
+      ...user,
+      isAdmin: user.email === "Fasih31@gmail.com",
+      passwordHash: undefined, // Never send password hash to client
+    });
+  });
+
+  // Logout endpoint
+  app.post("/api/auth/logout", (req: any, res) => {
+    req.logout((err: any) => {
+      if (err) {
+        return res.status(500).json({ message: "Logout failed" });
+      }
+      res.json({ message: "Logged out successfully" });
+    });
+  });
+
   app.get("/api/auth/me", isAuthenticated, async (req: any, res) => {
     try {
       const user = req.user;
-      const isUserAdmin = user.email === process.env.ADMIN_EMAIL;
+      const isUserAdmin = user.email === "Fasih31@gmail.com";
       res.json({
         ...user,
         isAdmin: isUserAdmin,
+        passwordHash: undefined, // Never send password hash to client
       });
     } catch (error) {
       console.error("Error fetching user:", error);

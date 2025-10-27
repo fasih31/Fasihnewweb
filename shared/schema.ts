@@ -30,6 +30,7 @@ export const users = pgTable("users", {
   email: varchar("email").notNull().unique(),
   name: varchar("name").notNull(),
   picture: varchar("picture"),
+  passwordHash: varchar("password_hash"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

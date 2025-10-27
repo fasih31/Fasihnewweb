@@ -19,11 +19,51 @@ import {
 import { LogIn, LogOut, Settings, User, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function AuthButton() {
   const { user, isAuthenticated, isAdmin } = useAuth();
   const [, setLocation] = useLocation();
   const [showSignIn, setShowSignIn] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const loginMutation = useMutation({
+    mutationFn: async (credentials: { email: string; password: string }) => {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Invalid credentials");
+      }
+
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+      toast({
+        title: "Success",
+        description: "Logged in successfully",
+      });
+      setShowSignIn(false); // Close the dialog on successful login
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Invalid email or password",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleSignIn = () => {
     window.location.href = "/api/auth/google";
@@ -31,6 +71,20 @@ export function AuthButton() {
 
   const handleSignOut = () => {
     window.location.href = "/api/auth/logout";
+  };
+
+  const handleLocalLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Only allow login for Fasih31@gmail.com with the specific password
+    if (email === "Fasih31@gmail.com" && password === "Fasih31@") {
+      loginMutation.mutate({ email, password });
+    } else {
+      toast({
+        title: "Error",
+        description: "Invalid email or password. Only Fasih31@gmail.com is allowed.",
+        variant: "destructive",
+      });
+    }
   };
 
   if (isAuthenticated && user) {
@@ -89,10 +143,47 @@ export function AuthButton() {
           <DialogHeader>
             <DialogTitle>Admin Access</DialogTitle>
             <DialogDescription>
-              Sign in with Google to access admin features and manage content.
+              Sign in with Google or your specific credentials to access admin features and manage content.
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-4 py-4">
+            <form onSubmit={handleLocalLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Fasih31@gmail.com"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+              <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
+                {loginMutation.isPending ? "Signing in..." : "Sign In"}
+              </Button>
+            </form>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">Or</span>
+              </div>
+            </div>
+
             <Button
               onClick={handleSignIn}
               className="w-full gap-2 hover-elevate active-elevate-2"
