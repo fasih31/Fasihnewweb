@@ -303,48 +303,50 @@ export function SEOChecker() {
 
             {/* Detailed Analysis Tabs */}
             <Tabs defaultValue="ai-insights" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-3 lg:grid-cols-10 gap-1">
-                <TabsTrigger value="ai-insights">
-                  <Brain className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">AI Insights</span>
-                </TabsTrigger>
-                <TabsTrigger value="trends">
-                  <BarChart3 className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Trends</span>
-                </TabsTrigger>
-                <TabsTrigger value="backlinks">
-                  <Target className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Backlinks</span>
-                </TabsTrigger>
-                <TabsTrigger value="performance">
-                  <Zap className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Performance</span>
-                </TabsTrigger>
-                <TabsTrigger value="technical">
-                  <Globe className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Technical</span>
-                </TabsTrigger>
-                <TabsTrigger value="content">
-                  <FileText className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Content</span>
-                </TabsTrigger>
-                <TabsTrigger value="images">
-                  <ImageIcon className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Images</span>
-                </TabsTrigger>
-                <TabsTrigger value="links">
-                  <LinkIcon className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Links</span>
-                </TabsTrigger>
-                <TabsTrigger value="mobile">
-                  <Smartphone className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Mobile</span>
-                </TabsTrigger>
-                <TabsTrigger value="security">
-                  <Shield className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Security</span>
-                </TabsTrigger>
-              </TabsList>
+              <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+                <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-5 lg:grid-cols-10 gap-1 p-1">
+                  <TabsTrigger value="ai-insights" className="flex items-center gap-1 whitespace-nowrap px-3 py-2">
+                    <Brain className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm">AI</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="trends" className="flex items-center gap-1 whitespace-nowrap px-3 py-2">
+                    <BarChart3 className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm">Trends</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="backlinks" className="flex items-center gap-1 whitespace-nowrap px-3 py-2">
+                    <Target className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm">Links</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="performance" className="flex items-center gap-1 whitespace-nowrap px-3 py-2">
+                    <Zap className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm">Speed</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="technical" className="flex items-center gap-1 whitespace-nowrap px-3 py-2">
+                    <Globe className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm">Tech</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="content" className="flex items-center gap-1 whitespace-nowrap px-3 py-2">
+                    <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm">Content</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="images" className="flex items-center gap-1 whitespace-nowrap px-3 py-2">
+                    <ImageIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm">Images</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="links" className="flex items-center gap-1 whitespace-nowrap px-3 py-2">
+                    <LinkIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm">URLs</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="mobile" className="flex items-center gap-1 whitespace-nowrap px-3 py-2">
+                    <Smartphone className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm">Mobile</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="security" className="flex items-center gap-1 whitespace-nowrap px-3 py-2">
+                    <Shield className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm">Security</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
               {/* AI Insights Tab */}
               <TabsContent value="ai-insights" className="space-y-4">

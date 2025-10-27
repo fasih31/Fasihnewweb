@@ -133,11 +133,11 @@ export function Navigation() {
                   <ChevronDown className="h-3 w-3" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-56 z-[100]">
                 {professionalTools.map((tool) => (
                   <DropdownMenuItem key={tool.path} asChild>
                     <Link href={tool.path}>
-                      <button className="w-full text-left px-2 py-1.5">
+                      <button className="w-full text-left px-3 py-2.5 hover:bg-accent rounded-sm transition-colors">
                         {tool.name}
                       </button>
                     </Link>

@@ -150,14 +150,28 @@ export function WebsiteScanner() {
 
         {result && (
           <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="lighthouse">Lighthouse</TabsTrigger>
-              <TabsTrigger value="security">Security</TabsTrigger>
-              <TabsTrigger value="screenshots">Screenshots</TabsTrigger>
-              <TabsTrigger value="ocr">OCR Text</TabsTrigger>
-              <TabsTrigger value="tech">Tech Stack</TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+              <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-3 lg:grid-cols-6 gap-1 p-1">
+                <TabsTrigger value="overview" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
+                  Overview
+                </TabsTrigger>
+                <TabsTrigger value="lighthouse" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
+                  Lighthouse
+                </TabsTrigger>
+                <TabsTrigger value="security" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
+                  Security
+                </TabsTrigger>
+                <TabsTrigger value="screenshots" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
+                  Screenshots
+                </TabsTrigger>
+                <TabsTrigger value="ocr" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
+                  OCR Text
+                </TabsTrigger>
+                <TabsTrigger value="tech" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
+                  Tech Stack
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-4">
