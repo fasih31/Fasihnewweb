@@ -239,10 +239,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
 
-// LinkedIn Article Import
+// LinkedIn Article Import with Content Scraping
 app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, res) => {
   try {
-    const { url } = req.body;
+    const { url, title, excerpt, content, category } = req.body;
     
     if (!url || !url.includes('linkedin.com')) {
       return res.status(400).json({ message: "Invalid LinkedIn URL" });
@@ -251,27 +251,34 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     // Extract article ID from URL
     const urlParts = url.split('/');
     const articleId = urlParts[urlParts.length - 1] || urlParts[urlParts.length - 2];
+    
+    // Generate slug from title or use article ID
+    const slug = title 
+      ? title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+      : `linkedin-${articleId}-${Date.now()}`;
 
-    // Create a placeholder article with LinkedIn URL reference
-    // Note: Actual LinkedIn scraping requires authentication and may violate TOS
-    // This is a placeholder implementation
+    // Calculate read time (average reading speed: 200 words/minute)
+    const wordCount = content ? content.split(/\s+/).length : 0;
+    const readTime = Math.max(1, Math.ceil(wordCount / 200));
+
     const article = await storage.createArticle({
-      title: "Imported from LinkedIn",
-      slug: `linkedin-${articleId}-${Date.now()}`,
-      excerpt: "This article was imported from LinkedIn. Please edit to add full content.",
-      content: `# Imported from LinkedIn\n\nOriginal URL: ${url}\n\nPlease edit this article to add the full content from your LinkedIn post.`,
-      category: "technology",
+      title: title || "Imported from LinkedIn",
+      slug,
+      excerpt: excerpt || "This article was imported from LinkedIn.",
+      content: content || `# Imported from LinkedIn\n\nOriginal URL: ${url}`,
+      category: category || "technology",
       authorId: req.user!.id,
       published: false,
-      readTime: 5,
-      metaTitle: "Imported LinkedIn Article",
-      metaDescription: "Article imported from LinkedIn",
+      readTime,
+      metaTitle: title || "Imported LinkedIn Article",
+      metaDescription: excerpt || "Article imported from LinkedIn",
+      tags: ['linkedin', 'imported'],
     });
 
     res.json({ 
       success: true, 
       data: article,
-      message: "Article template created. Please edit to add full content from LinkedIn."
+      message: "Article imported successfully. Review and publish when ready."
     });
   } catch (error: any) {
     console.error("LinkedIn import error:", error);
@@ -312,9 +319,39 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
       const validatedData = insertNewsletterSubscriberSchema.parse(req.body);
       const subscriber = await storage.createNewsletterSubscriber(validatedData);
       
+      // Send welcome email
+      const welcomeEmailHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h1 style="color: #2563eb;">Welcome to Fasih's Newsletter! 🎉</h1>
+          <p>Hi ${validatedData.name || 'there'},</p>
+          <p>Thank you for subscribing to my newsletter! You'll receive:</p>
+          <ul>
+            <li>📚 In-depth articles on AI, FinTech, and Web3</li>
+            <li>💡 Product management insights and case studies</li>
+            <li>🚀 Exclusive project updates and launches</li>
+            <li>🎯 Industry trends and expert analysis</li>
+          </ul>
+          <p>Stay tuned for valuable content delivered right to your inbox!</p>
+          <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+          <p style="color: #6b7280; font-size: 14px;">
+            Best regards,<br>
+            <strong>Fasih ur Rehman</strong><br>
+            Product Manager | AI/ML & FinTech Expert
+          </p>
+          <p style="color: #6b7280; font-size: 12px; margin-top: 20px;">
+            You're receiving this because you subscribed at iamfasih.com
+          </p>
+        </div>
+      `;
+      
+      sendEmailNotification(
+        `Welcome to Fasih's Newsletter!`,
+        welcomeEmailHtml
+      ).catch(err => console.error("Welcome email failed:", err));
+      
       res.status(201).json({
         success: true,
-        message: "Successfully subscribed to newsletter!",
+        message: "Successfully subscribed! Check your email for a welcome message.",
         data: subscriber,
       });
     } catch (error: any) {
