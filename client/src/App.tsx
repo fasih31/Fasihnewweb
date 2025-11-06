@@ -33,6 +33,8 @@ const CryptoWeb3Domain = lazy(() => import("@/pages/domains/crypto-web3"));
 const BlogPage = lazy(() => import("@/pages/blog"));
 const IDEPage = lazy(() => import("@/pages/ide"));
 const ExpertisePage = lazy(() => import("@/pages/expertise"));
+const StocksDetail = lazy(() => import("@/pages/stocks-detail"));
+const NewsDetail = lazy(() => import("@/pages/news-detail"));
 
 
 const LoadingFallback = () => (
@@ -70,6 +72,8 @@ function Router() {
         <Route path="/domains/ai-ml" component={AIMLDomain} />
         <Route path="/domains/crypto-web3" component={CryptoWeb3Domain} />
         <Route path="/ide" component={IDEPage} />
+        <Route path="/stocks" component={StocksDetail} />
+        <Route path="/news" component={NewsDetail} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>

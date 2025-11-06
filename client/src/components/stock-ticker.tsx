@@ -44,11 +44,18 @@ export function StockTicker() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <DollarSign className="h-5 w-5" />
-          Market Snapshot
-        </CardTitle>
-        <CardDescription>Real-time stock prices from major tech companies</CardDescription>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5" />
+              Market Snapshot
+            </CardTitle>
+            <CardDescription>Real-time stock prices from major tech companies</CardDescription>
+          </div>
+          <Button variant="outline" size="sm" asChild>
+            <a href="/stocks">View All</a>
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
