@@ -209,7 +209,50 @@
   * {
     @apply border-border;
   }
-  
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Code IDE Responsive Enhancements */
+@layer components {
+  .code-ide-container {
+    @apply w-full max-w-full overflow-hidden;
+  }
+
+  @media (max-width: 1024px) {
+    .code-ide-split {
+      @apply flex-col;
+    }
+  }
+
+  /* Ensure textarea doesn't overflow on mobile */
+  textarea[class*="font-mono"] {
+    @apply w-full;
+    overflow-x: auto;
+    overflow-wrap: break-word;
+  }
+
+  /* Better scrollbar styling */
+  .overflow-auto::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .overflow-auto::-webkit-scrollbar-track {
+    @apply bg-muted/20;
+  }
+
+  .overflow-auto::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full;
+  }
+
+  .overflow-auto::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+}
+
+@layer base {
   /* Scroll reveal animations */
   @keyframes fadeInUp {
     from {
@@ -221,7 +264,7 @@
       transform: translateY(0);
     }
   }
-  
+
   .animate-fade-in-up {
     animation: fadeInUp 0.6s ease-out forwards;
   }
