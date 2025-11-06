@@ -1056,7 +1056,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           case 'python':
             filename = path.join(tmpDir, 'script.py');
             await fs.promises.writeFile(filename, code);
-            command = `python3 ${filename}`;
+            command = `python ${filename}`;
             break;
 
           case 'javascript':
