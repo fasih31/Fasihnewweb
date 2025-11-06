@@ -1,12 +1,20 @@
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { SEOHead } from "@/components/seo-head";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { CryptoTracker } from "@/components/tools/crypto-tracker";
 import { CurrencyConverter } from "@/components/tools/currency-converter";
 import { UnitConverter } from "@/components/tools/unit-converter";
@@ -20,6 +28,11 @@ import { PasswordGenerator } from "@/components/tools/password-generator";
 import { JSONFormatter } from "@/components/tools/json-formatter";
 import { Base64Converter } from "@/components/tools/base64-converter";
 import { HashGenerator } from "@/components/tools/hash-generator";
+import { ImageCompressor } from "@/components/tools/image-compressor";
+import { URLShortener } from "@/components/tools/url-shortener";
+import { MarkdownConverter } from "@/components/tools/markdown-converter";
+import { ColorPaletteGenerator } from "@/components/tools/color-palette";
+import { LoremIpsumGenerator } from "@/components/tools/lorem-ipsum";
 import {
   TrendingUp,
   DollarSign,
@@ -37,7 +50,16 @@ import {
   Key,
   FileJson,
   Binary,
-  Hash
+  Hash,
+  Filter,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Image,
+  Link,
+  FileCode,
+  Palette,
+  FileText
 } from "lucide-react";
 
 interface Tool {
@@ -196,13 +218,101 @@ const tools: Tool[] = [
     gradient: "from-rose-500 to-red-500",
     category: "Security",
     openAsPage: false
+  },
+  {
+    id: "image-compressor",
+    title: "Image Compressor",
+    description: "Compress images to reduce file size while maintaining quality",
+    icon: Image,
+    features: ["Quality Control", "Before/After Preview", "Instant Download", "Multiple Formats"],
+    component: ImageCompressor,
+    gradient: "from-indigo-500 to-purple-500",
+    category: "Utilities",
+    openAsPage: false
+  },
+  {
+    id: "url-shortener",
+    title: "URL Shortener",
+    description: "Create short, memorable links for easy sharing",
+    icon: Link,
+    features: ["Custom Aliases", "Link Analytics", "QR Codes", "Instant Shortening"],
+    component: URLShortener,
+    gradient: "from-cyan-500 to-blue-500",
+    category: "Marketing",
+    openAsPage: false
+  },
+  {
+    id: "markdown-converter",
+    title: "Markdown to HTML",
+    description: "Convert Markdown to HTML with live preview",
+    icon: FileCode,
+    features: ["Live Preview", "Syntax Highlighting", "Export HTML", "Copy to Clipboard"],
+    component: MarkdownConverter,
+    gradient: "from-emerald-500 to-teal-500",
+    category: "Development",
+    openAsPage: false
+  },
+  {
+    id: "color-palette",
+    title: "Color Palette Generator",
+    description: "Generate beautiful color palettes for your designs",
+    icon: Palette,
+    features: ["Random Generation", "Lock Colors", "Export CSS", "RGB & HEX"],
+    component: ColorPaletteGenerator,
+    gradient: "from-fuchsia-500 to-pink-500",
+    category: "Design",
+    openAsPage: false
+  },
+  {
+    id: "lorem-ipsum",
+    title: "Lorem Ipsum Generator",
+    description: "Generate placeholder text for your designs and mockups",
+    icon: FileText,
+    features: ["Paragraphs Mode", "Sentences Mode", "Words Mode", "Copy to Clipboard"],
+    component: LoremIpsumGenerator,
+    gradient: "from-amber-500 to-yellow-500",
+    category: "Design",
+    openAsPage: false
   }
 ];
 
 export default function Tools() {
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const toolsPerPage = 9;
 
   const categories = Array.from(new Set(tools.map(t => t.category)));
+
+  // Filter tools based on search and category
+  const filteredTools = useMemo(() => {
+    return tools.filter(tool => {
+      const matchesSearch = tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          tool.features.some(f => f.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesCategory = selectedCategory === "all" || tool.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }, [searchQuery, selectedCategory]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredTools.length / toolsPerPage);
+  const paginatedTools = useMemo(() => {
+    const startIndex = (currentPage - 1) * toolsPerPage;
+    return filteredTools.slice(startIndex, startIndex + toolsPerPage);
+  }, [filteredTools, currentPage]);
+
+  // Reset to page 1 when filters change
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    setCurrentPage(1);
+  };
+
+  const handleCategoryChange = (value: string) => {
+    setSelectedCategory(value);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -228,12 +338,89 @@ export default function Tools() {
             </p>
           </div>
 
-          {/* Categories */}
-          {categories.map((category) => (
-            <div key={category} className="mb-8 sm:mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">{category}</h2>
+          {/* Search and Filter */}
+          <Card className="mb-8 shadow-lg">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    data-testid="input-search-tools"
+                    placeholder="Search tools by name, description, or features..."
+                    value={searchQuery}
+                    onChange={(e) => handleSearchChange(e.target.value)}
+                    className="pl-10 pr-10"
+                  />
+                  {searchQuery && (
+                    <Button
+                      data-testid="button-clear-search"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7 p-0"
+                      onClick={() => handleSearchChange("")}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+                <div className="flex gap-2 items-center">
+                  <Filter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                  <Select value={selectedCategory} onValueChange={handleCategoryChange}>
+                    <SelectTrigger data-testid="select-category-filter" className="w-full sm:w-[200px]">
+                      <SelectValue placeholder="All Categories" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Categories</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="flex items-center justify-between mt-4 text-sm text-muted-foreground">
+                <span data-testid="text-tool-count">
+                  Showing {filteredTools.length} {filteredTools.length === 1 ? 'tool' : 'tools'}
+                  {(searchQuery || selectedCategory !== "all") && ` (filtered)`}
+                </span>
+                {totalPages > 1 && (
+                  <span>
+                    Page {currentPage} of {totalPages}
+                  </span>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Tools Grid */}
+          {filteredTools.length === 0 ? (
+            <Card className="p-12 text-center">
+              <div className="flex flex-col items-center gap-4">
+                <Search className="h-12 w-12 text-muted-foreground" />
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">No tools found</h3>
+                  <p className="text-muted-foreground">
+                    Try adjusting your search or filter criteria
+                  </p>
+                </div>
+                <Button
+                  data-testid="button-reset-filters"
+                  variant="outline"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setSelectedCategory("all");
+                  }}
+                >
+                  Reset Filters
+                </Button>
+              </div>
+            </Card>
+          ) : (
+            <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {tools.filter(tool => tool.category === category).map((tool) => {
+                {paginatedTools.map((tool) => {
                   const Icon = tool.icon;
                   return (
                     <Card 
@@ -286,8 +473,60 @@ export default function Tools() {
                   );
                 })}
               </div>
-            </div>
-          ))}
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-8">
+                  <Button
+                    data-testid="button-prev-page"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4 mr-1" />
+                    Previous
+                  </Button>
+                  <div className="flex gap-1">
+                    {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                      let pageNum;
+                      if (totalPages <= 5) {
+                        pageNum = i + 1;
+                      } else if (currentPage <= 3) {
+                        pageNum = i + 1;
+                      } else if (currentPage >= totalPages - 2) {
+                        pageNum = totalPages - 4 + i;
+                      } else {
+                        pageNum = currentPage - 2 + i;
+                      }
+                      return (
+                        <Button
+                          key={pageNum}
+                          data-testid={`button-page-${pageNum}`}
+                          variant={currentPage === pageNum ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setCurrentPage(pageNum)}
+                          className="w-10"
+                        >
+                          {pageNum}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                  <Button
+                    data-testid="button-next-page"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
 
           {/* Footer Note */}
           <Card className="mt-8 sm:mt-12 bg-gradient-to-br from-primary/5 via-chart-2/5 to-chart-3/5 border-primary/20 shadow-lg">
