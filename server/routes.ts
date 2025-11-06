@@ -1540,6 +1540,64 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     }
   });
 
+  // Robots.txt endpoint
+  app.get("/robots.txt", (req, res) => {
+    res.type("text/plain");
+    res.send(`User-agent: *
+Allow: /
+Sitemap: ${req.protocol}://${req.get('host')}/sitemap.xml
+
+# Allow all search engines to crawl all pages
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /`);
+  });
+
+  // Sitemap.xml endpoint
+  app.get("/sitemap.xml", (req, res) => {
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const pages = [
+      { url: '/', priority: '1.0', changefreq: 'weekly' },
+      { url: '/about', priority: '0.8', changefreq: 'monthly' },
+      { url: '/services', priority: '0.9', changefreq: 'monthly' },
+      { url: '/solutions', priority: '0.9', changefreq: 'monthly' },
+      { url: '/portfolio', priority: '0.8', changefreq: 'weekly' },
+      { url: '/blog', priority: '0.9', changefreq: 'daily' },
+      { url: '/contact', priority: '0.7', changefreq: 'monthly' },
+      { url: '/tools', priority: '0.9', changefreq: 'weekly' },
+      { url: '/tools/seo-analyzer', priority: '0.9', changefreq: 'weekly' },
+      { url: '/tools/website-scanner', priority: '0.9', changefreq: 'weekly' },
+      { url: '/tools/code-playground', priority: '0.8', changefreq: 'weekly' },
+      { url: '/calculators', priority: '0.8', changefreq: 'weekly' },
+      { url: '/career', priority: '0.7', changefreq: 'monthly' },
+      { url: '/domains/fintech', priority: '0.8', changefreq: 'monthly' },
+      { url: '/domains/ecommerce', priority: '0.8', changefreq: 'monthly' },
+      { url: '/domains/edtech', priority: '0.8', changefreq: 'monthly' },
+      { url: '/domains/crypto-web3', priority: '0.8', changefreq: 'monthly' },
+      { url: '/domains/telecom', priority: '0.8', changefreq: 'monthly' },
+      { url: '/domains/ai-ml', priority: '0.8', changefreq: 'monthly' },
+      { url: '/islamic-fintech', priority: '0.9', changefreq: 'monthly' },
+    ];
+
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${pages.map(page => `  <url>
+    <loc>${baseUrl}${page.url}</loc>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+  </url>`).join('\n')}
+</urlset>`;
+
+    res.type("application/xml");
+    res.send(sitemap);
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

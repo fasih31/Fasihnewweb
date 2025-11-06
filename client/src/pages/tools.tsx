@@ -46,17 +46,6 @@ interface Tool {
   description: string;
   icon: any;
   features: string[];
-  component: any;
-  gradient: string;
-  category: string;
-}
-
-interface Tool {
-  id: string;
-  title: string;
-  description: string;
-  icon: any;
-  features: string[];
   component?: any;
   gradient: string;
   category: string;
