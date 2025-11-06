@@ -481,88 +481,84 @@ export function CodeIDE() {
             animate={{ opacity: 1, y: 0 }}
           >
             {/* File Controls Row */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full">
-              <div className="flex items-center gap-2 w-full sm:w-auto">
-                <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
-                <Input
-                  value={fileName}
-                  onChange={(e) => setFileName(e.target.value)}
-                  className="flex-1 sm:w-40 h-9 text-sm"
-                  data-testid="input-filename"
-                />
-              </div>
+            <div className="flex items-center gap-2">
+              <FileText className="h-4 w-4 text-muted-foreground" />
+              <Input
+                value={fileName}
+                onChange={(e) => setFileName(e.target.value)}
+                className="w-48 h-9 text-sm"
+                data-testid="input-filename"
+              />
               
-              <div className="flex gap-2 w-full sm:w-auto">
-                <Select value={language} onValueChange={setLanguage}>
-                  <SelectTrigger className="flex-1 sm:w-40 h-9" data-testid="select-language">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-[300px]">
-                    {LANGUAGES.map(lang => (
-                      <SelectItem key={lang.value} value={lang.value}>
-                        <div className="flex items-center gap-2">
-                          <div 
-                            className="w-2 h-2 rounded-full shrink-0" 
-                            style={{ backgroundColor: lang.color }}
-                          />
-                          <span className="truncate">{lang.label}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <Select value={language} onValueChange={setLanguage}>
+                <SelectTrigger className="w-48 h-9" data-testid="select-language">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="max-h-[300px]">
+                  {LANGUAGES.map(lang => (
+                    <SelectItem key={lang.value} value={lang.value}>
+                      <div className="flex items-center gap-2">
+                        <div 
+                          className="w-2 h-2 rounded-full" 
+                          style={{ backgroundColor: lang.color }}
+                        />
+                        <span>{lang.label}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
-                <Select value={theme} onValueChange={setTheme}>
-                  <SelectTrigger className="flex-1 sm:w-32 h-9" data-testid="select-theme">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-[200px]">
-                    {THEMES.map(t => (
-                      <SelectItem key={t.value} value={t.value}>
-                        <div className="flex items-center gap-2">
-                          <t.icon className="h-3 w-3 shrink-0" />
-                          <span className="truncate">{t.label}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <Select value={theme} onValueChange={setTheme}>
+                <SelectTrigger className="w-40 h-9" data-testid="select-theme">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="max-h-[200px]">
+                  {THEMES.map(t => (
+                    <SelectItem key={t.value} value={t.value}>
+                      <div className="flex items-center gap-2">
+                        <t.icon className="h-3 w-3" />
+                        <span>{t.label}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Action Buttons Row */}
-            <div className="flex gap-1.5 flex-wrap">
+            <div className="flex gap-2">
               <Button 
                 size="sm" 
                 onClick={handleRun} 
                 disabled={isRunning}
-                className="gap-1.5"
+                className="gap-2"
                 data-testid="button-run"
               >
                 <Play className="h-4 w-4" />
-                <span className="hidden xs:inline">Run</span>
+                Run Code
               </Button>
-              <Button size="sm" variant="outline" onClick={handleSave} data-testid="button-save" title="Save">
-                <Save className="h-4 w-4" />
-                <span className="sr-only">Save</span>
+              <Button size="sm" variant="outline" onClick={handleSave} data-testid="button-save">
+                <Save className="h-4 w-4 mr-2" />
+                Save
               </Button>
-              <Button size="sm" variant="outline" onClick={handleCopy} data-testid="button-copy" title="Copy">
-                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                <span className="sr-only">Copy</span>
+              <Button size="sm" variant="outline" onClick={handleCopy} data-testid="button-copy">
+                {copied ? <Check className="h-4 w-4 mr-2" /> : <Copy className="h-4 w-4 mr-2" />}
+                Copy
               </Button>
-              <Button size="sm" variant="outline" onClick={handleDownload} data-testid="button-download" title="Download">
-                <Download className="h-4 w-4" />
-                <span className="sr-only">Download</span>
+              <Button size="sm" variant="outline" onClick={handleDownload} data-testid="button-download">
+                <Download className="h-4 w-4 mr-2" />
+                Download
               </Button>
-              <Button size="sm" variant="outline" onClick={formatCode} data-testid="button-format" title="Format Code">
-                <Zap className="h-4 w-4" />
-                <span className="sr-only">Format</span>
+              <Button size="sm" variant="outline" onClick={formatCode} data-testid="button-format">
+                <Zap className="h-4 w-4 mr-2" />
+                Format
               </Button>
               <label htmlFor="file-upload">
-                <Button size="sm" variant="outline" asChild data-testid="button-upload" title="Upload File">
+                <Button size="sm" variant="outline" asChild data-testid="button-upload">
                   <span>
-                    <Upload className="h-4 w-4" />
-                    <span className="sr-only">Upload</span>
+                    <Upload className="h-4 w-4 mr-2" />
+                    Upload
                   </span>
                 </Button>
               </label>
@@ -573,9 +569,9 @@ export function CodeIDE() {
                 onChange={handleUpload}
                 accept=".js,.ts,.py,.java,.cpp,.cs,.go,.rs,.php,.rb,.html,.css,.sql,.json,.txt"
               />
-              <Button size="sm" variant="outline" onClick={handleClear} data-testid="button-clear" title="Clear">
-                <Trash2 className="h-4 w-4" />
-                <span className="sr-only">Clear</span>
+              <Button size="sm" variant="outline" onClick={handleClear} data-testid="button-clear">
+                <Trash2 className="h-4 w-4 mr-2" />
+                Clear
               </Button>
             </div>
           </motion.div>
@@ -639,7 +635,7 @@ export function CodeIDE() {
                     ref={textareaRef}
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
-                    className={`font-mono text-xs sm:text-sm min-h-[300px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px] resize-none transition-all flex-1 ${
+                    className={`font-mono text-sm min-h-[600px] resize-none transition-all flex-1 ${
                       theme === "vs-dark" 
                         ? "bg-gray-950 text-gray-100 border-gray-800" 
                         : "bg-white text-gray-900 border-gray-300"
@@ -680,8 +676,8 @@ export function CodeIDE() {
             </TabsContent>
 
             <TabsContent value="output" className="mt-0">
-              <Card className="bg-gray-950 text-green-400 font-mono text-xs sm:text-sm border-2 border-gray-800">
-                <CardContent className="p-3 sm:p-4 min-h-[300px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px] overflow-auto">
+              <Card className="bg-gray-950 text-green-400 font-mono text-sm border-2 border-gray-800">
+                <CardContent className="p-4 min-h-[600px] overflow-auto">
                   {isRunning ? (
                     <div className="flex items-center gap-2">
                       <div className="animate-spin h-4 w-4 border-2 border-green-400 border-t-transparent rounded-full" />
