@@ -23,6 +23,7 @@ const IslamicFinTech = lazy(() => import("@/pages/islamic-fintech"));
 const SEOAnalyzerTool = lazy(() => import("@/pages/seo-analyzer-tool"));
 const WebsiteScannerTool = lazy(() => import("@/pages/website-scanner-tool"));
 const CodePlaygroundTool = lazy(() => import("@/pages/code-playground-tool"));
+const MarketingAssets = lazy(() => import("@/pages/marketing-assets"));
 const FinTechDomain = lazy(() => import("@/pages/domains/fintech"));
 const EdTechDomain = lazy(() => import("@/pages/domains/edtech"));
 const EcommerceDomain = lazy(() => import("@/pages/domains/ecommerce"));
@@ -58,6 +59,7 @@ function Router() {
         <Route path="/calculators" component={Calculators} />
         <Route path="/tools/seo-analyzer" component={SEOAnalyzerTool} />
         <Route path="/tools/website-scanner" component={WebsiteScannerTool} />
+        <Route path="/marketing-assets" component={MarketingAssets} />
         <Route path="/tools/code-playground" component={CodePlaygroundTool} />
         <Route path="/expertise" component={ExpertisePage} />
         <Route path="/islamic-fintech" component={IslamicFinTech} />
