@@ -50,12 +50,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!user) {
         return res.status(401).json({ message: info?.message || "Invalid credentials" });
       }
-      
+
       req.logIn(user, (err) => {
         if (err) {
           return res.status(500).json({ message: "Login failed" });
         }
-        
+
         res.json({
           id: user.id,
           email: user.email,
@@ -101,7 +101,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/contact", async (req, res) => {
     try {
       console.log("Received contact form submission:", req.body);
-      
+
       // Sanitize input to prevent XSS attacks
       const sanitizeString = (str: string) => {
         return str
@@ -119,10 +119,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const validatedData = insertContactMessageSchema.parse(sanitizedBody);
       console.log("Validated data:", validatedData);
-      
+
       const message = await storage.createContactMessage(validatedData);
       console.log("Message saved to database:", message);
-      
+
       // Send email notification (non-blocking)
       const emailHtml = `
         <h2>New Contact Form Submission</h2>
@@ -133,11 +133,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         <hr>
         <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
       `;
-      
+
       sendEmailNotification(`New Contact Form from ${validatedData.name}`, emailHtml).catch(err => 
         console.error("Email notification failed:", err)
       );
-      
+
       res.status(201).json({
         success: true,
         message: "Message sent successfully",
@@ -145,7 +145,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error: any) {
       console.error("Contact form error:", error);
-      
+
       if (error.name === "ZodError") {
         const validationError = fromZodError(error);
         return res.status(400).json({
@@ -153,7 +153,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           message: validationError.message,
         });
       }
-      
+
       res.status(500).json({
         success: false,
         message: error.message || "Failed to send message. Please try again later.",
@@ -196,13 +196,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  
+
 
   app.post("/api/testimonials", isAdmin, async (req, res) => {
     try {
       const validatedData = insertTestimonialSchema.parse(req.body);
       const testimonial = await storage.createTestimonial(validatedData);
-      
+
       res.status(201).json({
         success: true,
         data: testimonial,
@@ -228,67 +228,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { id } = req.params;
       const updated = await storage.updateTestimonial(id, req.body);
-      
+
       if (!updated) {
         return res.status(404).json({
           success: false,
           message: "Testimonial not found",
         });
       }
-      
+
       res.json({
         success: true,
         data: updated,
       });
-
-
-// LinkedIn Article Import with Content Scraping
-app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, res) => {
-  try {
-    const { url, title, excerpt, content, category } = req.body;
-    
-    if (!url || !url.includes('linkedin.com')) {
-      return res.status(400).json({ message: "Invalid LinkedIn URL" });
-    }
-
-    // Extract article ID from URL
-    const urlParts = url.split('/');
-    const articleId = urlParts[urlParts.length - 1] || urlParts[urlParts.length - 2];
-    
-    // Generate slug from title or use article ID
-    const slug = title 
-      ? title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-      : `linkedin-${articleId}-${Date.now()}`;
-
-    // Calculate read time (average reading speed: 200 words/minute)
-    const wordCount = content ? content.split(/\s+/).length : 0;
-    const readTime = Math.max(1, Math.ceil(wordCount / 200));
-
-    const article = await storage.createArticle({
-      title: title || "Imported from LinkedIn",
-      slug,
-      excerpt: excerpt || "This article was imported from LinkedIn.",
-      content: content || `# Imported from LinkedIn\n\nOriginal URL: ${url}`,
-      category: category || "technology",
-      authorId: req.user!.id,
-      published: false,
-      readTime,
-      metaTitle: title || "Imported LinkedIn Article",
-      metaDescription: excerpt || "Article imported from LinkedIn",
-      tags: ['linkedin', 'imported'],
-    });
-
-    res.json({ 
-      success: true, 
-      data: article,
-      message: "Article imported successfully. Review and publish when ready."
-    });
-  } catch (error: any) {
-    console.error("LinkedIn import error:", error);
-    res.status(500).json({ message: error.message });
-  }
-});
-
     } catch (error: any) {
       console.error("Error updating testimonial:", error);
       res.status(500).json({
@@ -302,7 +253,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     try {
       const { id } = req.params;
       await storage.deleteTestimonial(id);
-      
+
       res.json({
         success: true,
         message: "Testimonial deleted successfully",
@@ -317,11 +268,11 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
   });
 
   // Newsletter subscription endpoints
-  app.post("/api/newsletter", async (req, res) => {
+  app.post("/api/newsletter/subscribe", async (req, res) => {
     try {
       const validatedData = insertNewsletterSubscriberSchema.parse(req.body);
       const subscriber = await storage.createNewsletterSubscriber(validatedData);
-      
+
       // Send welcome email
       const welcomeEmailHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -346,12 +297,12 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
           </p>
         </div>
       `;
-      
+
       sendEmailNotification(
         `Welcome to Fasih's Newsletter!`,
         welcomeEmailHtml
       ).catch(err => console.error("Welcome email failed:", err));
-      
+
       res.status(201).json({
         success: true,
         message: "Successfully subscribed! Check your email for a welcome message.",
@@ -395,7 +346,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     try {
       const validatedData = insertCareerInquirySchema.parse(req.body);
       const inquiry = await storage.createCareerInquiry(validatedData);
-      
+
       // Send email notification
       const emailHtml = `
         <h2>New Career Inquiry</h2>
@@ -411,9 +362,9 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
         <hr>
         <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
       `;
-      
+
       await sendEmailNotification(`New Career Inquiry: ${validatedData.inquiryType}`, emailHtml);
-      
+
       res.status(201).json({
         success: true,
         message: "Your inquiry has been submitted successfully!",
@@ -456,12 +407,12 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     try {
       const userId = req.user.id;
       const validatedData = insertArticleSchema.parse(req.body);
-      
+
       const article = await storage.createArticle({
         ...validatedData,
         authorId: userId,
       });
-      
+
       res.status(201).json({
         success: true,
         data: article,
@@ -487,14 +438,14 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     try {
       const { id } = req.params;
       const updated = await storage.updateArticle(id, req.body);
-      
+
       if (!updated) {
         return res.status(404).json({
           success: false,
           message: "Article not found",
         });
       }
-      
+
       res.json({
         success: true,
         data: updated,
@@ -512,7 +463,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     try {
       const { id } = req.params;
       await storage.deleteArticle(id);
-      
+
       res.json({
         success: true,
         message: "Article deleted successfully",
@@ -530,7 +481,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     try {
       const publishedOnly = req.query.published !== "false";
       const articles = await storage.getAllArticles(publishedOnly);
-      
+
       res.json({
         success: true,
         data: articles,
@@ -548,7 +499,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     try {
       const { slug } = req.params;
       const article = await storage.getArticleBySlug(slug);
-      
+
       if (!article) {
         return res.status(404).json({
           success: false,
@@ -559,7 +510,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
       if (article.published) {
         await storage.incrementArticleViews(article.id);
       }
-      
+
       res.json({
         success: true,
         data: article,
@@ -573,10 +524,58 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     }
   });
 
+  // LinkedIn Article Import with Content Scraping
+  app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { url, title, excerpt, content, category } = req.body;
+
+      if (!url || !url.includes('linkedin.com')) {
+        return res.status(400).json({ message: "Invalid LinkedIn URL" });
+      }
+
+      // Extract article ID from URL
+      const urlParts = url.split('/');
+      const articleId = urlParts[urlParts.length - 1] || urlParts[urlParts.length - 2];
+
+      // Generate slug from title or use article ID
+      const slug = title 
+        ? title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+        : `linkedin-${articleId}-${Date.now()}`;
+
+      // Calculate read time (average reading speed: 200 words/minute)
+      const wordCount = content ? content.split(/\s+/).length : 0;
+      const readTime = Math.max(1, Math.ceil(wordCount / 200));
+
+      const article = await storage.createArticle({
+        title: title || "Imported from LinkedIn",
+        slug,
+        excerpt: excerpt || "This article was imported from LinkedIn.",
+        content: content || `# Imported from LinkedIn\n\nOriginal URL: ${url}`,
+        category: category || "technology",
+        authorId: req.user!.id,
+        published: false,
+        readTime,
+        metaTitle: title || "Imported LinkedIn Article",
+        metaDescription: excerpt || "Article imported from LinkedIn",
+        tags: ['linkedin', 'imported'],
+      });
+
+      res.json({ 
+        success: true, 
+        data: article,
+        message: "Article imported successfully. Review and publish when ready."
+      });
+    } catch (error: any) {
+      console.error("LinkedIn import error:", error);
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+
   app.get("/api/stocks", async (req, res) => {
     try {
       const symbols = ["AAPL", "GOOGL", "MSFT", "TSLA"];
-      
+
       const FINNHUB_API_KEY = process.env.FINNHUB_API_KEY;
       if (FINNHUB_API_KEY) {
         const stockPromises = symbols.map(async (symbol) => {
@@ -585,7 +584,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
               `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${FINNHUB_API_KEY}`
             );
             const data = await response.json();
-            
+
             if (data && data.c) {
               return {
                 symbol,
@@ -602,19 +601,19 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
 
         const results = await Promise.all(stockPromises);
         const validResults = results.filter(r => r !== null);
-        
+
         if (validResults.length > 0) {
           return res.json(validResults);
         }
       }
-      
+
       const mockData = symbols.map(symbol => ({
         symbol,
         price: (Math.random() * 300 + 100).toFixed(2),
         change: (Math.random() * 10 - 5).toFixed(2),
         changePercent: ((Math.random() * 5 - 2.5)).toFixed(2) + "%",
       }));
-      
+
       res.json(mockData);
     } catch (error: any) {
       console.error("Error fetching stocks:", error);
@@ -634,19 +633,19 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
           }
         }
       );
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`CoinGecko API error: ${response.status} - ${errorText}`);
         throw new Error(`API error: ${response.status}`);
       }
-      
+
       const data = await response.json();
       console.log('Successfully fetched live crypto data');
       res.json(data);
     } catch (error) {
       console.error('Error fetching crypto data:', error);
-      
+
       // Return error response instead of mock data
       res.status(503).json({
         error: 'Unable to fetch live crypto data',
@@ -733,7 +732,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
           technologies.push(tech);
         }
       }
-      
+
       if (headers['server']?.includes('nginx')) technologies.push('Nginx');
       if (headers['server']?.includes('apache')) technologies.push('Apache');
       if (headers['server']?.includes('cloudflare')) technologies.push('Cloudflare CDN');
@@ -942,7 +941,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
       if (metaDescMatch && metaDescMatch[1].length >= 150 && metaDescMatch[1].length <= 160) score += 15;
       if (imagesWithAlt === images.length && images.length > 0) score += 10;
       if (loadTime < 3000) score += 10;
-      if (ogTitleMatch && ogDescMatch && ogImageMatch) score += 10;
+      if (ogTitleMatch && ogDescMatch) score += 10;
 
       const recommendations = [];
       if (!technical.hasHttps) recommendations.push({ category: 'Security', priority: 'high', message: 'Enable HTTPS encryption' });
@@ -1026,6 +1025,129 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     }
   });
 
+  // Code execution endpoint
+  app.post('/api/execute-code', async (req, res) => {
+    try {
+      const { code, language } = req.body;
+
+      if (!code || !language) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Code and language are required' 
+        });
+      }
+
+      const { exec } = await import('child_process');
+      const { promisify } = await import('util');
+      const execAsync = promisify(exec);
+      const fs = await import('fs');
+      const path = await import('path');
+      const { randomBytes } = await import('crypto');
+
+      // Create temporary directory for code execution
+      const tmpDir = path.join('/tmp', `code-${randomBytes(8).toString('hex')}`);
+      await fs.promises.mkdir(tmpDir, { recursive: true });
+
+      let command = '';
+      let filename = '';
+
+      try {
+        switch (language) {
+          case 'python':
+            filename = path.join(tmpDir, 'script.py');
+            await fs.promises.writeFile(filename, code);
+            command = `python3 ${filename}`;
+            break;
+
+          case 'javascript':
+          case 'typescript':
+            filename = path.join(tmpDir, 'script.js');
+            await fs.promises.writeFile(filename, code);
+            command = `node ${filename}`;
+            break;
+
+          case 'java':
+            filename = path.join(tmpDir, 'Main.java');
+            await fs.promises.writeFile(filename, code);
+            command = `cd ${tmpDir} && javac Main.java && java Main`;
+            break;
+
+          case 'cpp':
+            filename = path.join(tmpDir, 'program.cpp');
+            await fs.promises.writeFile(filename, code);
+            command = `cd ${tmpDir} && g++ program.cpp -o program && ./program`;
+            break;
+
+          case 'go':
+            filename = path.join(tmpDir, 'main.go');
+            await fs.promises.writeFile(filename, code);
+            command = `cd ${tmpDir} && go run main.go`;
+            break;
+
+          case 'rust':
+            filename = path.join(tmpDir, 'main.rs');
+            await fs.promises.writeFile(filename, code);
+            command = `cd ${tmpDir} && rustc main.rs && ./main`;
+            break;
+
+          case 'ruby':
+            filename = path.join(tmpDir, 'script.rb');
+            await fs.promises.writeFile(filename, code);
+            command = `ruby ${filename}`;
+            break;
+
+          case 'php':
+            filename = path.join(tmpDir, 'script.php');
+            await fs.promises.writeFile(filename, code);
+            command = `php ${filename}`;
+            break;
+
+          default:
+            throw new Error(`Language ${language} is not supported for backend execution`);
+        }
+
+        // Execute with timeout
+        const { stdout, stderr } = await execAsync(command, {
+          timeout: 5000, // 5 second timeout
+          maxBuffer: 1024 * 1024, // 1MB max output
+        });
+
+        // Clean up
+        await fs.promises.rm(tmpDir, { recursive: true, force: true });
+
+        res.json({
+          success: true,
+          output: (stdout + (stderr ? '\n⚠️ Warnings:\n' + stderr : '')).trim() || 'Code executed successfully with no output',
+        });
+
+      } catch (execError: any) {
+        // Clean up on error
+        try {
+          await fs.promises.rm(tmpDir, { recursive: true, force: true });
+        } catch {}
+
+        if (execError.killed) {
+          res.json({
+            success: false,
+            error: 'Execution timeout (5 seconds limit)',
+          });
+        } else {
+          res.json({
+            success: false,
+            error: execError.stderr || execError.message || 'Execution failed',
+          });
+        }
+      }
+
+    } catch (error: any) {
+      console.error('Code execution error:', error);
+      res.status(500).json({
+        success: false,
+        error: error.message || 'Internal server error',
+      });
+    }
+  });
+
   // Cryptocurrency API endpoint with fallback data
   app.get("/api/crypto", async (req, res) => {
     try {
@@ -1039,17 +1161,17 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
           }
         }
       );
-      
+
       if (response.ok) {
         const data = await response.json();
         console.log('Successfully fetched live crypto data from CoinGecko');
         return res.json(data);
       }
-      
+
       throw new Error(`CoinGecko API error: ${response.status}`);
     } catch (error) {
       console.error('Error fetching crypto data, using fallback:', error);
-      
+
       // Return realistic fallback data based on current market
       const fallbackData = [
         {
@@ -1153,7 +1275,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
           sparkline_in_7d: { price: Array(168).fill(0).map((_, i) => 36 + Math.random() * 5) }
         }
       ];
-      
+
       res.json(fallbackData);
     }
   });
@@ -1165,11 +1287,11 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
       const response = await fetch(
         `https://api.alquran.cloud/v1/surah/${surah}/en.asad`
       );
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch Quran data');
       }
-      
+
       const data = await response.json();
       res.json(data);
     } catch (error) {
@@ -1183,18 +1305,18 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     try {
       const book = req.params.book || 'bukhari';
       const number = req.params.number;
-      
+
       let url = 'https://random-hadith-generator.vercel.app/bukhari/';
       if (number) {
         url = `https://random-hadith-generator.vercel.app/${book}/${number}`;
       }
-      
+
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch Hadith data');
       }
-      
+
       const data = await response.json();
       res.json(data);
     } catch (error) {
@@ -1213,11 +1335,11 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
       );
       const quranData = await quranResponse.json();
       const randomAyah = quranData.data.ayahs[Math.floor(Math.random() * quranData.data.ayahs.length)];
-      
+
       // Get random Hadith
       const hadithResponse = await fetch('https://random-hadith-generator.vercel.app/bukhari/');
       const hadithData = await hadithResponse.json();
-      
+
       res.json({
         ayah: {
           text: randomAyah.text,
@@ -1236,21 +1358,21 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     }
   });
 
-  
+
 
   app.get("/api/news/:category?", async (req, res) => {
     try {
       const category = req.params.category || req.query.category || "business";
-      
+
       // Try BBC News RSS feed first (free, no API key needed)
       try {
         const bbcUrl = category === "technology" 
           ? 'http://feeds.bbci.co.uk/news/technology/rss.xml'
           : 'http://feeds.bbci.co.uk/news/business/rss.xml';
-        
+
         const response = await fetch(bbcUrl);
         const xmlText = await response.text();
-        
+
         // Parse RSS XML
         const items = xmlText.match(/<item>[\s\S]*?<\/item>/g) || [];
         const articles = items.slice(0, 5).map(item => {
@@ -1258,7 +1380,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
           const description = item.match(/<description><!\[CDATA\[(.*?)\]\]><\/description>/)?.[1] || '';
           const link = item.match(/<link>(.*?)<\/link>/)?.[1] || '';
           const pubDate = item.match(/<pubDate>(.*?)<\/pubDate>/)?.[1] || new Date().toISOString();
-          
+
           return {
             title,
             description: description.replace(/<[^>]*>/g, ''),
@@ -1267,14 +1389,14 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
             source: { name: "BBC News" },
           };
         });
-        
+
         if (articles.length > 0) {
           return res.json({ articles });
         }
       } catch (error) {
         console.error("Error fetching BBC RSS:", error);
       }
-      
+
       // Fallback to NewsAPI if available
       const NEWS_API_KEY = process.env.NEWS_API_KEY;
       if (NEWS_API_KEY) {
@@ -1283,7 +1405,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
             `https://newsapi.org/v2/top-headlines?category=${category}&language=en&pageSize=5&apiKey=${NEWS_API_KEY}`
           );
           const data = await response.json();
-          
+
           if (data.status === "ok" && data.articles && data.articles.length > 0) {
             return res.json({ articles: data.articles });
           }
@@ -1291,7 +1413,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
           console.error("Error fetching from News API:", error);
         }
       }
-      
+
       // Last resort fallback
       const fallbackArticles = [
         {
@@ -1316,7 +1438,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
           source: { name: "Global Business" },
         },
       ];
-      
+
       res.json({ articles: fallbackArticles });
     } catch (error: any) {
       console.error("Error fetching news:", error);
@@ -1329,7 +1451,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     try {
       const validatedData = insertLeadCaptureSchema.parse(req.body);
       const lead = await storage.createLeadCapture(validatedData);
-      
+
       // Send email notification
       const emailHtml = `
         <h2>New Lead Capture</h2>
@@ -1347,11 +1469,11 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
         <hr>
         <p><small>Captured at: ${new Date().toLocaleString()}</small></p>
       `;
-      
+
       sendEmailNotification(`New Lead from ${validatedData.name}`, emailHtml).catch(err => 
         console.error("Email notification failed:", err)
       );
-      
+
       res.status(201).json({
         success: true,
         message: "Lead captured successfully",
@@ -1359,7 +1481,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
       });
     } catch (error: any) {
       console.error("Lead capture error:", error);
-      
+
       if (error.name === "ZodError") {
         const validationError = fromZodError(error);
         return res.status(400).json({
@@ -1367,7 +1489,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
           message: validationError.message,
         });
       }
-      
+
       res.status(500).json({
         success: false,
         message: error.message || "Failed to capture lead",
@@ -1407,9 +1529,9 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
   app.post("/api/calculators/calculate", async (req, res) => {
     try {
       const { type, inputs } = req.body;
-      
+
       let results;
-      
+
       switch (type) {
         case 'bnpl':
           results = calculateBNPL(inputs);
@@ -1432,7 +1554,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
         default:
           return res.status(400).json({ success: false, message: "Invalid calculator type" });
       }
-      
+
       res.json({
         success: true,
         data: results,
@@ -1447,7 +1569,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     try {
       const validatedData = insertCalculatorResultSchema.parse(req.body);
       const result = await storage.createCalculatorResult(validatedData);
-      
+
       res.status(201).json({
         success: true,
         message: "Calculation saved successfully",
@@ -1455,7 +1577,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
       });
     } catch (error: any) {
       console.error("Save calculator error:", error);
-      
+
       if (error.name === "ZodError") {
         const validationError = fromZodError(error);
         return res.status(400).json({
@@ -1463,7 +1585,7 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
           message: validationError.message,
         });
       }
-      
+
       res.status(500).json({
         success: false,
         message: error.message || "Failed to save calculation",
@@ -1504,21 +1626,21 @@ app.post("/api/articles/import-linkedin", isAuthenticated, isAdmin, async (req, 
     try {
       const validatedData = insertPageAnalyticsSchema.parse(req.body);
       const analytics = await storage.createPageAnalytics(validatedData);
-      
+
       res.status(201).json({
         success: true,
         data: analytics,
       });
     } catch (error: any) {
       console.error("Analytics error:", error);
-      
+
       if (error.name === "ZodError") {
         return res.status(400).json({
           success: false,
           message: "Invalid analytics data",
         });
       }
-      
+
       res.status(500).json({
         success: false,
         message: "Failed to track pageview",
@@ -1606,10 +1728,10 @@ ${pages.map(page => `  <url>
 // Calculator Logic Functions
 function calculateBNPL(inputs: any) {
   const { purchaseAmount, numberOfInstallments, processingFee = 0 } = inputs;
-  
+
   const totalAmount = Number(purchaseAmount) + Number(processingFee);
   const installmentAmount = totalAmount / Number(numberOfInstallments);
-  
+
   const schedule = [];
   for (let i = 1; i <= numberOfInstallments; i++) {
     schedule.push({
@@ -1618,7 +1740,7 @@ function calculateBNPL(inputs: any) {
       dueDate: new Date(Date.now() + i * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     });
   }
-  
+
   return {
     purchaseAmount: Number(purchaseAmount),
     processingFee: Number(processingFee),
@@ -1631,12 +1753,12 @@ function calculateBNPL(inputs: any) {
 
 function calculateMurabaha(inputs: any) {
   const { assetCost, profitRate, tenureMonths } = inputs;
-  
+
   const cost = Number(assetCost);
   const profit = (cost * Number(profitRate)) / 100;
   const totalAmount = cost + profit;
   const monthlyInstallment = totalAmount / Number(tenureMonths);
-  
+
   return {
     assetCost: cost.toFixed(2),
     profitRate: Number(profitRate),
@@ -1650,20 +1772,20 @@ function calculateMurabaha(inputs: any) {
 
 function calculateIjarah(inputs: any) {
   const { assetValue, leasePeriodMonths, residualValue, profitRate } = inputs;
-  
+
   const asset = Number(assetValue);
   const residual = Number(residualValue);
   const period = Number(leasePeriodMonths);
   const rate = Number(profitRate) / 100 / 12;
-  
+
   const depreciableAmount = asset - residual;
   const monthlyDepreciation = depreciableAmount / period;
   const monthlyProfit = asset * (Number(profitRate) / 100) / 12;
   const monthlyRental = monthlyDepreciation + monthlyProfit;
-  
+
   const totalRentals = monthlyRental * period;
   const totalCost = totalRentals + residual;
-  
+
   return {
     assetValue: asset.toFixed(2),
     residualValue: residual.toFixed(2),
@@ -1677,12 +1799,12 @@ function calculateIjarah(inputs: any) {
 
 function calculateROI(inputs: any) {
   const { initialInvestment, returns, timeperiodMonths } = inputs;
-  
+
   const investment = Number(initialInvestment);
   const profit = Number(returns);
   const roi = ((profit / investment) * 100).toFixed(2);
   const annualizedROI = ((profit / investment) * (12 / Number(timeperiodMonths)) * 100).toFixed(2);
-  
+
   return {
     initialInvestment: investment.toFixed(2),
     returns: profit.toFixed(2),
@@ -1695,15 +1817,15 @@ function calculateROI(inputs: any) {
 
 function calculateTakaful(inputs: any) {
   const { sumAssured, age, term, contributionFrequency = 'monthly' } = inputs;
-  
+
   const baseRate = 0.005;
   const ageMultiplier = 1 + (Number(age) - 25) * 0.02;
   const termMultiplier = 1 + (Number(term) - 1) * 0.01;
-  
+
   const annualContribution = Number(sumAssured) * baseRate * ageMultiplier * termMultiplier;
   let contribution;
   let frequency;
-  
+
   switch (contributionFrequency) {
     case 'monthly':
       contribution = annualContribution / 12;
@@ -1725,7 +1847,7 @@ function calculateTakaful(inputs: any) {
       contribution = annualContribution / 12;
       frequency = 'month';
   }
-  
+
   return {
     sumAssured: Number(sumAssured).toFixed(2),
     age: Number(age),
@@ -1739,11 +1861,11 @@ function calculateTakaful(inputs: any) {
 
 function calculateProfitSharing(inputs: any) {
   const { totalProfit, investorSharePercentage, partnerSharePercentage } = inputs;
-  
+
   const profit = Number(totalProfit);
   const investorShare = (profit * Number(investorSharePercentage)) / 100;
   const partnerShare = (profit * Number(partnerSharePercentage)) / 100;
-  
+
   return {
     totalProfit: profit.toFixed(2),
     investorSharePercentage: Number(investorSharePercentage) + '%',

@@ -278,11 +278,43 @@ export function CodeIDE() {
           description: "Check the new tab for preview",
         });
       } else {
-        setOutput(`✅ ${LANGUAGES.find(l => l.value === language)?.label} Syntax Check\n\nCode structure appears valid.\nNote: Server-side execution for ${language} requires backend compilation service.\n\n📝 Code Preview:\n${code.substring(0, 300)}${code.length > 300 ? '...' : ''}`);
-        toast({
-          title: "Simulation Mode",
-          description: `${language} requires backend compilation`,
-        });
+        // Execute server-side languages via backend API
+        try {
+          const response = await fetch('/api/execute-code', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              code,
+              language,
+            }),
+          });
+
+          const result = await response.json();
+          
+          if (result.success) {
+            setOutput(result.output || '✅ Code executed successfully with no output');
+            toast({
+              title: "Execution Complete",
+              description: "Check the Output tab for results",
+            });
+          } else {
+            setOutput(`❌ Execution Error:\n\n${result.error || 'Unknown error occurred'}`);
+            toast({
+              title: "Execution Failed",
+              description: result.error || "Unknown error",
+              variant: "destructive",
+            });
+          }
+        } catch (error) {
+          setOutput(`❌ Backend Error:\n\nFailed to execute code on server.\n${error instanceof Error ? error.message : String(error)}`);
+          toast({
+            title: "Backend Error",
+            description: "Could not connect to execution server",
+            variant: "destructive",
+          });
+        }
       }
     } catch (error) {
       setOutput(`❌ Execution Error:\n\n${error instanceof Error ? error.message : String(error)}`);
