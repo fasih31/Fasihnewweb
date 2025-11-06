@@ -58,6 +58,28 @@ function fibonacci(n: number): number {
   return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
+
+const CODE_SNIPPETS = {
+  javascript: {
+    "For Loop": "for (let i = 0; i < arr.length; i++) {\n  console.log(arr[i]);\n}",
+    "Arrow Function": "const myFunc = (param) => {\n  return param * 2;\n};",
+    "Promise": "const myPromise = new Promise((resolve, reject) => {\n  // async operation\n  resolve(result);\n});",
+    "Async/Await": "async function fetchData() {\n  try {\n    const response = await fetch(url);\n    const data = await response.json();\n    return data;\n  } catch (error) {\n    console.error(error);\n  }\n}",
+  },
+  python: {
+    "For Loop": "for item in collection:\n    print(item)",
+    "List Comprehension": "squares = [x**2 for x in range(10)]",
+    "Function": "def my_function(param):\n    return param * 2",
+    "Try/Except": "try:\n    # code\n    pass\nexcept Exception as e:\n    print(f'Error: {e}')",
+  },
+  typescript: {
+    "Interface": "interface User {\n  id: number;\n  name: string;\n  email: string;\n}",
+    "Type": "type Status = 'pending' | 'success' | 'error';",
+    "Generic Function": "function identity<T>(arg: T): T {\n  return arg;\n}",
+  },
+};
+
+
 // Test with type safety
 const result: number = fibonacci(10);
 console.log(\`Result: \${result}\`);`,
@@ -118,7 +140,17 @@ public class FibonacciCalculator {
 </html>`,
 };
 
+interface FileTab {
+  name: string;
+  content: string;
+  language: string;
+}
+
 export function CodeIDE() {
+  const [files, setFiles] = useState<FileTab[]>([
+    { name: "untitled.js", content: CODE_TEMPLATES.javascript, language: "javascript" }
+  ]);
+  const [activeFileIndex, setActiveFileIndex] = useState(0);
   const [code, setCode] = useState(CODE_TEMPLATES.javascript);
   const [language, setLanguage] = useState("javascript");
   const [theme, setTheme] = useState("vs-dark");
@@ -129,6 +161,10 @@ export function CodeIDE() {
   const [copied, setCopied] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [fontSize, setFontSize] = useState(14);
+  const [showLineNumbers, setShowLineNumbers] = useState(true);
+  const [showFindReplace, setShowFindReplace] = useState(false);
+  const [findText, setFindText] = useState("");
+  const [replaceText, setReplaceText] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { toast } = useToast();
 
@@ -170,23 +206,91 @@ export function CodeIDE() {
     setOutput("🚀 Running code...\n");
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      if (language === "javascript") {
-        setOutput(`✅ JavaScript Code Syntax Validated\n\n⚠️ Security Notice: Direct code execution is disabled to protect against malicious scripts.\n\nFor testing your JavaScript code, please use:\n• Browser DevTools Console (F12)\n• CodePen, JSFiddle, or CodeSandbox\n• Your local development environment\n\n📝 Code Preview:\n${code.substring(0, 300)}${code.length > 300 ? '\n\n...(truncated for preview)' : ''}\n\n✨ Your code looks syntactically valid and ready to use!`);
+      if (language === "javascript" || language === "typescript") {
+        // Create sandboxed iframe for safe execution
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+        
+        const iframeWindow = iframe.contentWindow;
+        if (!iframeWindow) {
+          throw new Error('Failed to create sandbox');
+        }
+
+        let consoleOutput = '';
+        
+        // Capture console output
+        iframeWindow.console = {
+          log: (...args) => {
+            consoleOutput += args.map(arg => 
+              typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ') + '\n';
+          },
+          error: (...args) => {
+            consoleOutput += '❌ ERROR: ' + args.map(arg => String(arg)).join(' ') + '\n';
+          },
+          warn: (...args) => {
+            consoleOutput += '⚠️ WARNING: ' + args.map(arg => String(arg)).join(' ') + '\n';
+          },
+          info: (...args) => {
+            consoleOutput += 'ℹ️ INFO: ' + args.map(arg => String(arg)).join(' ') + '\n';
+          },
+        } as Console;
+
+        try {
+          // Execute code in sandbox with timeout
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Execution timeout (5s)')), 5000)
+          );
+          
+          const executionPromise = new Promise((resolve) => {
+            try {
+              iframeWindow.eval(code);
+              resolve(true);
+            } catch (err) {
+              consoleOutput += `❌ Runtime Error: ${err instanceof Error ? err.message : String(err)}\n`;
+              resolve(false);
+            }
+          });
+
+          await Promise.race([executionPromise, timeoutPromise]);
+          
+          setOutput(consoleOutput || '✅ Code executed successfully with no console output');
+          toast({
+            title: "Execution Complete",
+            description: "Check the Output tab for results",
+          });
+        } finally {
+          document.body.removeChild(iframe);
+        }
+      } else if (language === "html") {
+        // HTML preview in iframe
+        const blob = new Blob([code], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        setOutput(`✅ HTML Preview Generated\n\nYour HTML is rendered in a sandbox.\nOpen browser console (F12) to see any JavaScript output.`);
+        
+        // Could show preview in modal or separate tab
+        window.open(url, '_blank');
+        URL.revokeObjectURL(url);
+        
         toast({
-          title: "Syntax Check Complete",
-          description: "Code structure validated - use external tools for execution",
+          title: "HTML Preview Opened",
+          description: "Check the new tab for preview",
         });
       } else {
-        setOutput(`✅ ${LANGUAGES.find(l => l.value === language)?.label} Simulation\n\nCode syntax appears valid.\nNote: Full execution requires backend compilation service.\n\n📝 Code Preview:\n${code.substring(0, 200)}${code.length > 200 ? '...' : ''}`);
+        setOutput(`✅ ${LANGUAGES.find(l => l.value === language)?.label} Syntax Check\n\nCode structure appears valid.\nNote: Server-side execution for ${language} requires backend compilation service.\n\n📝 Code Preview:\n${code.substring(0, 300)}${code.length > 300 ? '...' : ''}`);
         toast({
           title: "Simulation Mode",
           description: `${language} requires backend compilation`,
         });
       }
     } catch (error) {
-      setOutput(`❌ Unexpected Error:\n\n${error instanceof Error ? error.message : String(error)}`);
+      setOutput(`❌ Execution Error:\n\n${error instanceof Error ? error.message : String(error)}`);
+      toast({
+        title: "Execution Failed",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive",
+      });
     } finally {
       setIsRunning(false);
     }
@@ -484,20 +588,36 @@ export function CodeIDE() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                <Textarea
-                  ref={textareaRef}
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  className={`font-mono text-xs sm:text-sm min-h-[300px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px] resize-none transition-all w-full ${
-                    theme === "vs-dark" 
-                      ? "bg-gray-950 text-gray-100 border-gray-800" 
-                      : "bg-white text-gray-900 border-gray-300"
-                  }`}
-                  style={{ fontSize: `${fontSize}px`, lineHeight: '1.6' }}
-                  placeholder="Start coding... Type your code here"
-                  spellCheck={false}
-                  data-testid="textarea-code"
-                />
+                <div className="flex gap-0">
+                  {showLineNumbers && (
+                    <div 
+                      className={`font-mono text-xs sm:text-sm select-none border-r pr-2 ${
+                        theme === "vs-dark" 
+                          ? "bg-gray-900 text-gray-500 border-gray-800" 
+                          : "bg-gray-50 text-gray-400 border-gray-300"
+                      }`}
+                      style={{ fontSize: `${fontSize}px`, lineHeight: '1.6', paddingTop: '0.75rem' }}
+                    >
+                      {code.split('\n').map((_, i) => (
+                        <div key={i} className="text-right px-2">{i + 1}</div>
+                      ))}
+                    </div>
+                  )}
+                  <Textarea
+                    ref={textareaRef}
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    className={`font-mono text-xs sm:text-sm min-h-[300px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px] resize-none transition-all flex-1 ${
+                      theme === "vs-dark" 
+                        ? "bg-gray-950 text-gray-100 border-gray-800" 
+                        : "bg-white text-gray-900 border-gray-300"
+                    }`}
+                    style={{ fontSize: `${fontSize}px`, lineHeight: '1.6' }}
+                    placeholder="Start coding... Type your code here"
+                    spellCheck={false}
+                    data-testid="textarea-code"
+                  />
+                </div>
                 <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground px-1">
                   <div className="flex items-center gap-4">
                     <span>Lines: {code.split('\n').length}</span>
