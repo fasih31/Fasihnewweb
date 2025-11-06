@@ -15,6 +15,11 @@ import { LoanCalculator } from "@/components/tools/loan-calculator";
 import { SEOChecker } from "@/components/tools/seo-checker";
 import { CodeIDE } from "@/components/tools/code-ide";
 import { AudioVideoConverter } from "@/components/tools/audio-video-converter";
+import { QRGenerator } from "@/components/tools/qr-generator";
+import { PasswordGenerator } from "@/components/tools/password-generator";
+import { JSONFormatter } from "@/components/tools/json-formatter";
+import { Base64Converter } from "@/components/tools/base64-converter";
+import { HashGenerator } from "@/components/tools/hash-generator";
 import {
   TrendingUp,
   DollarSign,
@@ -27,7 +32,12 @@ import {
   ExternalLink,
   CheckCircle2,
   Music,
-  Video
+  Video,
+  QrCode,
+  Key,
+  FileJson,
+  Binary,
+  Hash
 } from "lucide-react";
 
 interface Tool {
@@ -142,6 +152,61 @@ const tools: Tool[] = [
     gradient: "from-pink-500 to-purple-500",
     category: "Utilities",
     openAsPage: false
+  },
+  {
+    id: "qr-code",
+    title: "QR Code Generator",
+    description: "Create custom QR codes for URLs, text, and contact information",
+    icon: QrCode,
+    features: ["Custom Size", "Error Correction", "Instant Generation", "Download PNG"],
+    component: QRGenerator,
+    gradient: "from-violet-500 to-purple-500",
+    category: "Utilities",
+    openAsPage: false
+  },
+  {
+    id: "password",
+    title: "Password Generator",
+    description: "Generate strong, secure passwords with customizable complexity",
+    icon: Key,
+    features: ["Customizable Length", "Multiple Options", "Strength Meter", "Copy to Clipboard"],
+    component: PasswordGenerator,
+    gradient: "from-amber-500 to-orange-500",
+    category: "Security",
+    openAsPage: false
+  },
+  {
+    id: "json",
+    title: "JSON Formatter",
+    description: "Format, validate, and minify JSON data with syntax highlighting",
+    icon: FileJson,
+    features: ["Format JSON", "Minify JSON", "Validate Syntax", "Copy Output"],
+    component: JSONFormatter,
+    gradient: "from-lime-500 to-green-500",
+    category: "Development",
+    openAsPage: false
+  },
+  {
+    id: "base64",
+    title: "Base64 Converter",
+    description: "Encode and decode text to/from Base64 format",
+    icon: Binary,
+    features: ["Encode Text", "Decode Base64", "Instant Conversion", "Copy Results"],
+    component: Base64Converter,
+    gradient: "from-sky-500 to-blue-500",
+    category: "Development",
+    openAsPage: false
+  },
+  {
+    id: "hash",
+    title: "Hash Generator",
+    description: "Generate MD5, SHA-256, and other cryptographic hashes",
+    icon: Hash,
+    features: ["MD5 Hash", "SHA-256 Hash", "Multiple Algorithms", "Copy Hashes"],
+    component: HashGenerator,
+    gradient: "from-rose-500 to-red-500",
+    category: "Security",
+    openAsPage: false
   }
 ];
 
@@ -153,8 +218,8 @@ export default function Tools() {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Free Professional Tools & Utilities — Fasih ur Rehman"
-        description="Access free interactive professional tools including real-time crypto market tracker, currency converter, unit converter, website scanner, and financial loan calculators. Built with modern web technologies by Fasih ur Rehman."
+        title="Free Online Tools: QR Code, Password Generator, SEO Analyzer, Currency Converter & More"
+        description="Access 13+ free professional online tools including QR code generator, password generator, SEO analyzer, website scanner, JSON formatter, Base64 converter, hash generator, crypto tracker, currency converter, loan calculator, and code playground. Built by Fasih ur Rehman - FinTech Advisor & Product Manager."
       />
       <Navigation />
 

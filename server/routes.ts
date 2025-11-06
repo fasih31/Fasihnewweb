@@ -77,8 +77,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  app.get("/api/auth/me", isAuthenticated, async (req: any, res) => {
+  app.get("/api/auth/me", async (req: any, res) => {
     try {
+      if (!req.user) {
+        return res.json(null);
+      }
       const user = req.user;
       const isUserAdmin = user.email === "Fasih31@gmail.com";
       res.json({
