@@ -1,0 +1,95 @@
+51
+51/100
+SEO Score
+14/28
+Passed Tests
+4/28
+Warnings
+10/28
+Failed Tests
+Basic SEO
+Common Keywords ?A list of keywords that appear frequently in the text of your content.
+Here are the most common keywords we found on the page:
+99ac3ec8dde9930fseacurrentlydocumentationgatewayminutesownerpleasepoweredreferrenders
+SEO Description ?SEO analysis of your page's meta-description.
+How to fix No meta description was found on on this page.
+H1 Heading ?SEO Analysis of the H1 Tags on your page.
+One H1 tag was found on the page.
+Bad Gateway
+H2 Headings ?SEO analysis of the H2 headings on your page.
+How to fix No H2 tag was found on the page.
+Image ALT Attributes ?SEO analysis of the "alt" attribute for image tags.
+No images found on the page
+Keywords in Title & Description ?SEO analysis of the HTML page's Title and meta description content.
+How to fix No page description found on the page.
+Links Ratio ?SEO analysis of the ratio of internal links to external links.
+How to fix There are one or more issues with the number of links on this page:
+No internal links found.
+internal: 0
+external: 2
+SEO Title ?SEO analysis of the HTML title of the page.
+How to fix The page title has 3 characters which is less than the recommended minimum of 6.
+502
+Create a responsive site ?Our analysis of the use of CSS media queries in your content.
+How to fix The CSS code does not contain media queries.
+Homepage Is Reachable ?Tests if your homepage is reachable by making an HTTP request.
+How to fix Homepage returned HTTP status code 502 when trying to access http://iamfasih.com
+Advanced SEO
+Search Preview
+Here is how the site may appear in search results:
+502
+http://iamfasih.com
+Canonical Tag ?Does the content have a "canonical" URL?
+How to fix No canonical link tag found on the page.
+null
+Noindex Meta ?Does the content contain a noindex robots meta tag?
+The page does not contain any index meta tag or header.
+Mobile Search Preview
+Here is how the site may appear in search results on a mobile device:
+502
+http://iamfasih.com
+Mobile Snapshot ?A snapshot of how your content appears on a mobile device.
+
+WWW Canonicalization ?Does the site appear on more than one URL?
+Both www and non-www versions of the URL are redirected to the same site.
+OpenGraph Meta ?Does your site use OpenGraph meta tags?
+How to fix Some Opengraph meta tags are missing.
+Schema Meta Data ?Does the content include relevant Schema.org metadata?
+How to fix No Schema.org data found on the page.
+Sitemaps ?Does the site use an XML sitemap?
+How to fix No sitemaps found.
+Robots.txt ?Does your site have a valid robots.txt file
+How to fix Robots.txt file is missing or unavailable. Try our free robots.txt editor tool to easily test and validate your robots.txt file.
+Keep your content fresh ?Checks for recent content updates using available signals (XML sitemap, og:updated_time, or Last-Modified header).
+How to fix No content freshness information found (no XML sitemap lastmod, og:updated_time, or Last-Modified header).
+Broken Links ?Detects broken or dead links (404/500 errors) in the website that may harm SEO and user trust.
+No broken links on the page.
+Performance
+Install WP Rocket to get the Performance Boost
+Page Size ?An analysis of the size of your HTML file.
+How to fix The size of the HTML document is 159 Kb, over the average of 33 Kb and our recommendation of 50 Kb.
+Response Time ?How fast does your server respond to requests?
+The response time is under 0.8 seconds which is great.
+Image Headers Expire ?Do your images use "expires" headers?
+No local images found on the page
+Minify CSS ?Are your CSS files properly minified?
+All CSS files appear to be minified.
+Page Objects ?Analysis of the embedded objects in the pages.
+The page makes 0 requests.
+total: 0
+images: 0
+javascript: 0
+stylesheets: 0
+Minify Javascript ?Does the site use minified JavaScript?
+All Javascript files appear to be minified.
+Mobile Speed ?How fast does your website respond to mobile users?
+The page performance is good across all key metrics.
+Security
+Theme Visibility ?Theme Visibility
+The theme is not publicly visible, so it is not easily identifiable.
+Visible Plugins ?Visible Plugins
+Hurray! None of the plugins are publicly visible.
+Directory Listing ?Does your web server list the contents of the directories?
+Directory Listing seems to be disabled on the server.
+Secure Connection ?Is your content served over a secure connection?
+The site is using a secure transfer protocol (https).
