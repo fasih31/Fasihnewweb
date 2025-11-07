@@ -122,10 +122,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const validatedData = insertContactMessageSchema.parse(sanitizedBody);
       console.log("Validated data:", validatedData);
 
-      const message = await storage.createContactMessage(validatedData);
-      console.log("Message saved to database:", message);
-
-      // Send email notification (non-blocking)
+      // Send email notification directly
       const emailHtml = `
         <h2>New Contact Form Submission</h2>
         <p><strong>From:</strong> ${validatedData.name}</p>
@@ -136,14 +133,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
       `;
 
-      sendEmailNotification(`New Contact Form from ${validatedData.name}`, emailHtml).catch(err =>
-        console.error("Email notification failed:", err)
-      );
+      await sendEmailNotification(`New Contact Form from ${validatedData.name}`, emailHtml);
 
       res.status(201).json({
         success: true,
         message: "Message sent successfully",
-        data: message,
       });
     } catch (error: any) {
       console.error("Contact form error:", error);
