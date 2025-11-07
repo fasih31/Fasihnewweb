@@ -99,60 +99,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Contact form submission endpoint
+  // Contact form submission endpoint - sends email only
   app.post("/api/contact", async (req, res) => {
     try {
-      console.log("Received contact form submission:", req.body);
+      const { name, email, message } = req.body;
 
-      // Sanitize input to prevent XSS attacks
-      const sanitizeString = (str: string) => {
-        return str
-          .replace(/[<>]/g, '') // Remove HTML tags
-          .trim()
-          .substring(0, 5000); // Limit length
-      };
+      // Basic validation
+      if (!name || !email || !message) {
+        return res.status(400).json({
+          success: false,
+          message: "Please fill in all fields",
+        });
+      }
 
-      const sanitizedBody = {
-        ...req.body,
-        name: req.body.name ? sanitizeString(req.body.name) : '',
-        email: req.body.email ? sanitizeString(req.body.email) : '',
-        message: req.body.message ? sanitizeString(req.body.message) : '',
-      };
-
-      const validatedData = insertContactMessageSchema.parse(sanitizedBody);
-      console.log("Validated data:", validatedData);
+      if (!email.includes('@')) {
+        return res.status(400).json({
+          success: false,
+          message: "Please enter a valid email address",
+        });
+      }
 
       // Send email notification directly
       const emailHtml = `
         <h2>New Contact Form Submission</h2>
-        <p><strong>From:</strong> ${validatedData.name}</p>
-        <p><strong>Email:</strong> ${validatedData.email}</p>
+        <p><strong>From:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
         <p><strong>Message:</strong></p>
-        <p>${validatedData.message}</p>
+        <p>${message}</p>
         <hr>
         <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
       `;
 
-      await sendEmailNotification(`New Contact Form from ${validatedData.name}`, emailHtml);
+      await sendEmailNotification(`New Contact from ${name}`, emailHtml);
 
-      res.status(201).json({
+      res.status(200).json({
         success: true,
         message: "Message sent successfully",
       });
     } catch (error: any) {
       console.error("Contact form error:", error);
-
-      if (error.name === "ZodError") {
-        const validationError = fromZodError(error);
-        return res.status(400).json({
-          success: false,
-          message: validationError.message,
-        });
-      }
-
       res.status(500).json({
         success: false,
-        message: error.message || "Failed to send message. Please try again later.",
+        message: "Failed to send message. Please try again later.",
       });
     }
   });
