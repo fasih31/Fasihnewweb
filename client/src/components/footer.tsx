@@ -68,7 +68,7 @@ export function Footer() {
         {/* Bottom Bar - Copyright & Legal */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
           <div className="flex flex-col items-center sm:items-start gap-1">
-            <p>&copy; {new Date().getFullYear()} Fasih ur Rehman. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Fasih — Designed, Secured, and Optimized with Best Practices.</p>
             <p className="text-xs">Professional Product Manager | FinTech & AI Specialist</p>
           </div>
           <div className="flex gap-6">

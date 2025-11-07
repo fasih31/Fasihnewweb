@@ -47,31 +47,27 @@ app.use((req, res, next) => {
 // Trust proxy (important for rate limiting behind reverse proxies)
 app.set('trust proxy', 1);
 
-// Comprehensive Security Headers
+// Comprehensive Security Headers - Industry Best Practices
 app.use((req, res, next) => {
-  // Allow iframe embedding for Replit environment, prevent clickjacking elsewhere
-  if (process.env.REPL_ID) {
-    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-  } else {
-    res.setHeader('X-Frame-Options', 'DENY');
-  }
+  // Prevent clickjacking attacks
+  res.setHeader('X-Frame-Options', 'DENY');
 
   // Prevent MIME type sniffing
   res.setHeader('X-Content-Type-Options', 'nosniff');
 
-  // Enable XSS protection
+  // Enable XSS protection (legacy browsers)
   res.setHeader('X-XSS-Protection', '1; mode=block');
 
-  // Referrer policy
+  // Referrer policy for privacy
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
 
-  // Permissions policy
-  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=(), payment=(), usb=()');
+  // Restrict browser features
+  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=(), payment=(), usb=(), interest-cohort=()');
   res.setHeader('X-DNS-Prefetch-Control', 'on');
   res.setHeader('X-Download-Options', 'noopen');
   res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
 
-  // Content Security Policy - updated for better security
+  // Content Security Policy - Strict security with necessary external resources
   res.setHeader(
     'Content-Security-Policy',
     "default-src 'self'; " +
@@ -82,19 +78,23 @@ app.use((req, res, next) => {
     "connect-src 'self' https://api.coingecko.com https://api.exchangerate-api.com https://finnhub.io https://newsapi.org https://api.alquran.cloud https://random-hadith-generator.vercel.app; " +
     "frame-ancestors 'none'; " +
     "base-uri 'self'; " +
-    "form-action 'self'"
+    "form-action 'self'; " +
+    "upgrade-insecure-requests; " +
+    "block-all-mixed-content"
   );
 
-  // HSTS for HTTPS
+  // HTTP Strict Transport Security (HSTS) - Force HTTPS
   if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   }
 
-  // Security headers for cache control
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  res.setHeader('Surrogate-Control', 'no-store');
+  // Cache control for security-sensitive pages
+  if (req.path.startsWith('/api') || req.path.includes('admin')) {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
+  }
 
   next();
 });

@@ -53,9 +53,10 @@ export async function setupAuth(app: Express) {
     return;
   }
 
-  const callbackURL = process.env.NODE_ENV === "production"
-    ? `https://${process.env.REPLIT_DOMAINS?.split(",")[0]}/api/auth/google/callback`
-    : "http://localhost:5000/api/auth/google/callback";
+  const callbackURL = process.env.GOOGLE_CALLBACK_URL || 
+    (process.env.NODE_ENV === "production"
+      ? "https://iamfasih.com/api/auth/google/callback"
+      : "http://localhost:5000/api/auth/google/callback");
 
   passport.use(
     new GoogleStrategy(

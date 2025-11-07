@@ -24,7 +24,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER || 'Fasih31@gmail.com',
-    pass: process.env.EMAIL_PASSWORD, // You'll need to set this in Replit Secrets
+    pass: process.env.EMAIL_PASSWORD, // Set this in environment variables for production
   },
 });
 
@@ -2432,26 +2432,39 @@ Allow: /`);
       { url: '/portfolio', priority: '0.8', changefreq: 'weekly' },
       { url: '/blog', priority: '0.9', changefreq: 'daily' },
       { url: '/contact', priority: '0.7', changefreq: 'monthly' },
-      { url: '/tools', priority: '0.9', changefreq: 'weekly' },
-      { url: '/tools/seo-analyzer', priority: '0.9', changefreq: 'weekly' },
-      { url: '/tools/website-scanner', priority: '0.9', changefreq: 'weekly' },
-      { url: '/tools/code-playground', priority: '0.8', changefreq: 'weekly' },
-      { url: '/tools/crypto-tracker', priority: '0.8', changefreq: 'daily' },
-      { url: '/tools/currency-converter', priority: '0.8', changefreq: 'daily' },
-      { url: '/tools/json-formatter', priority: '0.7', changefreq: 'monthly' },
-      { url: '/tools/password-generator', priority: '0.7', changefreq: 'monthly' },
-      { url: '/tools/qr-generator', priority: '0.7', changefreq: 'monthly' },
-      { url: '/tools/lorem-ipsum', priority: '0.6', changefreq: 'monthly' },
-      { url: '/calculators', priority: '0.8', changefreq: 'weekly' },
+      { url: '/expertise', priority: '0.8', changefreq: 'monthly' },
       { url: '/career', priority: '0.7', changefreq: 'monthly' },
+      { url: '/library', priority: '0.7', changefreq: 'weekly' },
+      { url: '/marketing-assets', priority: '0.7', changefreq: 'monthly' },
+      { url: '/stocks', priority: '0.7', changefreq: 'daily' },
+      { url: '/news', priority: '0.7', changefreq: 'daily' },
+      { url: '/ide', priority: '0.8', changefreq: 'weekly' },
+      
+      // Domain Pages
+      { url: '/islamic-fintech', priority: '0.9', changefreq: 'monthly' },
       { url: '/domains/fintech', priority: '0.8', changefreq: 'monthly' },
       { url: '/domains/ecommerce', priority: '0.8', changefreq: 'monthly' },
       { url: '/domains/edtech', priority: '0.8', changefreq: 'monthly' },
       { url: '/domains/crypto-web3', priority: '0.8', changefreq: 'monthly' },
       { url: '/domains/telecom', priority: '0.8', changefreq: 'monthly' },
       { url: '/domains/ai-ml', priority: '0.8', changefreq: 'monthly' },
-      { url: '/islamic-fintech', priority: '0.9', changefreq: 'monthly' },
-      { url: '/library', priority: '0.7', changefreq: 'weekly' },
+      
+      // Tools Hub
+      { url: '/tools', priority: '0.9', changefreq: 'weekly' },
+      { url: '/calculators', priority: '0.8', changefreq: 'weekly' },
+      
+      // Professional Tools (High Priority)
+      { url: '/tools/seo-analyzer', priority: '0.9', changefreq: 'weekly' },
+      { url: '/tools/website-scanner', priority: '0.9', changefreq: 'weekly' },
+      { url: '/tools/code-playground', priority: '0.8', changefreq: 'weekly' },
+      { url: '/tools/crypto-tracker', priority: '0.8', changefreq: 'daily' },
+      { url: '/tools/currency-converter', priority: '0.8', changefreq: 'daily' },
+      
+      // Developer Tools
+      { url: '/tools/json-formatter', priority: '0.7', changefreq: 'monthly' },
+      { url: '/tools/password-generator', priority: '0.7', changefreq: 'monthly' },
+      { url: '/tools/qr-generator', priority: '0.7', changefreq: 'monthly' },
+      { url: '/tools/lorem-ipsum', priority: '0.6', changefreq: 'monthly' },
     ];
 
     // Get dynamic blog articles

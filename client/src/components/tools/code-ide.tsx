@@ -108,7 +108,7 @@ export function CodeIDE() {
   return (
     <div className={`${isFullscreen ? "fixed inset-0 z-50 bg-background" : ""}`}>
       <Card className={`border-0 shadow-none ${isFullscreen ? "h-full rounded-none" : ""}`}>
-        {/* Header - Replit-style */}
+        {/* Professional IDE Header */}
         <div className="border-b bg-card/50 backdrop-blur-sm">
           <div className="flex items-center justify-between p-3 gap-3">
             <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -146,7 +146,7 @@ export function CodeIDE() {
           </div>
         </div>
 
-        {/* Main Content - Split View like Replit */}
+        {/* Main Content - Split View Editor */}
         <div className={`grid lg:grid-cols-2 gap-0 ${isFullscreen ? "h-[calc(100vh-69px)]" : "h-[600px]"}`}>
           {/* Editor Panel */}
           <div className="flex flex-col border-r">
