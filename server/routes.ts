@@ -972,14 +972,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           accessControl: html.includes('login'),
           dataAtRest: hasHttps,
           dataInTransit: hasHttps && !!headers['strict-transport-security'],
-          protectiveT technology: !!headers['x-frame-options'],
+          protectiveTechnology: !!headers['x-frame-options'],
         },
         detect: {
           anomaliesAndEvents: html.includes('analytics'),
           continuousMonitoring: html.includes('monitor'),
         },
         respond: {
-          responseN: html.includes('error'),
+          responsePlanning: html.includes('error'),
           communications: html.includes('contact'),
         },
         recover: {
