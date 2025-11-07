@@ -1,6 +1,7 @@
+
 import { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "dark" | "light";
+type Theme = "dark" | "light" | "ocean" | "forest" | "sunset";
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -29,7 +30,7 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
+    root.classList.remove("light", "dark", "ocean", "forest", "sunset");
     root.classList.add(theme);
     localStorage.setItem("theme", theme);
   }, [theme]);

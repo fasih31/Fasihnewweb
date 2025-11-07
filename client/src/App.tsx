@@ -41,7 +41,7 @@ const IDEPage = lazy(() => import("@/pages/ide"));
 const ExpertisePage = lazy(() => import("@/pages/expertise"));
 const StocksDetail = lazy(() => import("@/pages/stocks-detail"));
 const NewsDetail = lazy(() => import("@/pages/news-detail"));
-
+const Library = lazy(() => import("@/pages/library"));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-background dark:bg-gray-950 flex items-center justify-center">
@@ -86,6 +86,7 @@ function Router() {
         <Route path="/ide" component={IDEPage} />
         <Route path="/stocks" component={StocksDetail} />
         <Route path="/news" component={NewsDetail} />
+        <Route path="/library" component={Library} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>

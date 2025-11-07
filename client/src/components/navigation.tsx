@@ -116,6 +116,11 @@ export function Navigation() {
                 {link.name}
               </Button>
             ))}
+            <Link href="/library">
+              <Button variant="ghost" className="hover-elevate active-elevate-2 text-sm">
+                Library
+              </Button>
+            </Link>
           </nav>
 
           {/* Desktop Actions */}
@@ -212,6 +217,11 @@ export function Navigation() {
                 {link.name}
               </Button>
             ))}
+            <Link href="/library">
+              <Button variant="ghost" className="w-full justify-start hover-elevate active-elevate-2 h-12 text-base">
+                Library
+              </Button>
+            </Link>
             <div className="pt-3 mt-2 border-t border-border/50">
               <p className="text-sm font-semibold text-muted-foreground px-3 py-2 mb-1">Tools</p>
               {toolsMenuItems.map((tool) => (
