@@ -1,0 +1,12 @@
+
+# DMARC DNS Configuration Instructions
+# 
+# Add the following TXT record to your DNS:
+# Host: _dmarc.iamfasih.com
+# Type: TXT
+# Value: v=DMARC1; p=quarantine; rua=mailto:dmarc@iamfasih.com; ruf=mailto:dmarc@iamfasih.com; fo=1
+#
+# This will:
+# - Set policy to quarantine suspicious emails
+# - Send aggregate reports to dmarc@iamfasih.com
+# - Send forensic reports for all failures

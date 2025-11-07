@@ -1,0 +1,12 @@
+
+# SPF DNS Configuration Instructions
+#
+# Add the following TXT record to your DNS:
+# Host: iamfasih.com (or @)
+# Type: TXT
+# Value: v=spf1 include:_spf.google.com include:mailgun.org ~all
+#
+# This will:
+# - Allow Google Workspace to send emails
+# - Allow Mailgun to send emails
+# - Soft-fail all other senders

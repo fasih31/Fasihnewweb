@@ -25,8 +25,8 @@ export default function Home() {
   return (
     <>
       <SEOHead
-        title="Fasih ur Rehman | Best FinTech Advisor & Product Manager | Free SEO Tools, Online Calculators"
-        description="Expert FinTech Advisor & Product Manager with 9+ years experience in Islamic Finance, E-commerce Designer, EdTech Solutions. Access free professional tools: SEO analyzer, website scanner, QR code generator, password generator, crypto tracker, currency converter, loan calculator, and more. Delivering digital transformation across UAE, Saudi Arabia & Middle East."
+        title="Fasih ur Rehman | FinTech PM & Islamic Finance"
+        description="Expert FinTech Product Manager with 9+ years in Islamic Finance, BNPL, Digital Banking & AI. Free tools: SEO analyzer, QR generator, calculators."
         keywords="Fasih ur Rehman, FinTech Advisor, Product Manager Dubai, Islamic Finance Expert, E-commerce Designer, SEO Tools, Website Analyzer, QR Code Generator, Password Generator, Online Calculators, Crypto Market Tracker, Currency Converter, JSON Formatter, Free Online Tools, EdTech Solutions, Digital Transformation UAE, Shariah Compliant Banking"
         canonicalUrl="https://iamfasih.com"
         schema={[getPersonSchema(), getOrganizationSchema(), getServiceSchema(), getFAQSchema(), ...getScholarlyArticleSchema()]}

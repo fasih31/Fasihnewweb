@@ -17,8 +17,8 @@ interface SEOHeadProps {
 }
 
 export function SEOHead({
-  title = "Fasih ur Rehman - FinTech PM & Islamic Finance Expert",
-  description = "Expert FinTech Product Manager with 9+ years in Islamic Finance, E-commerce, EdTech, AI & Crypto. Delivering digital transformation across Middle East.",
+  title = "Fasih ur Rehman | FinTech PM & Islamic Finance",
+  description = "Expert FinTech Product Manager with 9+ years in Islamic Finance, BNPL, Digital Banking & AI. Delivering transformation across UAE & Middle East.",
   keywords = "Fasih ur Rehman, Product Manager Dubai, FinTech, Islamic Finance, E-commerce, EdTech, DaaS, SaaS, Telecom, AI, Crypto, Web3, Blockchain, Shariah Compliant, Digital Transformation, UAE, Saudi Arabia, BNPL, Murabaha, Ijarah, Takaful, Islamic Banking, Halal Finance, PMP Certified",
   ogImage = "/og-image.png",
   canonicalUrl,
@@ -39,10 +39,10 @@ export function SEOHead({
         <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="author" content="Fasih ur Rehman" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
         <meta name="format-detection" content="telephone=no" />
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-        {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+        <link rel="canonical" href={canonicalUrl || currentUrl} />
 
         {/* Geographic and Language Targeting */}
         <meta name="geo.region" content="AE-DU" />
@@ -119,6 +119,24 @@ export function SEOHead({
         <meta name="google-site-verification" content="GOOGLE_VERIFICATION_CODE_PLACEHOLDER" />
         <meta name="msvalidate.01" content="BING_VERIFICATION_CODE_PLACEHOLDER" />
         <meta name="yandex-verification" content="YANDEX_VERIFICATION_CODE_PLACEHOLDER" />
+        
+        {/* Facebook Pixel - Add your pixel ID when ready */}
+        {typeof window !== "undefined" && (
+          <script dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', 'YOUR_PIXEL_ID_HERE');
+              fbq('track', 'PageView');
+            `
+          }} />
+        )}
 
         {/* Rich Snippet Enhancement */}
         <meta name="page-topic" content="FinTech Product Management and Islamic Finance Solutions" />

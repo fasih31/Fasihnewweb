@@ -32,3 +32,7 @@ Sitemap: https://iamfasih.com/sitemap.xml
 
 # Crawl Delay (optional, helps prevent server overload)
 Crawl-delay: 1
+
+# Contact Information
+# DMARC: Configure at your DNS provider: _dmarc.iamfasih.com TXT "v=DMARC1; p=quarantine; rua=mailto:dmarc@iamfasih.com"
+# SPF: Configure at your DNS provider: iamfasih.com TXT "v=spf1 include:_spf.google.com ~all"
