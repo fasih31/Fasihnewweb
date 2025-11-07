@@ -26,7 +26,7 @@ export type ContactMessage = typeof contactMessages.$inferSelect;
 
 // Simple user for article authorship tracking
 export const users = pgTable("users", {
-  id: varchar("id").primaryKey(),
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   email: varchar("email").notNull().unique(),
   name: varchar("name").notNull(),
   picture: varchar("picture"),
