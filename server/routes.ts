@@ -797,55 +797,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Performance metrics
       const performanceMetrics = {
         loadTime,
-
-
-  // Schema Markup Validator
-  app.post("/api/seo-schema", async (req, res) => {
-    try {
-      const { url } = req.body;
-      const response = await fetch(url);
-      const html = await response.text();
-      const $ = cheerio.load(html);
-
-      const schemas = [];
-      $('script[type="application/ld+json"]').each((_, el) => {
-        try {
-          const schemaData = JSON.parse($(el).html() || '{}');
-          schemas.push({
-            type: schemaData['@type'],
-            data: schemaData,
-            valid: true,
-          });
-        } catch (error) {
-          schemas.push({
-            type: 'unknown',
-            data: {},
-            valid: false,
-            error: 'Invalid JSON-LD',
-          });
-        }
-      });
-
-      res.json({
-        success: true,
-        data: {
-          hasStructuredData: schemas.length > 0,
-          schemaCount: schemas.length,
-          schemas,
-          recommendations: schemas.length === 0 ? [
-            'Add Organization schema for brand identity',
-            'Implement Article schema for blog posts',
-            'Use Product schema for e-commerce',
-            'Add BreadcrumbList for navigation',
-          ] : [],
-        },
-      });
-    } catch (error: any) {
-      console.error('Schema validation error:', error);
-      res.status(500).json({ success: false, message: error.message });
-    }
-  });
-
         htmlSize: html.length,
         compression: headers['content-encoding'] || 'none',
         cacheControl: headers['cache-control'] || 'not set',
@@ -975,6 +926,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error scanning website:', error);
       res.status(500).json({ error: 'Failed to scan website' });
+    }
+  });
+
+  // Schema Markup Validator
+  app.post("/api/seo-schema", async (req, res) => {
+    try {
+      const { url } = req.body;
+      const response = await fetch(url);
+      const html = await response.text();
+      const $ = cheerio.load(html);
+
+      const schemas = [];
+      $('script[type="application/ld+json"]').each((_, el) => {
+        try {
+          const schemaData = JSON.parse($(el).html() || '{}');
+          schemas.push({
+            type: schemaData['@type'],
+            data: schemaData,
+            valid: true,
+          });
+        } catch (error) {
+          schemas.push({
+            type: 'unknown',
+            data: {},
+            valid: false,
+            error: 'Invalid JSON-LD',
+          });
+        }
+      });
+
+      res.json({
+        success: true,
+        data: {
+          hasStructuredData: schemas.length > 0,
+          schemaCount: schemas.length,
+          schemas,
+          recommendations: schemas.length === 0 ? [
+            'Add Organization schema for brand identity',
+            'Implement Article schema for blog posts',
+            'Use Product schema for e-commerce',
+            'Add BreadcrumbList for navigation',
+          ] : [],
+        },
+      });
+    } catch (error: any) {
+      console.error('Schema validation error:', error);
+      res.status(500).json({ success: false, message: error.message });
     }
   });
 
