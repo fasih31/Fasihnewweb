@@ -1353,6 +1353,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             h1Tags: h1Count,
             h2Tags: h2Count,
             h3Tags: h3Count,
+            h4Tags: 0,
+            h5Tags: 0,
+            h6Tags: 0,
             totalWords,
             readabilityScore: Math.round(readabilityScore),
             keywordDensity: {},
@@ -1361,8 +1364,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             total: images.length,
             withAlt: imagesWithAlt,
             withoutAlt: images.length - imagesWithAlt,
-            oversized: 0, // Cannot determine size without fetching
-            totalSize: 0, // Cannot determine size without fetching
+            oversized: 0,
+            totalSize: 0,
             optimizationSuggestions: [],
           },
           links: {
@@ -1409,6 +1412,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Continue with Puppeteer analysis if successful
       const $ = cheerio.load(await page.content());
+      const html = await page.content();
       const headers = Object.fromEntries(page.headers());
 
       const hasHttps = targetUrl.startsWith('https://');
