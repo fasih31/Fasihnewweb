@@ -805,6 +805,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         asyncScripts: (html.match(/<script[^>]*async[^>]*>/gi) || []).length,
         deferScripts: (html.match(/<script[^>]*defer[^>]*>/gi) || []).length,
       };
+        totalResources: scripts + stylesheets + (html.match(/<img[^>]*>/gi) || []).length,
+        lazyLoadImages: (html.match(/loading\s*=\s*["']lazy["']/gi) || []).length,
+        asyncScripts: (html.match(/<script[^>]*async[^>]*>/gi) || []).length,
+        deferScripts: (html.match(/<script[^>]*defer[^>]*>/gi) || []).length,
+      };
 
       // Real Lighthouse scores from audit
       const lighthouseScores = {
@@ -896,19 +901,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         headers,
         technologies,
-        screenshots,
-        ocr,
-        lighthouse: lighthouseScores,
-        lighthouseDetails: {
-          firstContentfulPaint: lhr?.audits?.['first-contentful-paint']?.numericValue,
-          speedIndex: lhr?.audits?.['speed-index']?.numericValue,
-          largestContentfulPaint: lhr?.audits?.['largest-contentful-paint']?.numericValue,
-          timeToInteractive: lhr?.audits?.['interactive']?.numericValue,
-          totalBlockingTime: lhr?.audits?.['total-blocking-time']?.numericValue,
-          cumulativeLayoutShift: lhr?.audits?.['cumulative-layout-shift']?.numericValue,
-        },
         security,
-        codeQuality,
         performanceMetrics,
         htmlStructure: {
           totalElements,
@@ -921,7 +914,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
           buttons,
           inputs,
         },
-        domainInfo,
       });
     } catch (error) {
       console.error('Error scanning website:', error);
