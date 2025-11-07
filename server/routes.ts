@@ -797,6 +797,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Performance metrics
       const performanceMetrics = {
         loadTime,
+
+
+  // Schema Markup Validator
+  app.post("/api/seo-schema", async (req, res) => {
+    try {
+      const { url } = req.body;
+      const response = await fetch(url);
+      const html = await response.text();
+      const $ = cheerio.load(html);
+
+      const schemas = [];
+      $('script[type="application/ld+json"]').each((_, el) => {
+        try {
+          const schemaData = JSON.parse($(el).html() || '{}');
+          schemas.push({
+            type: schemaData['@type'],
+            data: schemaData,
+            valid: true,
+          });
+        } catch (error) {
+          schemas.push({
+            type: 'unknown',
+            data: {},
+            valid: false,
+            error: 'Invalid JSON-LD',
+          });
+        }
+      });
+
+      res.json({
+        success: true,
+        data: {
+          hasStructuredData: schemas.length > 0,
+          schemaCount: schemas.length,
+          schemas,
+          recommendations: schemas.length === 0 ? [
+            'Add Organization schema for brand identity',
+            'Implement Article schema for blog posts',
+            'Use Product schema for e-commerce',
+            'Add BreadcrumbList for navigation',
+          ] : [],
+        },
+      });
+    } catch (error: any) {
+      console.error('Schema validation error:', error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  });
+
         htmlSize: html.length,
         compression: headers['content-encoding'] || 'none',
         cacheControl: headers['cache-control'] || 'not set',
@@ -847,6 +896,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
         responsive,
         loadTime,
         status: response.status,
+
+
+  // Backlink Analysis API
+  app.post("/api/seo-backlinks", async (req, res) => {
+    try {
+      const { url } = req.body;
+      
+      // In production, integrate with Moz, Ahrefs, or SEMrush API
+      // For now, provide mock comprehensive data
+      
+      const backlinkData = {
+        totalBacklinks: Math.floor(Math.random() * 10000) + 1000,
+        referringDomains: Math.floor(Math.random() * 500) + 100,
+        domainAuthority: Math.floor(Math.random() * 40) + 60,
+        pageAuthority: Math.floor(Math.random() * 30) + 50,
+        topBacklinks: Array.from({ length: 20 }, (_, i) => ({
+          sourceUrl: `https://authority-site-${i + 1}.com/article`,
+          targetUrl: url,
+          anchorText: ['SEO tools', 'website analyzer', 'best SEO', 'optimization guide'][Math.floor(Math.random() * 4)],
+          domainAuthority: Math.floor(Math.random() * 40) + 50,
+          linkType: ['dofollow', 'nofollow'][Math.floor(Math.random() * 2)],
+          firstSeen: new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000).toISOString(),
+        })),
+        linkVelocity: {
+          newLinks30Days: Math.floor(Math.random() * 100) + 20,
+          lostLinks30Days: Math.floor(Math.random() * 30) + 5,
+          trend: 'growing',
+        },
+        anchorTextDistribution: {
+          'branded': 35,
+          'exact-match': 15,
+          'partial-match': 25,
+          'generic': 20,
+          'naked-url': 5,
+        },
+      };
+
+      res.json({
+        success: true,
+        data: backlinkData,
+      });
+    } catch (error: any) {
+      console.error('Backlink analysis error:', error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  });
+
         headers,
         technologies,
         screenshots,
@@ -997,6 +1093,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
         hasViewport: $('meta[name="viewport"]').length > 0,
         hasCharset: $('meta[charset]').length > 0 || $('meta[http-equiv="Content-Type"]').length > 0,
         hasLangAttribute: $('html').attr('lang') !== undefined,
+
+
+  // Schedule SEO Monitoring
+  app.post("/api/seo-monitor/schedule", isAuthenticated, async (req, res) => {
+    try {
+      const { url, email, frequency } = req.body; // frequency: daily, weekly, monthly
+      
+      const monitoringConfig = {
+        url,
+        email,
+        frequency,
+        userId: req.user!.id,
+        nextRunAt: new Date(),
+        createdAt: new Date(),
+      };
+
+      // Store in database
+      await storage.createSEOMonitor(monitoringConfig);
+
+      // Send confirmation email
+      const emailHtml = `
+        <h2>SEO Monitoring Scheduled</h2>
+        <p>We'll monitor <strong>${url}</strong> and send you ${frequency} reports.</p>
+        <p>You'll receive alerts when significant SEO changes are detected.</p>
+      `;
+
+      await sendEmailNotification(`SEO Monitoring Activated for ${url}`, emailHtml);
+
+      res.json({
+        success: true,
+        message: "SEO monitoring scheduled successfully",
+        data: monitoringConfig,
+      });
+    } catch (error: any) {
+      console.error("Schedule monitoring error:", error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  });
+
         hasFavicon: $('link[rel="icon"]').length > 0 || $('link[rel="shortcut icon"]').length > 0,
         hasServiceWorker: html.includes('serviceWorker'),
         isAMPEnabled: $('link[rel="amphtml"]').length > 0,
@@ -1050,9 +1185,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let readabilityScore = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
       readabilityScore = Math.max(0, Math.min(100, readabilityScore)); // Clamp 0-100
 
+      // Check for international SEO
+      const hreflangTags = $('link[rel="alternate"][hreflang]').length;
+      const hasMultiLanguage = hreflangTags > 0;
+      const languageVersions = $('link[rel="alternate"][hreflang]').map((_, el) => ({
+        hreflang: $(el).attr('hreflang'),
+        href: $(el).attr('href'),
+      })).get();
+
       // Calculate overall score
       let score = 0;
       if (technical.hasHttps) score += 5;
+      if (hasMultiLanguage) score += 5; // Bonus for international SEO
       if (technical.hasCanonical) score += 5;
       if (technical.hasViewport) score += 5;
       if (h1Count >= 1 && h1Count <= 1) score += 10; // Exactly one H1
@@ -1077,9 +1221,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!technical.hasLangAttribute) recommendations.push({ category: 'Accessibility', priority: 'low', message: 'Add a language attribute to the <html> tag' });
 
 
+      // AI-powered content suggestions using OpenAI
+      let aiContentSuggestions;
+      if (process.env.OPENAI_API_KEY) {
+        try {
+          const openai = await import('openai');
+          const client = new openai.default({
+            apiKey: process.env.OPENAI_API_KEY,
+          });
+
+          const response = await client.chat.completions.create({
+            model: 'gpt-4',
+            messages: [
+              {
+                role: 'system',
+                content: 'You are an SEO expert. Analyze the provided content and suggest improvements.',
+              },
+              {
+                role: 'user',
+                content: `Title: ${title}\nMeta Description: ${metaDescription}\nContent: ${bodyText.substring(0, 2000)}\n\nProvide 5 specific SEO improvements.`,
+              },
+            ],
+            max_tokens: 500,
+          });
+
+          aiContentSuggestions = response.choices[0].message.content;
+        } catch (error) {
+          console.error('OpenAI error:', error);
+        }
+      }
+
       res.json({
         url,
         score: Math.min(100, score),
+        aiContentSuggestions,
         performance: {
           loadTime,
           pageSize: html.length,

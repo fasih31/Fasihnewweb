@@ -133,6 +133,7 @@ export function SEOChecker() {
   const [url, setUrl] = useState("");
   const [compareMode, setCompareMode] = useState(false);
   const [competitorUrls, setCompetitorUrls] = useState<string[]>([]);
+  const [comparisonResults, setComparisonResults] = useState<SEOAnalysis[]>([]);
 
   const analyzeMutation = useMutation<SEOAnalysis, Error, string>({
     mutationFn: async (analyzeUrl) => {
@@ -206,28 +207,77 @@ export function SEOChecker() {
   const handleDownloadPDF = async () => {
     if (!analyzeMutation.data) return;
     
-    // Generate PDF report with comprehensive SEO data
+    const data = analyzeMutation.data;
     const htmlContent = `
       <!DOCTYPE html>
       <html>
       <head>
         <style>
-          body { font-family: Arial, sans-serif; padding: 20px; }
-          h1 { color: #333; }
-          .metric { margin: 10px 0; padding: 10px; background: #f5f5f5; }
-          .score { font-size: 48px; font-weight: bold; color: #0066cc; }
+          body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; max-width: 1200px; margin: 0 auto; }
+          h1 { color: #2563eb; border-bottom: 3px solid #2563eb; padding-bottom: 10px; }
+          h2 { color: #334155; margin-top: 30px; border-left: 4px solid #2563eb; padding-left: 15px; }
+          .header { text-align: center; margin-bottom: 40px; }
+          .score { font-size: 72px; font-weight: bold; color: ${data.score >= 90 ? '#22c55e' : data.score >= 70 ? '#eab308' : '#ef4444'}; }
+          .metric { margin: 10px 0; padding: 15px; background: #f8fafc; border-radius: 8px; display: flex; justify-content: space-between; }
+          .metric-label { font-weight: 600; color: #475569; }
+          .metric-value { color: #0f172a; }
+          .status-pass { color: #22c55e; font-weight: bold; }
+          .status-fail { color: #ef4444; font-weight: bold; }
+          .recommendation { background: #fef3c7; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 4px solid #eab308; }
+          .priority-high { border-left-color: #ef4444; background: #fee2e2; }
+          .priority-medium { border-left-color: #eab308; background: #fef3c7; }
+          .priority-low { border-left-color: #3b82f6; background: #dbeafe; }
+          table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+          th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+          th { background: #f1f5f9; font-weight: 600; }
+          .footer { margin-top: 50px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; color: #64748b; }
         </style>
       </head>
       <body>
-        <h1>SEO Analysis Report - ${analyzeMutation.data.url}</h1>
-        <div class="score">Score: ${analyzeMutation.data.score}/100</div>
-        <h2>Performance Metrics</h2>
-        <div class="metric">Load Time: ${analyzeMutation.data.performance.loadTime}ms</div>
-        <div class="metric">Page Size: ${(analyzeMutation.data.performance.pageSize / 1024).toFixed(2)} KB</div>
-        <h2>Technical SEO</h2>
-        ${Object.entries(analyzeMutation.data.technical).map(([key, value]) => 
-          `<div class="metric">${key}: ${value ? '✓' : '✗'}</div>`
+        <div class="header">
+          <h1>🚀 Professional SEO Analysis Report</h1>
+          <p style="color: #64748b; font-size: 18px;">${data.url}</p>
+          <p style="color: #94a3b8;">Generated on ${new Date().toLocaleString()}</p>
+        </div>
+        
+        <div style="text-align: center; margin: 40px 0;">
+          <div class="score">${data.score}/100</div>
+          <p style="font-size: 20px; color: #64748b;">Overall SEO Score</p>
+        </div>
+
+        <h2>⚡ Performance Metrics</h2>
+        <div class="metric"><span class="metric-label">Load Time</span><span class="metric-value">${data.performance.loadTime}ms</span></div>
+        <div class="metric"><span class="metric-label">Page Size</span><span class="metric-value">${(data.performance.pageSize / 1024).toFixed(2)} KB</span></div>
+        <div class="metric"><span class="metric-label">HTTP Requests</span><span class="metric-value">${data.performance.requests}</span></div>
+        <div class="metric"><span class="metric-label">First Contentful Paint</span><span class="metric-value">${data.performance.firstContentfulPaint}ms</span></div>
+
+        <h2>🔧 Technical SEO</h2>
+        <table>
+          <tr><th>Check</th><th>Status</th></tr>
+          ${Object.entries(data.technical).map(([key, value]) => 
+            `<tr><td>${key.replace(/([A-Z])/g, ' $1').trim()}</td><td class="${value ? 'status-pass' : 'status-fail'}">${value ? '✓ Pass' : '✗ Fail'}</td></tr>`
+          ).join('')}
+        </table>
+
+        <h2>📝 Content Analysis</h2>
+        <div class="metric"><span class="metric-label">Title Length</span><span class="metric-value">${data.content.title.length} characters</span></div>
+        <div class="metric"><span class="metric-label">Meta Description Length</span><span class="metric-value">${data.content.metaDescription.length} characters</span></div>
+        <div class="metric"><span class="metric-label">H1 Tags</span><span class="metric-value">${data.content.h1Tags}</span></div>
+        <div class="metric"><span class="metric-label">Total Words</span><span class="metric-value">${data.content.totalWords}</span></div>
+        <div class="metric"><span class="metric-label">Readability Score</span><span class="metric-value">${data.content.readabilityScore}/100</span></div>
+
+        <h2>🎯 Top Recommendations</h2>
+        ${data.recommendations.slice(0, 10).map(rec => 
+          `<div class="recommendation priority-${rec.priority}">
+            <strong style="text-transform: uppercase;">${rec.priority} Priority</strong>
+            <p style="margin: 5px 0 0 0;">${rec.message}</p>
+          </div>`
         ).join('')}
+
+        <div class="footer">
+          <p>This report was generated by Fasih's SEO Analyzer</p>
+          <p style="font-size: 12px;">© ${new Date().getFullYear()} iamfasih.com - All Rights Reserved</p>
+        </div>
       </body>
       </html>
     `;
