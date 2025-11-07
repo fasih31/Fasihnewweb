@@ -7,8 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowRightLeft, DollarSign, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 
 const popularCurrencies = [
   { code: "USD", name: "US Dollar", symbol: "$" },
@@ -54,7 +54,7 @@ export default function CurrencyConverterPage() {
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
-        <Navbar />
+        <Navigation />
         
         <main className="container mx-auto px-4 py-16">
           <div className="max-w-4xl mx-auto">

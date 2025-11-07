@@ -4,8 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Code, Check, AlertCircle, Copy } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 import { useToast } from "@/hooks/use-toast";
 
 export default function JSONFormatterPage() {
@@ -72,7 +72,7 @@ export default function JSONFormatterPage() {
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
-        <Navbar />
+        <Navigation />
         
         <main className="container mx-auto px-4 py-16">
           <div className="max-w-6xl mx-auto">

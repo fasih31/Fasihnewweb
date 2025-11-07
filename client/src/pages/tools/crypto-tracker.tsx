@@ -2,8 +2,8 @@ import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, DollarSign, Activity } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 
 export default function CryptoTrackerPage() {
   const { data: cryptoData, isLoading } = useQuery<any[]>({
@@ -23,7 +23,7 @@ export default function CryptoTrackerPage() {
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
-        <Navbar />
+        <Navigation />
         
         <main className="container mx-auto px-4 py-16">
           <div className="max-w-7xl mx-auto">
