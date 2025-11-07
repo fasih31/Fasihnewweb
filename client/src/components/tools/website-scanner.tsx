@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, CheckCircle, XCircle, AlertCircle, Loader2, FileText, Image as ImageIcon, Code, Shield } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
+import { Progress } from "@/components/ui/progress";
 
 interface ScanResult {
   url: string;
