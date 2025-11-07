@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowRightLeft, DollarSign, TrendingUp } from "lucide-react";
+import { ArrowRightLeft, DollarSign, TrendingUp, RefreshCw, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
@@ -28,8 +28,10 @@ export default function CurrencyConverterPage() {
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("EUR");
 
-  const { data: rates, isLoading } = useQuery<Record<string, number>>({
+  const { data: rates, isLoading, error, refetch } = useQuery<Record<string, number>>({
     queryKey: ["/api/currency-rates"],
+    refetchInterval: 300000,
+    retry: 3,
   });
 
   const convertedAmount = rates && amount
@@ -136,6 +138,19 @@ export default function CurrencyConverterPage() {
                     </Select>
                   </div>
                 </div>
+
+                {error && (
+                  <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4" data-testid="error-message">
+                    <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
+                      <AlertCircle className="h-5 w-5" />
+                      <p className="font-medium">Failed to load exchange rates. Please try again.</p>
+                    </div>
+                    <Button onClick={() => refetch()} variant="outline" size="sm" className="mt-2">
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Retry
+                    </Button>
+                  </div>
+                )}
 
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-lg border-2 border-green-200 dark:border-green-800">
                   <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">Converted Amount</div>

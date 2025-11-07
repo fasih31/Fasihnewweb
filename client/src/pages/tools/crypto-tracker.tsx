@@ -1,13 +1,16 @@
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingUp, TrendingDown, DollarSign, Activity } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { TrendingUp, TrendingDown, DollarSign, Activity, RefreshCw, AlertCircle } from "lucide-react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 
 export default function CryptoTrackerPage() {
-  const { data: cryptoData, isLoading } = useQuery<any[]>({
+  const { data: cryptoData, isLoading, error, refetch } = useQuery<any[]>({
     queryKey: ["/api/crypto"],
+    refetchInterval: 60000,
+    retry: 3,
   });
 
   return (
@@ -34,7 +37,26 @@ export default function CryptoTrackerPage() {
               <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                 Monitor real-time cryptocurrency prices, market capitalization, 24-hour volume, and price changes for the top digital assets.
               </p>
+              <Button
+                onClick={() => refetch()}
+                variant="outline"
+                className="mt-4"
+                data-testid="button-refresh"
+                disabled={isLoading}
+              >
+                <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+                Refresh Data
+              </Button>
             </div>
+
+            {error && (
+              <div className="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4" data-testid="error-message">
+                <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
+                  <AlertCircle className="h-5 w-5" />
+                  <p className="font-medium">Failed to load cryptocurrency data. Please try refreshing.</p>
+                </div>
+              </div>
+            )}
 
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

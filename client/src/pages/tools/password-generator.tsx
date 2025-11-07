@@ -55,11 +55,22 @@ export default function PasswordGeneratorPage() {
   };
 
   const getStrength = () => {
-    if (!password) return { label: "None", color: "bg-gray-300", percentage: 0 };
-    if (length[0] < 8) return { label: "Weak", color: "bg-red-500", percentage: 25 };
-    if (length[0] < 12) return { label: "Fair", color: "bg-orange-500", percentage: 50 };
-    if (length[0] < 16) return { label: "Good", color: "bg-yellow-500", percentage: 75 };
-    return { label: "Strong", color: "bg-green-500", percentage: 100 };
+    if (!password) return { label: "None", color: "bg-gray-300 dark:bg-gray-700", percentage: 0 };
+    
+    let score = 0;
+    const len = length[0];
+    
+    if (len >= 8) score += 20;
+    if (len >= 12) score += 20;
+    if (len >= 16) score += 20;
+    if (includeUppercase && includeLowercase) score += 15;
+    if (includeNumbers) score += 15;
+    if (includeSymbols) score += 10;
+    
+    if (score < 40) return { label: "Weak", color: "bg-red-500 dark:bg-red-600", percentage: 25 };
+    if (score < 60) return { label: "Fair", color: "bg-orange-500 dark:bg-orange-600", percentage: 50 };
+    if (score < 80) return { label: "Good", color: "bg-yellow-500 dark:bg-yellow-600", percentage: 75 };
+    return { label: "Strong", color: "bg-green-500 dark:bg-green-600", percentage: 100 };
   };
 
   const strength = getStrength();

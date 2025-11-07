@@ -15,6 +15,14 @@ export default function JSONFormatterPage() {
   const { toast } = useToast();
 
   const formatJSON = () => {
+    if (!input.trim()) {
+      toast({
+        title: "Empty Input",
+        description: "Please enter JSON data to format",
+        variant: "destructive",
+      });
+      return;
+    }
     try {
       const parsed = JSON.parse(input);
       const formatted = JSON.stringify(parsed, null, 2);

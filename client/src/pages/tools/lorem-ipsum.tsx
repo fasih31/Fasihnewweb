@@ -16,7 +16,10 @@ const LOREM_WORDS = [
   "ad", "minim", "veniam", "quis", "nostrud", "exercitation", "ullamco", "laboris", "nisi", "aliquip",
   "ex", "ea", "commodo", "consequat", "duis", "aute", "irure", "in", "reprehenderit", "voluptate",
   "velit", "esse", "cillum", "fugiat", "nulla", "pariatur", "excepteur", "sint", "occaecat", "cupidatat",
-  "non", "proident", "sunt", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id", "est"
+  "non", "proident", "sunt", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id", "est",
+  "laborum", "autem", "quibusdam", "officiis", "debitis", "rerum", "necessitatibus", "saepe", "eveniet",
+  "voluptates", "repudiandae", "itaque", "earum", "hic", "tenetur", "sapiente", "delectus", "reiciendis",
+  "maiores", "alias", "perferendis", "doloribus", "asperiores", "repellat", "quia", "consequuntur"
 ];
 
 export default function LoremIpsumPage() {

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { QrCode, Download, Link as LinkIcon } from "lucide-react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
@@ -12,13 +13,14 @@ import { Footer } from "@/components/footer";
 export default function QRGeneratorPage() {
   const [text, setText] = useState("");
   const [qrDataUrl, setQrDataUrl] = useState("");
+  const [size, setSize] = useState("300");
+  const [errorCorrection, setErrorCorrection] = useState("M");
 
   const generateQR = async () => {
     if (!text) return;
     
-    // Using QR code API
-    const size = 300;
-    const url = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}`;
+    // Using QR code API with customization options
+    const url = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&ecc=${errorCorrection}&data=${encodeURIComponent(text)}`;
     setQrDataUrl(url);
   };
 
@@ -77,9 +79,42 @@ export default function QRGeneratorPage() {
                       placeholder="Enter URL, text, or content..."
                       value={text}
                       onChange={(e) => setText(e.target.value)}
-                      rows={6}
+                      rows={4}
                       className="resize-none"
                     />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="size">Size (px)</Label>
+                      <Select value={size} onValueChange={setSize}>
+                        <SelectTrigger id="size" data-testid="select-size">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="150">150 x 150</SelectItem>
+                          <SelectItem value="200">200 x 200</SelectItem>
+                          <SelectItem value="300">300 x 300</SelectItem>
+                          <SelectItem value="500">500 x 500</SelectItem>
+                          <SelectItem value="1000">1000 x 1000</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="error-correction">Error Correction</Label>
+                      <Select value={errorCorrection} onValueChange={setErrorCorrection}>
+                        <SelectTrigger id="error-correction" data-testid="select-error-correction">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="L">Low (7%)</SelectItem>
+                          <SelectItem value="M">Medium (15%)</SelectItem>
+                          <SelectItem value="Q">High (25%)</SelectItem>
+                          <SelectItem value="H">Very High (30%)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
 
                   <Button 
