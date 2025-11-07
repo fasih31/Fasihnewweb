@@ -1054,8 +1054,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const syllables = bodyText.split(/\s+/).reduce((count, word) => {
           return count + word.toLowerCase().split(/[aeiouy]+/).length - 1;
         }, 0);
-        let readabilityScore = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
-        readabilityScore = Math.max(0, Math.min(100, readabilityScore)); // Clamp 0-100
+
+        // Calculate Flesch Reading Ease score with safe division
+        let readabilityScore = 100;
+        if (sentences > 0 && totalWords > 0) {
+          const avgWordsPerSentence = totalWords / sentences;
+          const avgSyllablesPerWord = syllables / totalWords;
+          readabilityScore = 206.835 - 1.015 * avgWordsPerSentence - 84.6 * avgSyllablesPerWord;
+          readabilityScore = Math.max(0, Math.min(100, readabilityScore)); // Clamp 0-100
+        }
+
         const hasCanonical = $('link[rel="canonical"]').length > 0;
         const hasViewport = $('meta[name="viewport"]').length > 0;
 
@@ -1215,8 +1223,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const syllables = bodyText.split(/\s+/).reduce((count, word) => {
         return count + word.toLowerCase().split(/[aeiouy]+/).length - 1;
       }, 0);
-      let readabilityScore = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
-      readabilityScore = Math.max(0, Math.min(100, readabilityScore));
+
+      // Calculate Flesch Reading Ease score with safe division
+      let readabilityScore = 100;
+      if (sentences > 0 && totalWords > 0) {
+        const avgWordsPerSentence = totalWords / sentences;
+        const avgSyllablesPerWord = syllables / totalWords;
+        readabilityScore = 206.835 - 1.015 * avgWordsPerSentence - 84.6 * avgSyllablesPerWord;
+        readabilityScore = Math.max(0, Math.min(100, readabilityScore)); // Clamp 0-100
+      }
 
       const hasCanonical = $('link[rel="canonical"]').length > 0;
       const hasViewport = $('meta[name="viewport"]').length > 0;
