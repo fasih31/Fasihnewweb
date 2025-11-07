@@ -1291,7 +1291,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const tabletScreenshot = desktopScreenshot;
 
         // Directly process HTML from fetch
-        const $ = cheerio.load(html);
+        const cheerioInstance = cheerio.load(html);
         const headers = Object.fromEntries(response.headers);
 
         const hasHttps = targetUrl.startsWith('https://');
@@ -1308,19 +1308,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const h6Count = (html.match(/<h6[^>]*>/gi) || []).length;
         const scripts = (html.match(/<script[^>]*>/gi) || []).length;
         const stylesheets = (html.match(/<link[^>]*stylesheet[^>]*>/gi) || []).length;
-        const images = $('img');
-        const imagesWithAlt = images.filter((_, img) => $(img).attr('alt')).length;
-        const internalLinks = $('a').filter((_, link) => {
-          const href = $(link).attr('href');
+        const images = cheerioInstance('img');
+        const imagesWithAlt = images.filter((_, img) => cheerioInstance(img).attr('alt')).length;
+        const internalLinks = cheerioInstance('a').filter((_, link) => {
+          const href = cheerioInstance(link).attr('href');
           return href && (href.startsWith('/') || href.startsWith(new URL(targetUrl).hostname) || !href.startsWith('http'));
         }).length;
-        const externalLinks = $('a').filter((_, link) => {
-          const href = $(link).attr('href');
+        const externalLinks = cheerioInstance('a').filter((_, link) => {
+          const href = cheerioInstance(link).attr('href');
           return href && href.startsWith('http') && !href.startsWith(new URL(targetUrl).hostname);
         }).length;
-        const title = $('title').first().text();
-        const metaDescription = $('meta[name="description"]').first().attr('content');
-        const bodyText = $('body').text().replace(/\s+/g, ' ').trim();
+        const title = cheerioInstance('title').first().text();
+        const metaDescription = cheerioInstance('meta[name="description"]').first().attr('content');
+        const bodyText = cheerioInstance('body').text().replace(/\s+/g, ' ').trim();
         const totalWords = bodyText.split(/\s+/).filter(word => word.length > 0).length;
         const sentences = bodyText.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
         const syllables = bodyText.split(/\s+/).reduce((count, word) => {
@@ -1336,8 +1336,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           readabilityScore = Math.max(0, Math.min(100, readabilityScore)); // Clamp 0-100
         }
 
-        const hasCanonical = $('link[rel="canonical"]').length > 0;
-        const hasViewport = $('meta[name="viewport"]').length > 0;
+        const hasCanonical = cheerioInstance('link[rel="canonical"]').length > 0;
+        const hasViewport = cheerioInstance('meta[name="viewport"]').length > 0;
+        const ogTitle = cheerioInstance('meta[property="og:title"]').first().attr('content');
+        const ogDescription = cheerioInstance('meta[property="og:description"]').first().attr('content');
 
         let score = 0;
         if (hasHttps) score += 5;
@@ -1421,14 +1423,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           },
           social: {
             hasOgTags: !!(ogTitle && ogDescription),
-            hasTwitterCard: $('meta[name="twitter:card"]').length > 0,
-            ogTitle: $('meta[property="og:title"]').first().attr('content'),
-            ogDescription: $('meta[property="og:description"]').first().attr('content'),
-            ogImage: $('meta[property="og:image"]').first().attr('content'),
-            twitterCard: $('meta[name="twitter:card"]').first().attr('content'),
+            hasTwitterCard: cheerioInstance('meta[name="twitter:card"]').length > 0,
+            ogTitle: ogTitle,
+            ogDescription: ogDescription,
+            ogImage: cheerioInstance('meta[property="og:image"]').first().attr('content'),
+            twitterCard: cheerioInstance('meta[name="twitter:card"]').first().attr('content'),
           },
           schema: {
-            hasStructuredData: $('script[type="application/ld+json"]').length > 0,
+            hasStructuredData: cheerioInstance('script[type="application/ld+json"]').length > 0,
             types: [],
             validationErrors: [],
           },
@@ -1448,7 +1450,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             },
           },
           accessibility: {
-            score: imagesWithAlt === images.length && $('html').attr('lang') !== undefined ? 85 : 60,
+            score: imagesWithAlt === images.length && cheerioInstance('html').attr('lang') !== undefined ? 85 : 60,
             issues: imagesWithAlt < images.length ? [`${images.length - imagesWithAlt} images missing alt text`] : [],
           },
           recommendations,
@@ -1467,7 +1469,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             extractedText: bodyText.substring(0, 5000),
             confidence: 95,
             wordCount: totalWords,
-            language: $('html').attr('lang') || 'en',
+            language: cheerioInstance('html').attr('lang') || 'en',
           },
           htmlStructure: {
             totalElements,
@@ -1482,7 +1484,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             createdDate: 'N/A',
             expiryDate: 'N/A',
           },
-          technologies,
+          technologies: [],
         });
       }
 
