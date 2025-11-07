@@ -36,6 +36,8 @@ interface ScanResult {
   };
   security: {
     ssl: boolean;
+    overallScore: number;
+    grade: string;
     headers: {
       hsts: boolean;
       csp: boolean;
@@ -43,6 +45,30 @@ interface ScanResult {
       xss: boolean;
     };
     vulnerabilities: string[];
+  };
+  securityStandards?: {
+    owasp: {
+      score: number;
+      checks: any;
+    };
+    ssl: {
+      grade: string;
+      protocol: string;
+      vulnerabilities: any;
+    };
+    securityHeaders: {
+      score: number;
+      maxScore: number;
+      analysis: any;
+    };
+    compliance: {
+      pciDss: { score: number; checks: any };
+      gdpr: { score: number; checks: any };
+      hipaa: { score: number; checks: any };
+      iso27001: { score: number; controls: any };
+    };
+    nist: any;
+    vulnerabilities: Record<string, boolean>;
   };
   htmlStructure: {
     totalElements: number;
@@ -151,27 +177,290 @@ export function WebsiteScanner() {
         {result && (
           <Tabs defaultValue="overview" className="space-y-4">
             <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-              <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-3 lg:grid-cols-6 gap-1 p-1">
+              <TabsList className="inline-flex w-auto min-w-full sm:grid sm:w-full sm:grid-cols-4 lg:grid-cols-8 gap-1 p-1">
                 <TabsTrigger value="overview" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
                   Overview
+                </TabsTrigger>
+                <TabsTrigger value="security-overview" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
+                  Security Score
+                </TabsTrigger>
+                <TabsTrigger value="owasp" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
+                  OWASP Top 10
+                </TabsTrigger>
+                <TabsTrigger value="compliance" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
+                  Compliance
                 </TabsTrigger>
                 <TabsTrigger value="lighthouse" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
                   Lighthouse
                 </TabsTrigger>
                 <TabsTrigger value="security" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
-                  Security
+                  Headers
                 </TabsTrigger>
                 <TabsTrigger value="screenshots" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
                   Screenshots
-                </TabsTrigger>
-                <TabsTrigger value="ocr" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
-                  OCR Text
                 </TabsTrigger>
                 <TabsTrigger value="tech" className="whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm">
                   Tech Stack
                 </TabsTrigger>
               </TabsList>
             </div>
+
+            {/* Security Overview Tab */}
+            <TabsContent value="security-overview" className="space-y-4">
+              {result.securityStandards && (
+                <>
+                  <Card className="bg-gradient-to-br from-primary/10 to-chart-2/10 border-primary/20">
+                    <CardContent className="p-6">
+                      <div className="text-center mb-6">
+                        <div className={`text-6xl font-bold mb-2 ${
+                          result.security.overallScore >= 90 ? 'text-green-600' : 
+                          result.security.overallScore >= 70 ? 'text-yellow-600' : 
+                          'text-red-600'
+                        }`}>
+                          {result.security.overallScore}
+                        </div>
+                        <Badge variant={
+                          result.security.grade === 'A+' || result.security.grade === 'A' ? 'default' : 
+                          result.security.grade === 'B' || result.security.grade === 'C' ? 'secondary' : 
+                          'destructive'
+                        } className="text-lg px-4 py-1">
+                          Grade: {result.security.grade}
+                        </Badge>
+                        <p className="text-sm text-muted-foreground mt-2">Overall Security Score</p>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="p-4 bg-background/50 rounded-lg">
+                          <p className="font-medium mb-3">Security Standards Compliance</p>
+                          <div className="space-y-2">
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm">OWASP Top 10</span>
+                              <div className="flex items-center gap-2">
+                                <Progress value={result.securityStandards.owasp.score} className="h-2 w-24" />
+                                <span className="text-sm font-medium">{result.securityStandards.owasp.score}%</span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm">PCI DSS</span>
+                              <div className="flex items-center gap-2">
+                                <Progress value={result.securityStandards.compliance.pciDss.score} className="h-2 w-24" />
+                                <span className="text-sm font-medium">{result.securityStandards.compliance.pciDss.score}%</span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm">GDPR</span>
+                              <div className="flex items-center gap-2">
+                                <Progress value={result.securityStandards.compliance.gdpr.score} className="h-2 w-24" />
+                                <span className="text-sm font-medium">{result.securityStandards.compliance.gdpr.score}%</span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm">HIPAA</span>
+                              <div className="flex items-center gap-2">
+                                <Progress value={result.securityStandards.compliance.hipaa.score} className="h-2 w-24" />
+                                <span className="text-sm font-medium">{result.securityStandards.compliance.hipaa.score}%</span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm">ISO 27001</span>
+                              <div className="flex items-center gap-2">
+                                <Progress value={result.securityStandards.compliance.iso27001.score} className="h-2 w-24" />
+                                <span className="text-sm font-medium">{result.securityStandards.compliance.iso27001.score}%</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="p-4 bg-background/50 rounded-lg">
+                          <p className="font-medium mb-3">SSL/TLS Analysis</p>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between">
+                              <span>Grade</span>
+                              <Badge variant={result.securityStandards.ssl.grade === 'A' ? 'default' : 'destructive'}>
+                                {result.securityStandards.ssl.grade}
+                              </Badge>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Protocol</span>
+                              <span className="font-medium">{result.securityStandards.ssl.protocol}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span>Heartbleed</span>
+                              {result.securityStandards.ssl.vulnerabilities.heartbleed ? 
+                                <XCircle className="h-4 w-4 text-red-500" /> : 
+                                <CheckCircle className="h-4 w-4 text-green-500" />
+                              }
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span>POODLE</span>
+                              {result.securityStandards.ssl.vulnerabilities.poodle ? 
+                                <XCircle className="h-4 w-4 text-red-500" /> : 
+                                <CheckCircle className="h-4 w-4 text-green-500" />
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 p-4 bg-background/50 rounded-lg">
+                        <p className="font-medium mb-3">Critical Vulnerabilities</p>
+                        <div className="grid md:grid-cols-2 gap-2 text-sm">
+                          {Object.entries(result.securityStandards.vulnerabilities).map(([vuln, present]) => (
+                            <div key={vuln} className="flex items-center justify-between">
+                              <span className="capitalize">{vuln.replace(/([A-Z])/g, ' $1').trim()}</span>
+                              {present ? 
+                                <XCircle className="h-4 w-4 text-red-500" /> : 
+                                <CheckCircle className="h-4 w-4 text-green-500" />
+                              }
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </>
+              )}
+            </TabsContent>
+
+            {/* OWASP Tab */}
+            <TabsContent value="owasp" className="space-y-4">
+              {result.securityStandards && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Shield className="h-5 w-5 text-primary" />
+                      OWASP Top 10 Security Checks
+                    </CardTitle>
+                    <CardDescription>
+                      Compliance Score: {result.securityStandards.owasp.score}%
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {Object.entries(result.securityStandards.owasp.checks).map(([category, checks]: [string, any]) => (
+                      <div key={category} className="p-3 bg-muted/50 rounded-lg">
+                        <p className="font-semibold mb-2 capitalize">{category.replace(/([A-Z])/g, ' $1').trim()}</p>
+                        <div className="space-y-2">
+                          {typeof checks === 'object' && Object.entries(checks).map(([check, passed]) => (
+                            <div key={check} className="flex items-center justify-between text-sm">
+                              <span className="capitalize">{check.replace(/([A-Z])/g, ' $1').trim()}</span>
+                              {passed ? 
+                                <CheckCircle className="h-4 w-4 text-green-500" /> : 
+                                <XCircle className="h-4 w-4 text-red-500" />
+                              }
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+
+            {/* Compliance Tab */}
+            <TabsContent value="compliance" className="space-y-4">
+              {result.securityStandards && (
+                <>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>PCI DSS Compliance</CardTitle>
+                        <CardDescription>Payment Card Industry Data Security Standard</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="mb-4">
+                          <Progress value={result.securityStandards.compliance.pciDss.score} className="h-2" />
+                          <p className="text-sm text-muted-foreground mt-2">Score: {result.securityStandards.compliance.pciDss.score}%</p>
+                        </div>
+                        <div className="space-y-2">
+                          {Object.entries(result.securityStandards.compliance.pciDss.checks).map(([check, passed]) => (
+                            <div key={check} className="flex items-center justify-between text-sm">
+                              <span className="capitalize">{check.replace(/([A-Z])/g, ' $1').trim()}</span>
+                              {passed ? 
+                                <CheckCircle className="h-4 w-4 text-green-500" /> : 
+                                <XCircle className="h-4 w-4 text-red-500" />
+                              }
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>GDPR Compliance</CardTitle>
+                        <CardDescription>General Data Protection Regulation</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="mb-4">
+                          <Progress value={result.securityStandards.compliance.gdpr.score} className="h-2" />
+                          <p className="text-sm text-muted-foreground mt-2">Score: {result.securityStandards.compliance.gdpr.score}%</p>
+                        </div>
+                        <div className="space-y-2">
+                          {Object.entries(result.securityStandards.compliance.gdpr.checks).map(([check, passed]) => (
+                            <div key={check} className="flex items-center justify-between text-sm">
+                              <span className="capitalize">{check.replace(/([A-Z])/g, ' $1').trim()}</span>
+                              {passed ? 
+                                <CheckCircle className="h-4 w-4 text-green-500" /> : 
+                                <XCircle className="h-4 w-4 text-red-500" />
+                              }
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>HIPAA Compliance</CardTitle>
+                        <CardDescription>Health Insurance Portability and Accountability Act</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="mb-4">
+                          <Progress value={result.securityStandards.compliance.hipaa.score} className="h-2" />
+                          <p className="text-sm text-muted-foreground mt-2">Score: {result.securityStandards.compliance.hipaa.score}%</p>
+                        </div>
+                        <div className="space-y-2">
+                          {Object.entries(result.securityStandards.compliance.hipaa.checks).map(([check, passed]) => (
+                            <div key={check} className="flex items-center justify-between text-sm">
+                              <span className="capitalize">{check.replace(/([A-Z])/g, ' $1').trim()}</span>
+                              {passed ? 
+                                <CheckCircle className="h-4 w-4 text-green-500" /> : 
+                                <XCircle className="h-4 w-4 text-red-500" />
+                              }
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>ISO 27001</CardTitle>
+                        <CardDescription>Information Security Management</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="mb-4">
+                          <Progress value={result.securityStandards.compliance.iso27001.score} className="h-2" />
+                          <p className="text-sm text-muted-foreground mt-2">Score: {result.securityStandards.compliance.iso27001.score}%</p>
+                        </div>
+                        <div className="space-y-2">
+                          {Object.entries(result.securityStandards.compliance.iso27001.controls).map(([control, passed]) => (
+                            <div key={control} className="flex items-center justify-between text-sm">
+                              <span className="capitalize">{control.replace(/([A-Z])/g, ' $1').trim()}</span>
+                              {passed ? 
+                                <CheckCircle className="h-4 w-4 text-green-500" /> : 
+                                <XCircle className="h-4 w-4 text-red-500" />
+                              }
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </>
+              )}
+            </TabsContent>
 
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-4">
