@@ -19,6 +19,7 @@ import { SEOHead, getPersonSchema, getOrganizationSchema, getServiceSchema, getF
 import { ScrollProgress } from "@/components/scroll-progress";
 import { StatsSection } from "@/components/stats-section";
 import { FloatingCTA } from "@/components/floating-cta";
+import { TopToolsCarousel } from "@/components/top-tools-carousel";
 
 export default function Home() {
   return (
@@ -35,6 +36,7 @@ export default function Home() {
       <Navigation />
       <main>
         <HeroSection />
+        <TopToolsCarousel />
         <AboutSection />
         <StatsSection />
         <ServicesSection />
