@@ -82,10 +82,10 @@ const tools: Tool[] = [
     description: "Real-time cryptocurrency prices and market data with live updates",
     icon: TrendingUp,
     features: ["Live Price Updates", "Market Cap Data", "24h Price Changes", "Multiple Cryptocurrencies"],
-    component: CryptoTracker,
     gradient: "from-orange-500 to-pink-500",
     category: "Finance",
-    openAsPage: false
+    openAsPage: true,
+    pagePath: "/tools/crypto-tracker"
   },
   {
     id: "currency",
@@ -93,10 +93,10 @@ const tools: Tool[] = [
     description: "Convert between 150+ global currencies with real-time exchange rates",
     icon: DollarSign,
     features: ["150+ Currencies", "Real-time Rates", "Instant Conversion", "Historical Data"],
-    component: CurrencyConverter,
     gradient: "from-green-500 to-emerald-500",
     category: "Finance",
-    openAsPage: false
+    openAsPage: true,
+    pagePath: "/tools/currency-converter"
   },
   {
     id: "converter",
@@ -170,10 +170,10 @@ const tools: Tool[] = [
     description: "Create custom QR codes for URLs, text, and contact information",
     icon: QrCode,
     features: ["Custom Size", "Error Correction", "Instant Generation", "Download PNG"],
-    component: QRGenerator,
     gradient: "from-violet-500 to-purple-500",
     category: "Utilities",
-    openAsPage: false
+    openAsPage: true,
+    pagePath: "/tools/qr-generator"
   },
   {
     id: "password",
@@ -181,10 +181,10 @@ const tools: Tool[] = [
     description: "Generate strong, secure passwords with customizable complexity",
     icon: Key,
     features: ["Customizable Length", "Multiple Options", "Strength Meter", "Copy to Clipboard"],
-    component: PasswordGenerator,
     gradient: "from-amber-500 to-orange-500",
     category: "Security",
-    openAsPage: false
+    openAsPage: true,
+    pagePath: "/tools/password-generator"
   },
   {
     id: "json",
@@ -192,10 +192,10 @@ const tools: Tool[] = [
     description: "Format, validate, and minify JSON data with syntax highlighting",
     icon: FileJson,
     features: ["Format JSON", "Minify JSON", "Validate Syntax", "Copy Output"],
-    component: JSONFormatter,
     gradient: "from-lime-500 to-green-500",
     category: "Development",
-    openAsPage: false
+    openAsPage: true,
+    pagePath: "/tools/json-formatter"
   },
   {
     id: "base64",
@@ -269,10 +269,10 @@ const tools: Tool[] = [
     description: "Generate placeholder text for your designs and mockups",
     icon: FileText,
     features: ["Paragraphs Mode", "Sentences Mode", "Words Mode", "Copy to Clipboard"],
-    component: LoremIpsumGenerator,
     gradient: "from-amber-500 to-yellow-500",
     category: "Design",
-    openAsPage: false
+    openAsPage: true,
+    pagePath: "/tools/lorem-ipsum"
   }
 ];
 

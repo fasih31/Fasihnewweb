@@ -24,6 +24,12 @@ const SEOAnalyzerTool = lazy(() => import("@/pages/seo-analyzer-tool"));
 const WebsiteScannerTool = lazy(() => import("@/pages/website-scanner-tool"));
 const CodePlaygroundTool = lazy(() => import("@/pages/code-playground-tool"));
 const MarketingAssets = lazy(() => import("@/pages/marketing-assets"));
+const CryptoTrackerTool = lazy(() => import("@/pages/tools/crypto-tracker"));
+const CurrencyConverterTool = lazy(() => import("@/pages/tools/currency-converter"));
+const QRGeneratorTool = lazy(() => import("@/pages/tools/qr-generator"));
+const PasswordGeneratorTool = lazy(() => import("@/pages/tools/password-generator"));
+const JSONFormatterTool = lazy(() => import("@/pages/tools/json-formatter"));
+const LoremIpsumTool = lazy(() => import("@/pages/tools/lorem-ipsum"));
 const FinTechDomain = lazy(() => import("@/pages/domains/fintech"));
 const EdTechDomain = lazy(() => import("@/pages/domains/edtech"));
 const EcommerceDomain = lazy(() => import("@/pages/domains/ecommerce"));
@@ -61,8 +67,14 @@ function Router() {
         <Route path="/calculators" component={Calculators} />
         <Route path="/tools/seo-analyzer" component={SEOAnalyzerTool} />
         <Route path="/tools/website-scanner" component={WebsiteScannerTool} />
-        <Route path="/marketing-assets" component={MarketingAssets} />
         <Route path="/tools/code-playground" component={CodePlaygroundTool} />
+        <Route path="/tools/crypto-tracker" component={CryptoTrackerTool} />
+        <Route path="/tools/currency-converter" component={CurrencyConverterTool} />
+        <Route path="/tools/qr-generator" component={QRGeneratorTool} />
+        <Route path="/tools/password-generator" component={PasswordGeneratorTool} />
+        <Route path="/tools/json-formatter" component={JSONFormatterTool} />
+        <Route path="/tools/lorem-ipsum" component={LoremIpsumTool} />
+        <Route path="/marketing-assets" component={MarketingAssets} />
         <Route path="/expertise" component={ExpertisePage} />
         <Route path="/islamic-fintech" component={IslamicFinTech} />
         <Route path="/domains/fintech" component={FinTechDomain} />
