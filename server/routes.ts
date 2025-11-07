@@ -825,33 +825,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Enhanced technology detection
       const technologies: string[] = [];
-        const techPatterns = {
-          'React': [/react/i, /_jsx/i, /createElement/i],
-          'Vue.js': [/vue/i, /__VUE__/i],
-          'Angular': [/angular/i, /ng-/i],
-          'jQuery': [/jquery/i, /\$\(/],
-          'Bootstrap': [/bootstrap/i],
-          'Tailwind CSS': [/tailwind/i],
-          'Next.js': [/next/i, /_next\//i],
-          'Gatsby': [/gatsby/i],
-          'WordPress': [/wp-content/i, /wp-includes/i],
-          'Shopify': [/shopify/i, /cdn.shopify/i],
-          'Google Analytics': [/google-analytics/i, /gtag/i],
-          'Font Awesome': [/font-awesome/i, /fontawesome/i],
-          'Stripe': [/stripe/i],
-          'Cloudflare': [/cloudflare/i]
-        };
+      const techPatterns = {
+        'React': [/react/i, /_jsx/i, /createElement/i],
+        'Vue.js': [/vue/i, /__VUE__/i],
+        'Angular': [/angular/i, /ng-/i],
+        'jQuery': [/jquery/i, /\$\(/],
+        'Bootstrap': [/bootstrap/i],
+        'Tailwind CSS': [/tailwind/i],
+        'Next.js': [/next/i, /_next\//i],
+        'Gatsby': [/gatsby/i],
+        'WordPress': [/wp-content/i, /wp-includes/i],
+        'Shopify': [/shopify/i, /cdn.shopify/i],
+        'Google Analytics': [/google-analytics/i, /gtag/i],
+        'Font Awesome': [/font-awesome/i, /fontawesome/i],
+        'Stripe': [/stripe/i],
+        'Cloudflare': [/cloudflare/i]
+      };
 
-        for (const [tech, patterns] of Object.entries(techPatterns)) {
-          if (patterns.some(pattern => pattern.test(html))) {
-            technologies.push(tech);
-          }
+      for (const [tech, patterns] of Object.entries(techPatterns)) {
+        if (patterns.some(pattern => pattern.test(html))) {
+          technologies.push(tech);
         }
+      }
 
-        if (headers['server']?.includes('nginx')) technologies.push('Nginx');
-        if (headers['server']?.includes('apache')) technologies.push('Apache');
-        if (headers['server']?.includes('cloudflare')) technologies.push('Cloudflare CDN');
-        if (headers['x-powered-by']) technologies.push(`Powered by: ${headers['x-powered-by']}`);
+      if (headers['server']?.includes('nginx')) technologies.push('Nginx');
+      if (headers['server']?.includes('apache')) technologies.push('Apache');
+      if (headers['server']?.includes('cloudflare')) technologies.push('Cloudflare CDN');
+      if (headers['x-powered-by']) technologies.push(`Powered by: ${headers['x-powered-by']}`);
 
       // Advanced security analysis
       const security = {
