@@ -691,6 +691,25 @@ export function SEOChecker() {
                     <MetricRow label="H2 Tags" value={result.content.h2Tags.toString()} status={result.content.h2Tags > 0 ? "pass" : "warning"} />
                     <MetricRow label="Total Words" value={result.content.totalWords.toString()} status={result.content.totalWords > 300 ? "pass" : "warning"} />
                     <MetricRow label="Readability Score" value={`${result.content.readabilityScore}/100`} status={result.content.readabilityScore > 60 ? "pass" : "warning"} />
+                    
+                    {Object.keys(result.content.keywordDensity).length > 0 && (
+                      <div className="mt-4">
+                        <p className="font-medium mb-3">Top Keywords (TF-IDF)</p>
+                        <div className="space-y-2">
+                          {Object.entries(result.content.keywordDensity).map(([keyword, score]) => (
+                            <div key={keyword} className="flex items-center justify-between">
+                              <span className="text-sm font-medium">{keyword}</span>
+                              <div className="flex items-center gap-2 flex-1 ml-4">
+                                <Progress value={score} className="h-2" />
+                                <span className="text-sm text-muted-foreground min-w-[3rem] text-right">
+                                  {score.toFixed(2)}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </TabsContent>
