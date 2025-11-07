@@ -99,7 +99,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Contact form submission endpoint - sends email only
+  // Contact form submission endpoint - simple logging
   app.post("/api/contact", async (req, res) => {
     try {
       const { name, email, message } = req.body;
@@ -119,22 +119,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Send email notification directly
-      const emailHtml = `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>From:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message}</p>
-        <hr>
-        <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
-      `;
-
-      await sendEmailNotification(`New Contact from ${name}`, emailHtml);
+      // Log the contact form submission
+      console.log('\n=== NEW CONTACT FORM SUBMISSION ===');
+      console.log(`From: ${name}`);
+      console.log(`Email: ${email}`);
+      console.log(`Message: ${message}`);
+      console.log(`Time: ${new Date().toLocaleString()}`);
+      console.log('===================================\n');
 
       res.status(200).json({
         success: true,
-        message: "Message sent successfully",
+        message: "Message sent successfully! I'll get back to you soon.",
       });
     } catch (error: any) {
       console.error("Contact form error:", error);
