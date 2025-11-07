@@ -71,11 +71,12 @@ export function Navigation() {
 
   const updatedNavLinks = navLinks;
 
+  const toolsMenuItems = [
+    { name: "All Tools", path: "/tools", description: "Access a suite of professional tools for productivity." },
+  ];
 
-  const professionalTools = [
+  const productsMenuItems = [
     { name: "Islamic FinTech Solutions", path: "/islamic-fintech", description: "Explore innovative Islamic finance solutions." },
-    { name: "Professional Tools", path: "/tools", description: "Access a suite of professional tools for productivity." },
-    { name: "Career Opportunities", path: "/career", description: "Find your next career move with us." },
   ];
 
   return (
@@ -122,17 +123,37 @@ export function Navigation() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="hover-elevate active-elevate-2 text-sm gap-1">
-                  Professional Tools
+                  Tools
                   <ChevronDown className="h-3 w-3" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 z-[100]">
-                {professionalTools.map((tool) => (
+                {toolsMenuItems.map((tool) => (
                   <DropdownMenuItem key={tool.path} asChild>
-                    <Link href={tool.path} target="_blank" rel="noopener noreferrer">
+                    <Link href={tool.path}>
                       <div className="w-full px-3 py-2.5 hover:bg-accent rounded-sm transition-colors cursor-pointer">
                         <div className="font-medium">{tool.name}</div>
                         <div className="text-xs text-muted-foreground">{tool.description}</div>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="hover-elevate active-elevate-2 text-sm gap-1">
+                  Products
+                  <ChevronDown className="h-3 w-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 z-[100]">
+                {productsMenuItems.map((product) => (
+                  <DropdownMenuItem key={product.path} asChild>
+                    <Link href={product.path}>
+                      <div className="w-full px-3 py-2.5 hover:bg-accent rounded-sm transition-colors cursor-pointer">
+                        <div className="font-medium">{product.name}</div>
+                        <div className="text-xs text-muted-foreground">{product.description}</div>
                       </div>
                     </Link>
                   </DropdownMenuItem>
@@ -192,12 +213,23 @@ export function Navigation() {
               </Button>
             ))}
             <div className="pt-3 mt-2 border-t border-border/50">
-              <p className="text-sm font-semibold text-muted-foreground px-3 py-2 mb-1">Professional Tools</p>
-              {professionalTools.map((tool) => (
-                <Link key={tool.path} href={tool.path} target="_blank" rel="noopener noreferrer">
+              <p className="text-sm font-semibold text-muted-foreground px-3 py-2 mb-1">Tools</p>
+              {toolsMenuItems.map((tool) => (
+                <Link key={tool.path} href={tool.path}>
                   <div className="w-full px-3 py-2.5 hover:bg-accent rounded-md transition-colors cursor-pointer">
                     <div className="font-medium">{tool.name}</div>
                     <div className="text-xs text-muted-foreground">{tool.description}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="pt-3 mt-2 border-t border-border/50">
+              <p className="text-sm font-semibold text-muted-foreground px-3 py-2 mb-1">Products</p>
+              {productsMenuItems.map((product) => (
+                <Link key={product.path} href={product.path}>
+                  <div className="w-full px-3 py-2.5 hover:bg-accent rounded-md transition-colors cursor-pointer">
+                    <div className="font-medium">{product.name}</div>
+                    <div className="text-xs text-muted-foreground">{product.description}</div>
                   </div>
                 </Link>
               ))}
