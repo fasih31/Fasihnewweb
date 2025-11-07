@@ -189,8 +189,27 @@ export function SEOChecker() {
 
   const handleAnalyze = () => {
     if (!url) return;
-    const fullUrl = url.startsWith('http') ? url : `https://${url}`;
-    analyzeMutation.mutate(fullUrl);
+    
+    // Clean and validate URL
+    let cleanUrl = url.trim();
+    
+    // Remove trailing slashes
+    cleanUrl = cleanUrl.replace(/\/+$/, '');
+    
+    // Add protocol if missing
+    if (!cleanUrl.match(/^https?:\/\//i)) {
+      cleanUrl = `https://${cleanUrl}`;
+    }
+    
+    // Basic URL validation
+    try {
+      new URL(cleanUrl);
+      analyzeMutation.mutate(cleanUrl);
+    } catch (error) {
+      console.error('Invalid URL:', error);
+      // The mutation will handle the error display
+      analyzeMutation.mutate(cleanUrl);
+    }
   };
 
   const handleDownloadReport = () => {
@@ -316,35 +335,83 @@ export function SEOChecker() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="flex gap-2">
-          <div className="flex-1 space-y-2">
-            <Label>Website URL</Label>
-            <Input
-              type="url"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="example.com or https://example.com"
-              onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
-            />
+        <div className="space-y-3">
+          <div className="flex gap-2">
+            <div className="flex-1 space-y-2">
+              <Label htmlFor="url-input" className="flex items-center justify-between">
+                <span>Website URL</span>
+                <span className="text-xs text-muted-foreground font-normal">
+                  e.g., https://example.com
+                </span>
+              </Label>
+              <Input
+                id="url-input"
+                type="url"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="https://www.example.com"
+                onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
+                className="font-mono text-sm"
+              />
+            </div>
+            <div className="flex items-end">
+              <Button onClick={handleAnalyze} disabled={analyzeMutation.isPending || !url}>
+                {analyzeMutation.isPending ? (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                ) : (
+                  <Search className="h-4 w-4 mr-2" />
+                )}
+                Analyze
+              </Button>
+            </div>
           </div>
-          <div className="flex items-end">
-            <Button onClick={handleAnalyze} disabled={analyzeMutation.isPending || !url}>
-              {analyzeMutation.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-2" />
-              ) : (
-                <Search className="h-4 w-4 mr-2" />
-              )}
-              Analyze
+          <div className="flex gap-2 flex-wrap">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setUrl('https://www.google.com')}
+              disabled={analyzeMutation.isPending}
+            >
+              Try Google
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setUrl('https://www.github.com')}
+              disabled={analyzeMutation.isPending}
+            >
+              Try GitHub
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setUrl('https://iamfasih.com')}
+              disabled={analyzeMutation.isPending}
+            >
+              Try My Site
             </Button>
           </div>
         </div>
 
         {analyzeMutation.isError && (
           <Card className="bg-destructive/10 border-destructive/20">
-            <CardContent className="p-4">
-              <p className="text-destructive font-medium">
-                Failed to analyze website. Please check the URL and try again.
+            <CardContent className="p-4 space-y-2">
+              <p className="text-destructive font-medium flex items-center gap-2">
+                <XCircle className="h-5 w-5" />
+                Failed to analyze website
               </p>
+              <p className="text-sm text-muted-foreground">
+                {analyzeMutation.error?.message || 'Please check the URL and try again.'}
+              </p>
+              <div className="mt-3 p-3 bg-muted/50 rounded-md">
+                <p className="text-sm font-medium mb-2">Tips:</p>
+                <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
+                  <li>Make sure the URL is accessible (not password protected)</li>
+                  <li>Include the protocol (http:// or https://)</li>
+                  <li>Check that the website is online and responding</li>
+                  <li>Try without trailing slashes or query parameters first</li>
+                </ul>
+              </div>
             </CardContent>
           </Card>
         )}

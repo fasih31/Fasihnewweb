@@ -945,22 +945,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Advanced SEO Analysis API endpoint with Lighthouse, Puppeteer & NLP
   app.post("/api/seo-analyze", async (req, res) => {
+    let browser;
     try {
       const { url } = req.body;
       if (!url) {
         return res.status(400).json({ error: 'URL is required' });
       }
 
+      // Validate URL format
+      let validUrl;
+      try {
+        validUrl = new URL(url);
+        if (!['http:', 'https:'].includes(validUrl.protocol)) {
+          return res.status(400).json({ error: 'URL must use HTTP or HTTPS protocol' });
+        }
+      } catch (urlError) {
+        return res.status(400).json({ error: 'Invalid URL format. Please enter a valid URL (e.g., https://example.com)' });
+      }
+
+      console.log('Analyzing URL:', validUrl.href);
+
       // Launch Puppeteer for advanced analysis
       const puppeteer = await import('puppeteer');
-      const browser = await puppeteer.default.launch({
+      browser = await puppeteer.default.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--disable-gpu'
+        ]
       });
       const page = await browser.newPage();
       
+      // Set timeout and user agent
+      await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
+      
       const startTime = Date.now();
-      await page.goto(url, { waitUntil: 'networkidle2' });
+      try {
+        await page.goto(validUrl.href, { 
+          waitUntil: 'networkidle2',
+          timeout: 30000 // 30 second timeout
+        });
+      } catch (gotoError) {
+        await browser.close();
+        console.error('Error loading page:', gotoError);
+        return res.status(400).json({ 
+          error: 'Failed to load the website. Please check if the URL is accessible and try again.' 
+        });
+      }
       const loadTime = Date.now() - startTime;
       
       // Get HTML content
@@ -1253,7 +1287,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       console.error('Error analyzing SEO:', error);
-      res.status(500).json({ error: 'Failed to analyze SEO' });
+      if (browser) {
+        try {
+          await browser.close();
+        } catch (closeError) {
+          console.error('Error closing browser:', closeError);
+        }
+      }
+      res.status(500).json({ 
+        error: 'Failed to analyze SEO. Please check the URL and try again.',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   });
 
