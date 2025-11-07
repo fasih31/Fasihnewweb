@@ -32,7 +32,7 @@ export function URLShortener() {
     return result;
   };
 
-  const shortenUrl = () => {
+  const shortenUrl = async () => {
     if (!longUrl) {
       toast({
         title: "URL Required",
@@ -52,16 +52,36 @@ export function URLShortener() {
     }
 
     setIsShortening(true);
-    setTimeout(() => {
-      const code = customAlias || generateShortCode();
-      const domain = window.location.host || 'short.ly';
-      setShortUrl(`https://${domain}/${code}`);
-      setIsShortening(false);
+    try {
+      const response = await fetch('/api/shorten-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          url: longUrl,
+          customAlias: customAlias || undefined,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to shorten URL');
+      }
+
+      const data = await response.json();
+      setShortUrl(data.shortUrl);
       toast({
         title: "URL Shortened!",
         description: "Your short URL is ready to use",
       });
-    }, 800);
+    } catch (error: any) {
+      toast({
+        title: "Shortening Failed",
+        description: error.message || "Could not shorten URL",
+        variant: "destructive",
+      });
+    } finally {
+      setIsShortening(false);
+    }
   };
 
   const copyToClipboard = async () => {

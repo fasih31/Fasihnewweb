@@ -935,8 +935,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
 
       // Extract visible text for OCR/analysis
+      const $ = cheerio.load(html);
+      const bodyText = $('body').text().replace(/\s+/g, ' ').trim();
+      const totalWords = bodyText.split(/\s+/).filter(word => word.length > 0).length;
       const ocr = {
-        extractedText: $.html().substring(0, 5000),
+        extractedText: bodyText.substring(0, 5000),
         confidence: 95,
         wordCount: totalWords,
         language: $('html').attr('lang') || 'en',
@@ -963,7 +966,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
 
       // NIST Cybersecurity Framework
-      const nistFramework = {
+      const nistControls = {
         identify: {
           assetManagement: html.includes('sitemap'),
           riskAssessment: true,
@@ -1019,67 +1022,101 @@ export async function registerRoutes(app: Express): Promise<Server> {
         iso27001: Math.round((Object.values(iso27001Controls).filter(v => v === true).length / Object.values(iso27001Controls).length) * 100),
       };
 
-      const overallSecurityScore = Math.round(
-        (complianceScore.owasp * 0.3 +
-         securityHeadersScore * 0.2 +
-         (hasHttps ? 20 : 0) +
-         (Object.values(advancedVulnerabilities).filter(v => v === false).length / Object.values(advancedVulnerabilities).length) * 30)
+      const securityScore = (
+        complianceScore.owasp * 0.3 +
+        securityHeadersScore * 0.2 +
+        (hasHttps ? 20 : 0) +
+        (Object.values(advancedVulnerabilities).filter(v => v === false).length / Object.values(advancedVulnerabilities).length) * 30
       );
+      const securityGrade = securityScore >= 90 ? 'A+' : securityScore >= 80 ? 'A' : securityScore >= 70 ? 'B' : securityScore >= 60 ? 'C' : securityScore >= 50 ? 'D' : 'F';
+
+      const htmlStructure = {
+        totalElements,
+        headings: { h1: h1Count, h2: h2Count, h3: h3Count, h4: h4Count, h5: h5Count, h6: h6Count },
+        forms,
+        scripts,
+        stylesheets,
+        iframes,
+        videos,
+        buttons,
+        inputs,
+      };
+
+      const detectedTech = technologies;
 
       res.json({
-        url,
+        url: url,
         hasHttps,
-        hasTitle,
         hasMeta,
+        hasTitle,
         hasOgTags,
         responsive,
         loadTime,
         status: response.status,
-        headers,
-        technologies,
+        headers: headers as Record<string, string>,
+        technologies: detectedTech,
+        screenshots: {
+          desktop: screenshots.desktop,
+          mobile: screenshots.mobile,
+        },
+        htmlStructure,
+        domainInfo,
         security: {
-          ...security,
-          overallScore: overallSecurityScore,
-          grade: overallSecurityScore >= 90 ? 'A+' : overallSecurityScore >= 80 ? 'A' : overallSecurityScore >= 70 ? 'B' : overallSecurityScore >= 60 ? 'C' : overallSecurityScore >= 50 ? 'D' : 'F',
+          ssl: hasHttps,
+          overallScore: Math.round(securityScore),
+          grade: securityGrade,
+          headers: {
+            hsts: !!headers['strict-transport-security'],
+            csp: !!headers['content-security-policy'],
+            xframe: !!headers['x-frame-options'],
+            xss: !!headers['x-xss-protection'],
+          },
+          vulnerabilities: Object.entries(advancedVulnerabilities)
+            .filter(([_, hasVuln]) => hasVuln)
+            .map(([vuln]) => vuln.replace(/([A-Z])/g, ' $1').trim()),
         },
         securityStandards: {
           owasp: {
-            score: complianceScore.owasp,
+            score: Math.round(owaspScore),
             checks: owaspChecks,
-            recommendations: [],
           },
           ssl: sslAnalysis,
           securityHeaders: {
-            score: securityHeadersScore,
-            maxScore: 45,
+            score: Math.round(securityHeadersScore),
+            maxScore: 100,
             analysis: securityHeadersAnalysis,
           },
           compliance: {
-            pciDss: { score: complianceScore.pciDss, checks: pciDssChecks },
-            gdpr: { score: complianceScore.gdpr, checks: gdprChecks },
-            hipaa: { score: complianceScore.hipaa, checks: hipaaChecks },
-            iso27001: { score: complianceScore.iso27001, controls: iso27001Controls },
+            pciDss: {
+              score: Math.round(Object.values(pciDssChecks).filter(Boolean).length / Object.values(pciDssChecks).length * 100),
+              checks: pciDssChecks,
+            },
+            gdpr: {
+              score: Math.round(Object.values(gdprChecks).filter(Boolean).length / Object.values(gdprChecks).length * 100),
+              checks: gdprChecks,
+            },
+            hipaa: {
+              score: Math.round(Object.values(hipaaChecks).filter(Boolean).length / Object.values(hipaaChecks).length * 100),
+              checks: hipaaChecks,
+            },
+            iso27001: {
+              score: Math.round(Object.values(iso27001Controls).filter(Boolean).length / Object.values(iso27001Controls).length * 100),
+              controls: iso27001Controls,
+            },
           },
-          nist: nistFramework,
+          nist: nistControls,
           vulnerabilities: advancedVulnerabilities,
         },
-        performanceMetrics,
-        htmlStructure: {
-          totalElements,
-          headings: { h1: h1Count, h2: h2Count, h3: h3Count, h4: h4Count, h5: h5Count, h6: h6Count },
-          forms,
-          scripts,
-          stylesheets,
-          iframes,
-          videos,
-          buttons,
-          inputs,
+        lighthouse: {
+          performance: Math.round(Math.min(100, Math.max(50, 100 - (loadTime / 50)))),
+          accessibility: responsive ? 85 : 70,
+          bestPractices: hasHttps ? 80 : 65,
+          seo: (hasTitle && hasMeta ? 90 : 70),
         },
-        codeQuality,
-        lighthouseScores,
-        screenshots,
-        ocr,
-        domainInfo,
+        ocr: {
+          extractedText: bodyText.substring(0, 5000),
+          confidence: 95,
+        },
       });
     } catch (error) {
       console.error('Error scanning website:', error);
@@ -1383,7 +1420,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             touchElementsSpaced: true,
           },
           social: {
-            hasOgTags,
+            hasOgTags: !!(ogTitle && ogDescription),
             hasTwitterCard: $('meta[name="twitter:card"]').length > 0,
             ogTitle: $('meta[property="og:title"]').first().attr('content'),
             ogDescription: $('meta[property="og:description"]').first().attr('content'),
@@ -2423,7 +2460,7 @@ Allow: /`);
   app.get("/sitemap.xml", async (req, res) => {
     const baseUrl = `${req.protocol}://${req.get('host')}`;
     const today = new Date().toISOString().split('T')[0];
-    
+
     const staticPages = [
       { url: '/', priority: '1.0', changefreq: 'weekly' },
       { url: '/about', priority: '0.8', changefreq: 'monthly' },
@@ -2439,7 +2476,7 @@ Allow: /`);
       { url: '/stocks', priority: '0.7', changefreq: 'daily' },
       { url: '/news', priority: '0.7', changefreq: 'daily' },
       { url: '/ide', priority: '0.8', changefreq: 'weekly' },
-      
+
       // Domain Pages
       { url: '/islamic-fintech', priority: '0.9', changefreq: 'monthly' },
       { url: '/domains/fintech', priority: '0.8', changefreq: 'monthly' },
@@ -2448,18 +2485,18 @@ Allow: /`);
       { url: '/domains/crypto-web3', priority: '0.8', changefreq: 'monthly' },
       { url: '/domains/telecom', priority: '0.8', changefreq: 'monthly' },
       { url: '/domains/ai-ml', priority: '0.8', changefreq: 'monthly' },
-      
+
       // Tools Hub
       { url: '/tools', priority: '0.9', changefreq: 'weekly' },
       { url: '/calculators', priority: '0.8', changefreq: 'weekly' },
-      
+
       // Professional Tools (High Priority)
       { url: '/tools/seo-analyzer', priority: '0.9', changefreq: 'weekly' },
       { url: '/tools/website-scanner', priority: '0.9', changefreq: 'weekly' },
       { url: '/tools/code-playground', priority: '0.8', changefreq: 'weekly' },
       { url: '/tools/crypto-tracker', priority: '0.8', changefreq: 'daily' },
       { url: '/tools/currency-converter', priority: '0.8', changefreq: 'daily' },
-      
+
       // Developer Tools
       { url: '/tools/json-formatter', priority: '0.7', changefreq: 'monthly' },
       { url: '/tools/password-generator', priority: '0.7', changefreq: 'monthly' },
@@ -2501,7 +2538,7 @@ ${allPages.map(page => `  <url>
   app.get("/api/seo-health", async (req, res) => {
     try {
       const baseUrl = `${req.protocol}://${req.get('host')}`;
-      
+
       const checks = {
         sitemap: {
           exists: true,
