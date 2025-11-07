@@ -2,14 +2,28 @@
   deps = [
     pkgs.nodejs_20
     pkgs.postgresql
-    pkgs.python311
-    pkgs.python311Packages.pip
-    pkgs.openjdk17
-    pkgs.gcc
-    pkgs.go
-    pkgs.rustc
-    pkgs.cargo
-    pkgs.ruby
-    pkgs.php
+    pkgs.chromium
+    pkgs.nss
+    pkgs.freetype
+    pkgs.harfbuzz
+    pkgs.ttf_fonts
+    pkgs.glib
+    pkgs.nspr
+    pkgs.atk
+    pkgs.cups
+    pkgs.dbus
+    pkgs.expat
+    pkgs.libxcb
+    pkgs.libxkbcommon
+    pkgs.mesa
+    pkgs.pango
+    pkgs.systemd
+    pkgs.xorg.libX11
+    pkgs.xorg.libXcomposite
+    pkgs.xorg.libXdamage
+    pkgs.xorg.libXext
+    pkgs.xorg.libXfixes
+    pkgs.xorg.libXrandr
+    pkgs.xorg.libxshmfence
   ];
 }

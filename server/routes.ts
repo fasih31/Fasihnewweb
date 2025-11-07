@@ -969,12 +969,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const puppeteer = await import('puppeteer');
       browser = await puppeteer.default.launch({
         headless: true,
+        executablePath: process.env.CHROME_BIN || '/nix/store/*-chromium-*/bin/chromium',
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
           '--disable-accelerated-2d-canvas',
-          '--disable-gpu'
+          '--disable-gpu',
+          '--disable-software-rasterizer',
+          '--disable-dev-tools',
+          '--no-zygote',
+          '--single-process'
         ]
       });
       const page = await browser.newPage();
