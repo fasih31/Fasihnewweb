@@ -825,7 +825,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Enhanced technology detection
       const technologies: string[] = [];
-      const techPatterns = {
+      const techPatterns: Record<string, RegExp[]> = {
         'React': [/react/i, /_jsx/i, /createElement/i],
         'Vue.js': [/vue/i, /__VUE__/i],
         'Angular': [/angular/i, /ng-/i],
