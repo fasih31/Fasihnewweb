@@ -11,7 +11,6 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { HelmetProvider } from "react-helmet-async";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
-import { WhatsAppFloat } from "@/components/whatsapp-float";
 
 const AdminDashboard = lazy(() => import("@/pages/admin"));
 const BlogArticle = lazy(() => import("@/pages/blog-article"));
@@ -103,7 +102,6 @@ function App() {
             <ScrollToTop />
             <TooltipProvider>
               <Toaster />
-              <WhatsAppFloat />
               <Router />
             </TooltipProvider>
           </QueryClientProvider>

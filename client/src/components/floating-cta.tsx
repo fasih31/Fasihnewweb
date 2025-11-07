@@ -17,12 +17,9 @@ export function FloatingCTA() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToContact = () => {
-    const element = document.getElementById("contact");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsExpanded(false);
-    }
+  const handleWhatsAppClick = () => {
+    window.open('https://wa.me/971506184687', '_blank');
+    setIsExpanded(false);
   };
 
   return (
@@ -37,7 +34,7 @@ export function FloatingCTA() {
           {isExpanded ? (
             <div className="bg-card border-2 border-primary rounded-lg shadow-2xl p-4 w-64">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-bold text-sm">Ready to Start?</h3>
+                <h3 className="font-bold text-sm">Let's Connect on WhatsApp</h3>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -48,11 +45,11 @@ export function FloatingCTA() {
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground mb-3">
-                Let's discuss your project and bring your vision to life.
+                Chat with me directly on WhatsApp. I'm here to help with your project needs!
               </p>
-              <Button onClick={scrollToContact} className="w-full gap-2" size="sm">
+              <Button onClick={handleWhatsAppClick} className="w-full gap-2" size="sm">
                 <MessageCircle className="h-4 w-4" />
-                Get In Touch
+                Chat on WhatsApp
               </Button>
             </div>
           ) : (
