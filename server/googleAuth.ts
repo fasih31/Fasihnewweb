@@ -192,30 +192,42 @@ export const isAdmin: RequestHandler = (req, res, next) => {
 
 async function initializeAdminUser() {
   try {
-    const adminUser = await storage.getUserByEmail(ADMIN_EMAIL);
+    const adminEmail = process.env.ADMIN_EMAIL || "Fasih31@gmail.com";
+    if (!process.env.ADMIN_EMAIL) {
+      console.log(`ADMIN_EMAIL not set. Using default admin email: ${adminEmail}. For production, set ADMIN_EMAIL environment variable.`);
+    }
 
-    if (!adminUser) {
-      // If admin user does not exist, create one with a default password
-      const defaultPassword = "Fasih31@"; // This should be a strong, unique password
-      const passwordHash = await bcrypt.hash(defaultPassword, 10);
+    // Check if admin user exists
+    try {
+      const existingUser = await storage.getUserByEmail(adminEmail);
+
+      if (existingUser) {
+        console.log(`Admin user already exists: ${adminEmail}`);
+        return;
+      }
+    } catch (error) {
+      // User doesn't exist, continue to create
+      console.log(`Admin user not found, creating: ${adminEmail}`);
+    }
+
+    // Create admin user only if not exists
+    try {
       await storage.upsertUser({
-        id: `admin-${Date.now()}`, // Simple unique ID
-        email: ADMIN_EMAIL,
-        name: "Fasih ur Rehman", // Default admin name
-        passwordHash,
+        email: adminEmail,
+        name: "Fasih ur Rehman",
+        picture: null,
       });
-      console.log(`Admin user initialized with email: ${ADMIN_EMAIL}`);
-    } else if (!adminUser.passwordHash) {
-      // If admin user exists but has no password hash, update it
-      const defaultPassword = "Fasih31@"; // This should be a strong, unique password
-      const passwordHash = await bcrypt.hash(defaultPassword, 10);
-      await storage.upsertUser({
-        ...adminUser,
-        passwordHash,
-      });
-      console.log(`Admin user password updated for email: ${ADMIN_EMAIL}`);
+      console.log(`Admin user created successfully: ${adminEmail}`);
+    } catch (createError: any) {
+      // If duplicate key error, user was created by another process - that's ok
+      if (createError.code === '23505') {
+        console.log(`Admin user already exists (created by concurrent process): ${adminEmail}`);
+      } else {
+        throw createError;
+      }
     }
   } catch (error) {
     console.error("Error initializing admin user:", error);
+    // Don't throw - allow the app to start even if admin init fails
   }
 }

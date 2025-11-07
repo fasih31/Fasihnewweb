@@ -87,25 +87,18 @@ export class DatabaseStorage implements IStorage {
 
   async getUserByEmail(email: string): Promise<User | null> {
     try {
-      if (!email || typeof email !== 'string') {
-        console.error('Invalid email provided to getUserByEmail');
+      const result = await db.select().from(users).where(eq(users.email, email.toLowerCase().trim()));
+      if (!result || result.length === 0) {
         return null;
       }
-      
-      const result = await db
-        .select()
-        .from(users)
-        .where(eq(users.email, email.toLowerCase().trim()))
-        .limit(1);
-      
-      return result && result.length > 0 ? result[0] : null;
+      return result[0];
     } catch (error: any) {
       console.error('Error getting user by email:', {
         email,
         error: error.message,
         stack: error.stack
       });
-      return null;
+      return null; // Return null instead of throwing to allow app to continue
     }
   }
 
