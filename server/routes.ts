@@ -15,7 +15,7 @@ import {
 import { fromZodError } from "zod-validation-error";
 import { setupAuth, isAuthenticated, isAdmin } from "./googleAuth";
 import nodemailer from "nodemailer";
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import keywordExtractor from 'keyword-extractor';
 
 // Email configuration
@@ -805,11 +805,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         asyncScripts: (html.match(/<script[^>]*async[^>]*>/gi) || []).length,
         deferScripts: (html.match(/<script[^>]*defer[^>]*>/gi) || []).length,
       };
-        totalResources: scripts + stylesheets + (html.match(/<img[^>]*>/gi) || []).length,
-        lazyLoadImages: (html.match(/loading\s*=\s*["']lazy["']/gi) || []).length,
-        asyncScripts: (html.match(/<script[^>]*async[^>]*>/gi) || []).length,
-        deferScripts: (html.match(/<script[^>]*defer[^>]*>/gi) || []).length,
-      };
 
       // Real Lighthouse scores from audit
       const lighthouseScores = {
@@ -852,10 +847,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
         responsive,
         loadTime,
         status: response.status,
-
+        headers,
+        technologies,
+        security,
+        performanceMetrics,
+        htmlStructure: {
+          totalElements,
+          headings: { h1: h1Count, h2: h2Count, h3: h3Count, h4: h4Count, h5: h5Count, h6: h6Count },
+          forms,
+          scripts,
+          stylesheets,
+          iframes,
+          videos,
+          buttons,
+          inputs,
+        },
+        codeQuality,
+        lighthouseScores,
+        screenshots,
+        ocr,
+        domainInfo,
+      });
+    } catch (error) {
+      console.error('Error scanning website:', error);
+      res.status(500).json({ error: 'Failed to scan website' });
+    }
+  });
 
   // Backlink Analysis API
-  app.post("/api/seo-backlinks", async (req, res) => {
+  app.post("/api/seo-backlinks", async (req: Request, res: Response) => {
     try {
       const { url } = req.body;
       
@@ -899,30 +919,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-        headers,
-        technologies,
-        security,
-        performanceMetrics,
-        htmlStructure: {
-          totalElements,
-          headings: { h1: h1Count, h2: h2Count, h3: h3Count, h4: h4Count, h5: h5Count, h6: h6Count },
-          forms,
-          scripts,
-          stylesheets,
-          iframes,
-          videos,
-          buttons,
-          inputs,
-        },
-      });
-    } catch (error) {
-      console.error('Error scanning website:', error);
-      res.status(500).json({ error: 'Failed to scan website' });
-    }
-  });
-
   // Schema Markup Validator
-  app.post("/api/seo-schema", async (req, res) => {
+  app.post("/api/seo-schema", async (req: Request, res: Response) => {
     try {
       const { url } = req.body;
       const response = await fetch(url);
@@ -1083,45 +1081,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         hasViewport: $('meta[name="viewport"]').length > 0,
         hasCharset: $('meta[charset]').length > 0 || $('meta[http-equiv="Content-Type"]').length > 0,
         hasLangAttribute: $('html').attr('lang') !== undefined,
-
-
-  // Schedule SEO Monitoring
-  app.post("/api/seo-monitor/schedule", isAuthenticated, async (req, res) => {
-    try {
-      const { url, email, frequency } = req.body; // frequency: daily, weekly, monthly
-      
-      const monitoringConfig = {
-        url,
-        email,
-        frequency,
-        userId: req.user!.id,
-        nextRunAt: new Date(),
-        createdAt: new Date(),
-      };
-
-      // Store in database
-      await storage.createSEOMonitor(monitoringConfig);
-
-      // Send confirmation email
-      const emailHtml = `
-        <h2>SEO Monitoring Scheduled</h2>
-        <p>We'll monitor <strong>${url}</strong> and send you ${frequency} reports.</p>
-        <p>You'll receive alerts when significant SEO changes are detected.</p>
-      `;
-
-      await sendEmailNotification(`SEO Monitoring Activated for ${url}`, emailHtml);
-
-      res.json({
-        success: true,
-        message: "SEO monitoring scheduled successfully",
-        data: monitoringConfig,
-      });
-    } catch (error: any) {
-      console.error("Schedule monitoring error:", error);
-      res.status(500).json({ success: false, message: error.message });
-    }
-  });
-
         hasFavicon: $('link[rel="icon"]').length > 0 || $('link[rel="shortcut icon"]').length > 0,
         hasServiceWorker: html.includes('serviceWorker'),
         isAMPEnabled: $('link[rel="amphtml"]').length > 0,
@@ -1321,8 +1280,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Schedule SEO Monitoring
+  app.post("/api/seo-monitor/schedule", isAuthenticated, async (req: Request, res: Response) => {
+    try {
+      const { url, email, frequency } = req.body; // frequency: daily, weekly, monthly
+      
+      const monitoringConfig = {
+        url,
+        email,
+        frequency,
+        userId: req.user!.id,
+        nextRunAt: new Date(),
+        createdAt: new Date(),
+      };
+
+      // Store in database
+      await storage.createSEOMonitor(monitoringConfig);
+
+      // Send confirmation email
+      const emailHtml = `
+        <h2>SEO Monitoring Scheduled</h2>
+        <p>We'll monitor <strong>${url}</strong> and send you ${frequency} reports.</p>
+        <p>You'll receive alerts when significant SEO changes are detected.</p>
+      `;
+
+      await sendEmailNotification(`SEO Monitoring Activated for ${url}`, emailHtml);
+
+      res.json({
+        success: true,
+        message: "SEO monitoring scheduled successfully",
+        data: monitoringConfig,
+      });
+    } catch (error: any) {
+      console.error("Schedule monitoring error:", error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  });
+
   // Code execution endpoint
-  app.post('/api/execute-code', async (req, res) => {
+  app.post('/api/execute-code', async (req: Request, res: Response) => {
     try {
       const { code, language } = req.body;
 
