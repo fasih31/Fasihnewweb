@@ -17,6 +17,7 @@ import { setupAuth, isAuthenticated, isAdmin } from "./googleAuth";
 import nodemailer from "nodemailer";
 import * as cheerio from 'cheerio';
 import keywordExtractor from 'keyword-extractor';
+import { Request, Response } from 'express'; // Import Request and Response types
 
 // Email configuration
 const transporter = nodemailer.createTransport({
@@ -784,28 +785,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
 
       // Lighthouse scores (real if Puppeteer available, estimated otherwise)
-      const lighthouseScores = usePuppeteer ? {
-        performance: 75,
-        accessibility: 85,
-        bestPractices: 80,
-        seo: 90,
-      } : {
+      const lighthouseScores = {
         performance: Math.min(100, Math.max(50, 100 - (loadTime / 50))),
-        accessibility: technical.hasLangAttribute && responsive ? 85 : 70,
-        bestPractices: technical.hasHttps && technical.hasCanonical ? 80 : 65,
+        accessibility: responsive ? 85 : 70,
+        bestPractices: hasHttps ? 80 : 65,
         seo: (hasTitle && hasMeta ? 90 : 70),
       };
 
       // Screenshots (real if Puppeteer available, placeholder otherwise)
       const screenshots = {
-        desktop: `data:image/png;base64,${desktopScreenshot}`,
-        mobile: `data:image/png;base64,${mobileScreenshot}`,
-        tablet: `data:image/png;base64,${tabletScreenshot}`,
+        desktop: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==`,
+        mobile: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==`,
+        tablet: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==`,
       };
 
       // Extract visible text for OCR/analysis
       const ocr = {
-        extractedText: bodyText.substring(0, 5000),
+        extractedText: $.html().substring(0, 5000),
         confidence: 95,
         wordCount: totalWords,
         language: $('html').attr('lang') || 'en',
@@ -860,10 +856,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/seo-backlinks", async (req: Request, res: Response) => {
     try {
       const { url } = req.body;
-      
+
       // In production, integrate with Moz, Ahrefs, or SEMrush API
       // For now, provide mock comprehensive data
-      
+
       const backlinkData = {
         totalBacklinks: Math.floor(Math.random() * 10000) + 1000,
         referringDomains: Math.floor(Math.random() * 500) + 100,
@@ -949,28 +945,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Advanced SEO Analysis API endpoint with Lighthouse, Puppeteer & NLP
-  app.post("/api/seo-analyze", async (req, res) => {
+  app.post("/api/seo-analyze", async (req: Request, res: Response) => {
     let browser;
-    let usePuppeteer = true;
-    
     try {
       const { url } = req.body;
+
       if (!url) {
         return res.status(400).json({ error: 'URL is required' });
       }
 
       // Validate URL format
-      let validUrl;
-      try {
-        validUrl = new URL(url);
-        if (!['http:', 'https:'].includes(validUrl.protocol)) {
-          return res.status(400).json({ error: 'URL must use HTTP or HTTPS protocol' });
-        }
-      } catch (urlError) {
-        return res.status(400).json({ error: 'Invalid URL format. Please enter a valid URL (e.g., https://example.com)' });
+      let targetUrl = url.trim();
+      if (!targetUrl.match(/^https?:\/\//i)) {
+        targetUrl = `https://${targetUrl}`;
       }
 
-      console.log('Analyzing URL:', validUrl.href);
+      try {
+        new URL(targetUrl);
+      } catch (e) {
+        return res.status(400).json({ error: 'Invalid URL format' });
+      }
+
+      console.log('Analyzing URL:', targetUrl);
 
       // Try to launch Puppeteer for advanced analysis
       let page;
@@ -989,93 +985,190 @@ export async function registerRoutes(app: Express): Promise<Server> {
             '--no-zygote',
             '--single-process',
             '--disable-extensions'
-          ]
+          ],
+          timeout: 30000,
         });
         page = await browser.newPage();
-      } catch (puppeteerError) {
-        console.log('Puppeteer not available, using fallback analysis:', puppeteerError.message);
-        usePuppeteer = false;
-      }
-
-      let html;
-      let loadTime;
-      let desktopScreenshot = '';
-      let mobileScreenshot = '';
-      let tabletScreenshot = '';
-      
-      if (usePuppeteer && page) {
-      
-      // Set timeout and user agent
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
-        
-        const startTime = Date.now();
-        try {
-          await page.goto(validUrl.href, { 
-            waitUntil: 'networkidle2',
-            timeout: 30000 // 30 second timeout
+        await page.setDefaultNavigationTimeout(30000);
+        await page.goto(targetUrl, {
+          waitUntil: 'networkidle2',
+          timeout: 30000
+        }).catch(async (navError) => {
+          console.warn(`Navigation to ${targetUrl} with networkidle2 failed: ${navError.message}. Retrying with domcontentloaded.`);
+          // Try with domcontentloaded if networkidle2 fails
+          await page.goto(targetUrl, {
+            waitUntil: 'domcontentloaded',
+            timeout: 30000
           });
-        } catch (gotoError) {
-          await browser.close();
-          console.error('Error loading page:', gotoError);
-          return res.status(400).json({ 
-            error: 'Failed to load the website. Please check if the URL is accessible and try again.' 
-          });
-        }
-        loadTime = Date.now() - startTime;
-        
-        // Get HTML content
-        html = await page.content();
-
-        // Capture screenshots
-        desktopScreenshot = await page.screenshot({ 
-          encoding: 'base64',
-          fullPage: false,
-          type: 'png'
         });
-        
-        await page.setViewport({ width: 375, height: 667 });
-        mobileScreenshot = await page.screenshot({ 
-          encoding: 'base64',
-          fullPage: false,
-          type: 'png'
-        });
-
-        await page.setViewport({ width: 768, height: 1024 });
-        tabletScreenshot = await page.screenshot({ 
-          encoding: 'base64',
-          fullPage: false,
-          type: 'png'
-        });
-
-        await browser.close();
-      } else {
+      } catch (puppeteerError: any) {
+        console.log('Puppeteer not available or failed to launch, using fallback analysis:', puppeteerError.message);
         // Fallback: Use fetch to get HTML
         const startTime = Date.now();
-        const response = await fetch(validUrl.href, {
+        const response = await fetch(targetUrl, {
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
           }
         });
-        loadTime = Date.now() - startTime;
-        html = await response.text();
-        
+        const loadTime = Date.now() - startTime;
+        const html = await response.text();
+
         // Use placeholder for screenshots
-        desktopScreenshot = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
-        mobileScreenshot = desktopScreenshot;
-        tabletScreenshot = desktopScreenshot;
+        const desktopScreenshot = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+        const mobileScreenshot = desktopScreenshot;
+        const tabletScreenshot = desktopScreenshot;
+
+        // Directly process HTML from fetch
+        const $ = cheerio.load(html);
+        const headers = Object.fromEntries(response.headers);
+
+        const hasHttps = targetUrl.startsWith('https://');
+        const hasTitle = /<title[^>]*>([^<]+)<\/title>/i.test(html);
+        const hasMeta = /<meta\s+name="description"/i.test(html);
+        const hasOgTags = /<meta\s+property="og:/i.test(html);
+        const responsive = /<meta\s+name="viewport"/i.test(html);
+        const totalElements = (html.match(/<[^>]+>/g) || []).length;
+        const h1Count = (html.match(/<h1[^>]*>/gi) || []).length;
+        const h2Count = (html.match(/<h2[^>]*>/gi) || []).length;
+        const h3Count = (html.match(/<h3[^>]*>/gi) || []).length;
+        const h4Count = (html.match(/<h4[^>]*>/gi) || []).length;
+        const h5Count = (html.match(/<h5[^>]*>/gi) || []).length;
+        const h6Count = (html.match(/<h6[^>]*>/gi) || []).length;
+        const scripts = (html.match(/<script[^>]*>/gi) || []).length;
+        const stylesheets = (html.match(/<link[^>]*stylesheet[^>]*>/gi) || []).length;
+        const images = $('img');
+        const imagesWithAlt = images.filter((_, img) => $(img).attr('alt')).length;
+        const internalLinks = $('a').filter((_, link) => {
+          const href = $(link).attr('href');
+          return href && (href.startsWith('/') || href.startsWith(new URL(targetUrl).hostname) || !href.startsWith('http'));
+        }).length;
+        const externalLinks = $('a').filter((_, link) => {
+          const href = $(link).attr('href');
+          return href && href.startsWith('http') && !href.startsWith(new URL(targetUrl).hostname);
+        }).length;
+        const title = $('title').first().text();
+        const metaDescription = $('meta[name="description"]').first().attr('content');
+        const bodyText = $('body').text().replace(/\s+/g, ' ').trim();
+        const totalWords = bodyText.split(/\s+/).filter(word => word.length > 0).length;
+        const sentences = bodyText.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+        const syllables = bodyText.split(/\s+/).reduce((count, word) => {
+          return count + word.toLowerCase().split(/[aeiouy]+/).length - 1;
+        }, 0);
+        let readabilityScore = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
+        readabilityScore = Math.max(0, Math.min(100, readabilityScore)); // Clamp 0-100
+        const hasCanonical = $('link[rel="canonical"]').length > 0;
+        const hasViewport = $('meta[name="viewport"]').length > 0;
+
+        let score = 0;
+        if (hasHttps) score += 5;
+        if (hasCanonical) score += 5;
+        if (hasViewport) score += 5;
+        if (h1Count >= 1 && h1Count <= 1) score += 10;
+        if (title && title.length >= 50 && title.length <= 60) score += 10;
+        if (metaDescription && metaDescription.length >= 150 && metaDescription.length <= 160) score += 10;
+        if (imagesWithAlt === images.length && images.length > 0) score += 5;
+        if (loadTime < 3000) score += 10;
+        if (readabilityScore > 60) score += 5;
+        if (internalLinks > 0 && externalLinks > 0) score += 5;
+
+        const recommendations = [];
+        if (!hasHttps) recommendations.push({ category: 'Security', priority: 'high', message: 'Enable HTTPS encryption' });
+        if (h1Count !== 1) recommendations.push({ category: 'Content', priority: 'high', message: 'Use exactly one H1 tag per page' });
+        if (!title || title.length < 50 || title.length > 60) recommendations.push({ category: 'Meta', priority: 'high', message: 'Optimize title tag length to 50-60 characters' });
+        if (metaDescription && (metaDescription.length < 150 || metaDescription.length > 160)) recommendations.push({ category: 'Meta', priority: 'medium', message: 'Optimize meta description length to 150-160 characters' });
+        if (imagesWithAlt < images.length) recommendations.push({ category: 'Accessibility', priority: 'medium', message: 'Add alt text to all images' });
+        if (loadTime > 3000) recommendations.push({ category: 'Performance', priority: 'high', message: 'Improve page load time (target < 3s)' });
+        if (!hasCanonical) recommendations.push({ category: 'Technical SEO', priority: 'medium', message: 'Implement canonical tags for pages with duplicate content' });
+        if (!hasViewport) recommendations.push({ category: 'Accessibility', priority: 'low', message: 'Add viewport meta tag for mobile optimization' });
+
+        return res.json({
+          url: targetUrl,
+          score: Math.min(100, score),
+          aiContentSuggestions: "Puppeteer not available. AI suggestions require full browser environment.",
+          performance: {
+            loadTime,
+            pageSize: html.length,
+            requests: scripts + stylesheets + images.length,
+            firstContentfulPaint: Math.floor(loadTime * 0.6),
+            timeToInteractive: Math.floor(loadTime * 1.2),
+          },
+          technical: {
+            hasHttps,
+            hasRobotsTxt: false,
+            hasSitemap: html.includes('sitemap.xml'),
+            hasCanonical,
+            hasViewport,
+            hasCharset: $('meta[charset]').length > 0 || $('meta[http-equiv="Content-Type"]').length > 0,
+            hasLangAttribute: $('html').attr('lang') !== undefined,
+            hasFavicon: $('link[rel="icon"]').length > 0 || $('link[rel="shortcut icon"]').length > 0,
+            hasServiceWorker: html.includes('serviceWorker'),
+            isAMPEnabled: $('link[rel="amphtml"]').length > 0,
+          },
+          content: {
+            title: { exists: !!title, length: title?.length || 0, text: title },
+            metaDescription: { exists: !!metaDescription, length: metaDescription?.length || 0, text: metaDescription },
+            h1Tags: h1Count,
+            h2Tags: h2Count,
+            h3Tags: h3Count,
+            totalWords,
+            readabilityScore: Math.round(readabilityScore),
+            keywordDensity: {},
+          },
+          images: {
+            total: images.length,
+            withAlt: imagesWithAlt,
+            withoutAlt: images.length - imagesWithAlt,
+            oversized: 0, // Cannot determine size without fetching
+            totalSize: 0, // Cannot determine size without fetching
+            optimizationSuggestions: [],
+          },
+          links: {
+            internal: internalLinks,
+            external: externalLinks,
+            broken: 0,
+            nofollow: $('a[rel="nofollow"]').length,
+            dofollow: internalLinks + externalLinks - $('a[rel="nofollow"]').length,
+          },
+          mobile: {
+            isMobileFriendly: responsive,
+            hasResponsiveDesign: responsive,
+            usesFlexibleImages: responsive,
+            fontSizeReadable: true,
+            touchElementsSpaced: true,
+          },
+          social: {
+            hasOgTags,
+            hasTwitterCard: $('meta[name="twitter:card"]').length > 0,
+            ogTitle: $('meta[property="og:title"]').first().attr('content'),
+            ogDescription: $('meta[property="og:description"]').first().attr('content'),
+            ogImage: $('meta[property="og:image"]').first().attr('content'),
+            twitterCard: $('meta[name="twitter:card"]').first().attr('content'),
+          },
+          schema: {
+            hasStructuredData: $('script[type="application/ld+json"]').length > 0,
+            types: [],
+            validationErrors: [],
+          },
+          security: {
+            hasSSL: hasHttps,
+            hasSTS: headers['strict-transport-security'] !== undefined,
+            hasCSP: headers['content-security-policy'] !== undefined,
+            hasXFrameOptions: headers['x-frame-options'] !== undefined,
+            vulnerabilities: !hasHttps ? ['No HTTPS encryption'] : [],
+          },
+          accessibility: {
+            score: imagesWithAlt === images.length && $('html').attr('lang') !== undefined ? 85 : 60,
+            issues: imagesWithAlt < images.length ? [`${images.length - imagesWithAlt} images missing alt text`] : [],
+          },
+          recommendations,
+        });
       }
-      
-      const $ = cheerio.load(html);
 
-      // Get response headers via fetch
-      const response = await fetch(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        }
-      });
-      const headers = Object.fromEntries(response.headers);
+      // Continue with Puppeteer analysis if successful
+      const $ = cheerio.load(await page.content());
+      const headers = Object.fromEntries(page.headers());
 
-      // Extract meta tags
+      const hasHttps = targetUrl.startsWith('https://');
       const title = $('title').first().text();
       const metaDescription = $('meta[name="description"]').first().attr('content');
       const ogTitle = $('meta[property="og:title"]').first().attr('content');
@@ -1083,13 +1176,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const ogImage = $('meta[property="og:image"]').first().attr('content');
       const twitterCard = $('meta[name="twitter:card"]').first().attr('content');
 
-      // Count elements
       const h1Count = $('h1').length;
       const h2Count = $('h2').length;
       const h3Count = $('h3').length;
-      const totalWords = $('body').text().split(/\s+/).filter(word => word.length > 0).length;
-
-      // Image analysis
+      const h4Count = $('h4').length;
+      const h5Count = $('h5').length;
+      const h6Count = $('h6').length;
+      const scripts = $('script').length;
+      const stylesheets = $('link[rel="stylesheet"]').length;
       const images = $('img');
       const imagesWithAlt = images.filter((_, img) => $(img).attr('alt')).length;
       let oversizedImages = 0;
@@ -1098,44 +1192,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       images.each((_, img) => {
         const src = $(img).attr('src');
         if (src) {
-          // In a real scenario, you'd fetch the image to get its size.
-          // For this example, we'll use a placeholder logic.
           const placeholderSize = Math.floor(Math.random() * 500) + 50; // 50KB to 550KB
           totalImageSize += placeholderSize;
-          if (placeholderSize > 150) { // Consider images > 150KB as potentially oversized
+          if (placeholderSize > 150) {
             oversizedImages++;
           }
         }
       });
 
-      // Link analysis
       const internalLinks = $('a').filter((_, link) => {
         const href = $(link).attr('href');
-        return href && (href.startsWith('/') || href.startsWith(new URL(url).hostname) || !href.startsWith('http'));
+        return href && (href.startsWith('/') || href.startsWith(new URL(targetUrl).hostname) || !href.startsWith('http'));
       }).length;
       const externalLinks = $('a').filter((_, link) => {
         const href = $(link).attr('href');
-        return href && href.startsWith('http') && !href.startsWith(new URL(url).hostname);
+        return href && href.startsWith('http') && !href.startsWith(new URL(targetUrl).hostname);
       }).length;
 
-      // Technical SEO
-      const technical = {
-        hasHttps: url.startsWith('https://'),
-        hasRobotsTxt: false, // Would need to fetch and parse robots.txt
-        hasSitemap: $('link[rel="sitemap"]').length > 0 || html.includes('sitemap.xml'),
-        hasCanonical: $('link[rel="canonical"]').length > 0,
-        hasViewport: $('meta[name="viewport"]').length > 0,
-        hasCharset: $('meta[charset]').length > 0 || $('meta[http-equiv="Content-Type"]').length > 0,
-        hasLangAttribute: $('html').attr('lang') !== undefined,
-        hasFavicon: $('link[rel="icon"]').length > 0 || $('link[rel="shortcut icon"]').length > 0,
-        hasServiceWorker: html.includes('serviceWorker'),
-        isAMPEnabled: $('link[rel="amphtml"]').length > 0,
-      };
-
-      // Advanced NLP keyword extraction with TF-IDF scoring
       const bodyText = $('body').text().replace(/\s+/g, ' ').trim();
-      
-      // Extract keywords using natural's TF-IDF
+      const totalWords = bodyText.split(/\s+/).filter(word => word.length > 0).length;
+      const sentences = bodyText.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+      const syllables = bodyText.split(/\s+/).reduce((count, word) => {
+        return count + word.toLowerCase().split(/[aeiouy]+/).length - 1;
+      }, 0);
+      let readabilityScore = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
+      readabilityScore = Math.max(0, Math.min(100, readabilityScore));
+
+      const hasCanonical = $('link[rel="canonical"]').length > 0;
+      const hasViewport = $('meta[name="viewport"]').length > 0;
+
       const natural = await import('natural');
       const TfIdf = natural.TfIdf;
       const tfidf = new TfIdf();
@@ -1146,7 +1231,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         keywordScores[item.term] = parseFloat((item.tfidf * 100).toFixed(2));
       });
 
-      // Basic keyword extraction as fallback
       const extraction_result = keywordExtractor.extract(bodyText, {
         language: "english",
         remove_stopwords: true,
@@ -1154,69 +1238,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
         remove_duplicates: false,
         return_max_ngrams: 3,
       });
-      
+
       const keywords = extraction_result.reduce((acc, keyword) => {
         acc[keyword] = (acc[keyword] || 0) + 1;
         return acc;
       }, {});
-      
-      const keywordDensity = Object.keys(keywordScores).length > 0 
-        ? keywordScores 
+
+      const keywordDensity = Object.keys(keywordScores).length > 0
+        ? keywordScores
         : Object.entries(keywords)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 10)
-            .reduce((acc, [keyword, count]) => {
-              acc[keyword] = parseFloat(((count / totalWords) * 100).toFixed(2));
-              return acc;
-            }, {});
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 10)
+          .reduce((acc, [keyword, count]) => {
+            acc[keyword] = parseFloat(((count / totalWords) * 100).toFixed(2));
+            return acc;
+          }, {});
 
-      // Calculate Flesch Reading Ease score
-      const sentences = bodyText.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
-      const words = totalWords;
-      const syllables = bodyText.split(/\s+/).reduce((count, word) => {
-        return count + word.toLowerCase().split(/[aeiouy]+/).length - 1;
-      }, 0);
-      
-      let readabilityScore = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
-      readabilityScore = Math.max(0, Math.min(100, readabilityScore)); // Clamp 0-100
-
-      // Check for international SEO
-      const hreflangTags = $('link[rel="alternate"][hreflang]').length;
-      const hasMultiLanguage = hreflangTags > 0;
-      const languageVersions = $('link[rel="alternate"][hreflang]').map((_, el) => ({
-        hreflang: $(el).attr('hreflang'),
-        href: $(el).attr('href'),
-      })).get();
-
-      // Calculate overall score
       let score = 0;
-      if (technical.hasHttps) score += 5;
-      if (hasMultiLanguage) score += 5; // Bonus for international SEO
-      if (technical.hasCanonical) score += 5;
-      if (technical.hasViewport) score += 5;
-      if (h1Count >= 1 && h1Count <= 1) score += 10; // Exactly one H1
+      if (hasHttps) score += 5;
+      if (hasCanonical) score += 5;
+      if (hasViewport) score += 5;
+      if (h1Count >= 1 && h1Count <= 1) score += 10;
       if (title && title.length >= 50 && title.length <= 60) score += 10;
       if (metaDescription && metaDescription.length >= 150 && metaDescription.length <= 160) score += 10;
       if (imagesWithAlt === images.length && images.length > 0) score += 5;
-      if (loadTime < 3000) score += 10;
+      if (await page.evaluate(() => performance.timing.loadEventEnd) < 3000) score += 10;
       if (ogTitle && ogDescription) score += 5;
       if (keywordDensity && Object.keys(keywordDensity).length > 0) score += 5;
-      if (readabilityScore > 60) score += 5; // Good readability
-      if (internalLinks > 0 && externalLinks > 0) score += 5; // Mix of internal and external links
+      if (readabilityScore > 60) score += 5;
+      if (internalLinks > 0 && externalLinks > 0) score += 5;
 
       const recommendations = [];
-      if (!technical.hasHttps) recommendations.push({ category: 'Security', priority: 'high', message: 'Enable HTTPS encryption' });
+      if (!hasHttps) recommendations.push({ category: 'Security', priority: 'high', message: 'Enable HTTPS encryption' });
       if (h1Count !== 1) recommendations.push({ category: 'Content', priority: 'high', message: 'Use exactly one H1 tag per page' });
       if (!title || title.length < 50 || title.length > 60) recommendations.push({ category: 'Meta', priority: 'high', message: 'Optimize title tag length to 50-60 characters' });
       if (metaDescription && (metaDescription.length < 150 || metaDescription.length > 160)) recommendations.push({ category: 'Meta', priority: 'medium', message: 'Optimize meta description length to 150-160 characters' });
       if (imagesWithAlt < images.length) recommendations.push({ category: 'Accessibility', priority: 'medium', message: 'Add alt text to all images' });
-      if (loadTime > 3000) recommendations.push({ category: 'Performance', priority: 'high', message: 'Improve page load time (target < 3s)' });
+      if (await page.evaluate(() => performance.timing.loadEventEnd) > 3000) recommendations.push({ category: 'Performance', priority: 'high', message: 'Improve page load time (target < 3s)' });
       if (oversizedImages > 0) recommendations.push({ category: 'Performance', priority: 'medium', message: 'Optimize image sizes. Consider WebP format and compression.' });
-      if (!technical.hasCanonical) recommendations.push({ category: 'Technical SEO', priority: 'medium', message: 'Implement canonical tags for pages with duplicate content' });
-      if (!technical.hasLangAttribute) recommendations.push({ category: 'Accessibility', priority: 'low', message: 'Add a language attribute to the <html> tag' });
+      if (!hasCanonical) recommendations.push({ category: 'Technical SEO', priority: 'medium', message: 'Implement canonical tags for pages with duplicate content' });
+      if (!hasViewport) recommendations.push({ category: 'Accessibility', priority: 'low', message: 'Add viewport meta tag for mobile optimization' });
 
+      const desktopScreenshot = await page.screenshot({ encoding: 'base64', fullPage: true });
+      await page.setViewport({ width: 375, height: 667 });
+      const mobileScreenshot = await page.screenshot({ encoding: 'base64', fullPage: true });
+      await page.setViewport({ width: 768, height: 1024 });
+      const tabletScreenshot = await page.screenshot({ encoding: 'base64', fullPage: true });
 
-      // AI-powered content suggestions using OpenAI
       let aiContentSuggestions;
       if (process.env.OPENAI_API_KEY) {
         try {
@@ -1234,7 +1302,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               },
               {
                 role: 'user',
-                content: `Title: ${title}\nMeta Description: ${metaDescription}\nContent: ${bodyText.substring(0, 2000)}\n\nProvide 5 specific SEO improvements.`,
+                content: `URL: ${targetUrl}\nTitle: ${title}\nMeta Description: ${metaDescription}\nContent: ${bodyText.substring(0, 2000)}\n\nProvide 5 specific SEO improvements, focusing on actionable advice.`,
               },
             ],
             max_tokens: 500,
@@ -1242,28 +1310,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           aiContentSuggestions = response.choices[0].message.content;
         } catch (error) {
-          console.error('OpenAI error:', error);
+          console.error('OpenAI API error:', error);
+          aiContentSuggestions = "Failed to get AI suggestions due to an API error.";
         }
+      } else {
+        aiContentSuggestions = "OpenAI API key not configured. Cannot generate AI suggestions.";
       }
 
       res.json({
-        url,
+        url: targetUrl,
         score: Math.min(100, score),
         aiContentSuggestions,
         performance: {
-          loadTime,
+          loadTime: await page.evaluate(() => performance.timing.loadEventEnd),
           pageSize: html.length,
-          requests: 1 + ($._data($.root[0], 'events')?.load?.length || 0) + ($._data($.root[0], 'events')?.error?.length || 0), // Simplified request count
-          firstContentfulPaint: Math.floor(loadTime * 0.6),
-          timeToInteractive: Math.floor(loadTime * 1.2),
+          requests: scripts + stylesheets + images.length,
+          firstContentfulPaint: await page.evaluate(() => performance.timing.firstContentfulPaint - performance.timing.navigationStart),
+          timeToInteractive: await page.evaluate(() => performance.timing.domInteractive - performance.timing.navigationStart),
         },
-        technical,
+        technical: {
+          hasHttps,
+          hasRobotsTxt: false,
+          hasSitemap: html.includes('sitemap.xml'),
+          hasCanonical,
+          hasViewport,
+          hasCharset: $('meta[charset]').length > 0 || $('meta[http-equiv="Content-Type"]').length > 0,
+          hasLangAttribute: $('html').attr('lang') !== undefined,
+          hasFavicon: $('link[rel="icon"]').length > 0 || $('link[rel="shortcut icon"]').length > 0,
+          hasServiceWorker: html.includes('serviceWorker'),
+          isAMPEnabled: $('link[rel="amphtml"]').length > 0,
+        },
         content: {
           title: { exists: !!title, length: title?.length || 0, text: title },
           metaDescription: { exists: !!metaDescription, length: metaDescription?.length || 0, text: metaDescription },
           h1Tags: h1Count,
           h2Tags: h2Count,
           h3Tags: h3Count,
+          h4Tags: h4Count,
+          h5Tags: h5Count,
+          h6Tags: h6Count,
           totalWords,
           readabilityScore: Math.round(readabilityScore),
           keywordDensity: keywordDensity,
@@ -1288,11 +1373,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           dofollow: internalLinks + externalLinks - $('a[rel="nofollow"]').length,
         },
         mobile: {
-          isMobileFriendly: technical.hasViewport,
-          hasResponsiveDesign: technical.hasViewport, // Simplified check
-          usesFlexibleImages: true, // Assume true if viewport meta tag exists
-          fontSizeReadable: true, // Assume true, requires more advanced analysis
-          touchElementsSpaced: true, // Assume true, requires more advanced analysis
+          isMobileFriendly: hasViewport,
+          hasResponsiveDesign: hasViewport,
+          usesFlexibleImages: hasViewport,
+          fontSizeReadable: true,
+          touchElementsSpaced: true,
         },
         social: {
           hasOgTags: !!(ogTitle && ogDescription),
@@ -1304,23 +1389,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         },
         schema: {
           hasStructuredData: $('script[type="application/ld+json"]').length > 0,
-          types: [], // Would require parsing the JSON-LD
-          validationErrors: [], // Would require a JSON-LD validator
+          types: [],
+          validationErrors: [],
         },
         security: {
-          hasSSL: technical.hasHttps,
+          hasSSL: hasHttps,
           hasSTS: headers['strict-transport-security'] !== undefined,
           hasCSP: headers['content-security-policy'] !== undefined,
           hasXFrameOptions: headers['x-frame-options'] !== undefined,
-          vulnerabilities: !technical.hasHttps ? ['No HTTPS encryption'] : [],
+          vulnerabilities: !hasHttps ? ['No HTTPS encryption'] : [],
         },
         accessibility: {
-          score: imagesWithAlt === images.length && technical.hasLangAttribute ? 85 : 60, // Basic score
+          score: imagesWithAlt === images.length && $('html').attr('lang') !== undefined ? 85 : 60,
           issues: imagesWithAlt < images.length ? [`${images.length - imagesWithAlt} images missing alt text`] : [],
         },
         recommendations,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error analyzing SEO:', error);
       if (browser) {
         try {
@@ -1329,10 +1414,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.error('Error closing browser:', closeError);
         }
       }
-      res.status(500).json({ 
+      res.status(500).json({
         error: 'Failed to analyze SEO. Please check the URL and try again.',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        details: error.message || 'Unknown error',
       });
+    } finally {
+      if (browser) {
+        try {
+          await browser.close();
+        } catch (closeError) {
+          console.error('Error closing browser in finally block:', closeError);
+        }
+      }
     }
   });
 
@@ -1340,7 +1433,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/seo-monitor/schedule", isAuthenticated, async (req: Request, res: Response) => {
     try {
       const { url, email, frequency } = req.body; // frequency: daily, weekly, monthly
-      
+
       const monitoringConfig = {
         url,
         email,

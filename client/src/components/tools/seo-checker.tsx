@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,12 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Search, 
-  CheckCircle, 
-  XCircle, 
-  AlertCircle, 
-  Loader2, 
+import {
+  Search,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Loader2,
   TrendingUp,
   Globe,
   FileText,
@@ -30,6 +29,7 @@ import {
 } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface SEOAnalysis {
   url: string;
@@ -144,7 +144,7 @@ export function SEOChecker() {
       });
       if (!response.ok) throw new Error('Analysis failed');
       const data = await response.json();
-      
+
       // Mock AI insights (in production, this would come from an AI service)
       data.aiInsights = {
         contentQuality: Math.floor(Math.random() * 30) + 70,
@@ -162,14 +162,14 @@ export function SEOChecker() {
         ],
         predictedRanking: { position: Math.floor(Math.random() * 10) + 1, confidence: Math.floor(Math.random() * 30) + 70 }
       };
-      
+
       // Mock historical data
       data.historicalData = Array.from({ length: 30 }, (_, i) => ({
         date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         score: Math.floor(Math.random() * 20) + 75,
         rank: Math.floor(Math.random() * 5) + 1
       }));
-      
+
       // Mock backlinks data
       data.backlinks = {
         total: Math.floor(Math.random() * 5000) + 1000,
@@ -182,25 +182,25 @@ export function SEOChecker() {
           { domain: 'blogplatform.com', authority: 75, links: 67 }
         ]
       };
-      
+
       return data;
     },
   });
 
   const handleAnalyze = () => {
     if (!url) return;
-    
+
     // Clean and validate URL
     let cleanUrl = url.trim();
-    
+
     // Remove trailing slashes
     cleanUrl = cleanUrl.replace(/\/+$/, '');
-    
+
     // Add protocol if missing
     if (!cleanUrl.match(/^https?:\/\//i)) {
       cleanUrl = `https://${cleanUrl}`;
     }
-    
+
     // Basic URL validation
     try {
       new URL(cleanUrl);
@@ -225,7 +225,7 @@ export function SEOChecker() {
 
   const handleDownloadPDF = async () => {
     if (!analyzeMutation.data) return;
-    
+
     const data = analyzeMutation.data;
     const htmlContent = `
       <!DOCTYPE html>
@@ -258,7 +258,7 @@ export function SEOChecker() {
           <p style="color: #64748b; font-size: 18px;">${data.url}</p>
           <p style="color: #94a3b8;">Generated on ${new Date().toLocaleString()}</p>
         </div>
-        
+
         <div style="text-align: center; margin: 40px 0;">
           <div class="score">${data.score}/100</div>
           <p style="font-size: 20px; color: #64748b;">Overall SEO Score</p>
@@ -273,7 +273,7 @@ export function SEOChecker() {
         <h2>🔧 Technical SEO</h2>
         <table>
           <tr><th>Check</th><th>Status</th></tr>
-          ${Object.entries(data.technical).map(([key, value]) => 
+          ${Object.entries(data.technical).map(([key, value]) =>
             `<tr><td>${key.replace(/([A-Z])/g, ' $1').trim()}</td><td class="${value ? 'status-pass' : 'status-fail'}">${value ? '✓ Pass' : '✗ Fail'}</td></tr>`
           ).join('')}
         </table>
@@ -286,7 +286,7 @@ export function SEOChecker() {
         <div class="metric"><span class="metric-label">Readability Score</span><span class="metric-value">${data.content.readabilityScore}/100</span></div>
 
         <h2>🎯 Top Recommendations</h2>
-        ${data.recommendations.slice(0, 10).map(rec => 
+        ${data.recommendations.slice(0, 10).map(rec =>
           `<div class="recommendation priority-${rec.priority}">
             <strong style="text-transform: uppercase;">${rec.priority} Priority</strong>
             <p style="margin: 5px 0 0 0;">${rec.message}</p>
@@ -300,7 +300,7 @@ export function SEOChecker() {
       </body>
       </html>
     `;
-    
+
     const blob = new Blob([htmlContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -366,24 +366,24 @@ export function SEOChecker() {
             </div>
           </div>
           <div className="flex gap-2 flex-wrap">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               onClick={() => setUrl('https://www.google.com')}
               disabled={analyzeMutation.isPending}
             >
               Try Google
             </Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               onClick={() => setUrl('https://www.github.com')}
               disabled={analyzeMutation.isPending}
             >
               Try GitHub
             </Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               onClick={() => setUrl('https://iamfasih.com')}
               disabled={analyzeMutation.isPending}
@@ -546,9 +546,9 @@ export function SEOChecker() {
                         </CardHeader>
                         <CardContent>
                           <ResponsiveContainer width="100%" height={200}>
-                            <RadarChart data={result.aiInsights.semanticAnalysis.map((topic, i) => ({ 
-                              topic, 
-                              score: Math.floor(Math.random() * 30) + 70 
+                            <RadarChart data={result.aiInsights.semanticAnalysis.map((topic, i) => ({
+                              topic,
+                              score: Math.floor(Math.random() * 30) + 70
                             }))}>
                               <PolarGrid />
                               <PolarAngleAxis dataKey="topic" />
@@ -715,28 +715,28 @@ export function SEOChecker() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <MetricRow 
-                      label="Load Time" 
+                    <MetricRow
+                      label="Load Time"
                       value={`${result.performance.loadTime}ms`}
                       status={result.performance.loadTime < 3000 ? "pass" : "warning"}
                     />
-                    <MetricRow 
-                      label="Page Size" 
+                    <MetricRow
+                      label="Page Size"
                       value={`${(result.performance.pageSize / 1024).toFixed(2)} KB`}
                       status={result.performance.pageSize < 500000 ? "pass" : "warning"}
                     />
-                    <MetricRow 
-                      label="HTTP Requests" 
+                    <MetricRow
+                      label="HTTP Requests"
                       value={result.performance.requests.toString()}
                       status={result.performance.requests < 50 ? "pass" : "warning"}
                     />
-                    <MetricRow 
-                      label="First Contentful Paint" 
+                    <MetricRow
+                      label="First Contentful Paint"
                       value={`${result.performance.firstContentfulPaint}ms`}
                       status={result.performance.firstContentfulPaint < 1800 ? "pass" : "warning"}
                     />
-                    <MetricRow 
-                      label="Time to Interactive" 
+                    <MetricRow
+                      label="Time to Interactive"
                       value={`${result.performance.timeToInteractive}ms`}
                       status={result.performance.timeToInteractive < 3800 ? "pass" : "warning"}
                     />
@@ -808,7 +808,7 @@ export function SEOChecker() {
                     <MetricRow label="H2 Tags" value={result.content.h2Tags.toString()} status={result.content.h2Tags > 0 ? "pass" : "warning"} />
                     <MetricRow label="Total Words" value={result.content.totalWords.toString()} status={result.content.totalWords > 300 ? "pass" : "warning"} />
                     <MetricRow label="Readability Score" value={`${result.content.readabilityScore}/100`} status={result.content.readabilityScore > 60 ? "pass" : "warning"} />
-                    
+
                     {Object.keys(result.content.keywordDensity).length > 0 && (
                       <div className="mt-4">
                         <p className="font-medium mb-3">Top Keywords (TF-IDF)</p>
