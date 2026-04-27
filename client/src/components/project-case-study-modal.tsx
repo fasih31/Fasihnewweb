@@ -43,7 +43,7 @@ export function ProjectCaseStudyModal({ project, open, onClose }: ProjectCaseStu
           <div>
             <h3 className="text-xl font-bold text-foreground mb-3">Technologies Used</h3>
             <div className="flex flex-wrap gap-2">
-              {project.technologies.map((tech, index) => (
+              {(project.technologies ?? project.techStack ?? []).map((tech: string, index: number) => (
                 <Badge key={index} variant="secondary">
                   {tech}
                 </Badge>
@@ -56,7 +56,7 @@ export function ProjectCaseStudyModal({ project, open, onClose }: ProjectCaseStu
             <div>
               <h3 className="text-xl font-bold text-foreground mb-3">Key Features</h3>
               <div className="grid md:grid-cols-2 gap-3">
-                {project.features.map((feature, index) => (
+                {project.features.map((feature: string, index: number) => (
                   <div key={index} className="flex items-start gap-2">
                     <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <span className="text-sm text-muted-foreground">{feature}</span>

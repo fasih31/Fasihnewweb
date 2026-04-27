@@ -23,7 +23,7 @@ import { Request, Response } from 'express'; // Import Request and Response type
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER || 'Fasih31@gmail.com',
+    user: process.env.EMAIL_USER || 'fasih31@gmail.com',
     pass: process.env.EMAIL_PASSWORD, // Set this in environment variables for production
   },
 });
@@ -31,14 +31,33 @@ const transporter = nodemailer.createTransport({
 async function sendEmailNotification(subject: string, html: string) {
   try {
     await transporter.sendMail({
-      from: process.env.EMAIL_USER || 'Fasih31@gmail.com',
-      to: 'Fasih31@gmail.com',
+      from: process.env.EMAIL_USER || 'fasih31@gmail.com',
+      to: 'fasih31@gmail.com',
       subject,
       html,
     });
   } catch (error) {
     console.error('Failed to send email notification:', error);
   }
+}
+
+function detectTechnologiesFromHtml(html: string): string[] {
+  const checks: Array<{ name: string; pattern: RegExp }> = [
+    { name: "React", pattern: /react|__REACT_DEVTOOLS_GLOBAL_HOOK__/i },
+    { name: "Next.js", pattern: /_next\/|next-head-count|next\/static/i },
+    { name: "Vue.js", pattern: /vue|__vue__/i },
+    { name: "Angular", pattern: /ng-version|angular/i },
+    { name: "Tailwind CSS", pattern: /tailwind/i },
+    { name: "Bootstrap", pattern: /bootstrap/i },
+    { name: "Google Analytics", pattern: /googletagmanager|gtag\(/i },
+    { name: "Facebook Pixel", pattern: /connect\.facebook\.net|fbq\(/i },
+    { name: "Cloudflare", pattern: /cloudflare/i },
+    { name: "WordPress", pattern: /wp-content|wp-includes/i },
+  ];
+
+  return checks
+    .filter((check) => check.pattern.test(html))
+    .map((check) => check.name);
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -64,7 +83,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           email: user.email,
           name: user.name,
           picture: user.picture,
-          isAdmin: user.email === "Fasih31@gmail.com",
+          isAdmin: user.email?.toLowerCase() === "fasih31@gmail.com",
         });
       });
     })(req, res, next);
@@ -86,7 +105,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json(null);
       }
       const user = req.user;
-      const isUserAdmin = user.email === "Fasih31@gmail.com";
+      const isUserAdmin = user.email?.toLowerCase() === "fasih31@gmail.com";
       res.json({
         id: user.id,
         email: user.email,
@@ -100,10 +119,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Contact form submission endpoint - simple logging
+  // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {
-      const { name, email, message } = req.body;
+      const validatedData = insertContactMessageSchema.parse(req.body);
+      const { name, email, message } = validatedData;
 
       // Basic validation
       if (!name || !email || !message) {
@@ -120,7 +140,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Log the contact form submission
+      // Store message and log submission
+      await storage.createContactMessage(validatedData);
+
       console.log('\n=== NEW CONTACT FORM SUBMISSION ===');
       console.log(`From: ${name}`);
       console.log(`Email: ${email}`);
@@ -128,11 +150,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`Time: ${new Date().toLocaleString()}`);
       console.log('===================================\n');
 
+      const emailHtml = `
+        <h2>New Contact Form Message</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>WhatsApp:</strong> +971506184687</p>
+        <p><strong>Message:</strong></p>
+        <p>${message.replace(/\n/g, "<br/>")}</p>
+      `;
+      await sendEmailNotification(`New Contact Form Message from ${name}`, emailHtml);
+
       res.status(200).json({
         success: true,
         message: "Message sent successfully! I'll get back to you soon.",
       });
     } catch (error: any) {
+      if (error?.name === "ZodError") {
+        const validationError = fromZodError(error);
+        return res.status(400).json({
+          success: false,
+          message: validationError.message,
+        });
+      }
       console.error("Contact form error:", error);
       res.status(500).json({
         success: false,
@@ -1309,14 +1348,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const scripts = (html.match(/<script[^>]*>/gi) || []).length;
         const stylesheets = (html.match(/<link[^>]*stylesheet[^>]*>/gi) || []).length;
         const images = cheerioInstance('img');
-        const imagesWithAlt = images.filter((_, img) => cheerioInstance(img).attr('alt')).length;
+        const imagesWithAlt = images.filter((_, img) => Boolean(cheerioInstance(img).attr('alt'))).length;
         const internalLinks = cheerioInstance('a').filter((_, link) => {
           const href = cheerioInstance(link).attr('href');
-          return href && (href.startsWith('/') || href.startsWith(new URL(targetUrl).hostname) || !href.startsWith('http'));
+          if (!href) return false;
+          return href.startsWith('/') || href.startsWith(new URL(targetUrl).hostname) || !href.startsWith('http');
         }).length;
         const externalLinks = cheerioInstance('a').filter((_, link) => {
           const href = cheerioInstance(link).attr('href');
-          return href && href.startsWith('http') && !href.startsWith(new URL(targetUrl).hostname);
+          if (!href) return false;
+          return href.startsWith('http') && !href.startsWith(new URL(targetUrl).hostname);
         }).length;
         const title = cheerioInstance('title').first().text();
         const metaDescription = cheerioInstance('meta[name="description"]').first().attr('content');
@@ -1340,6 +1381,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const hasViewport = cheerioInstance('meta[name="viewport"]').length > 0;
         const ogTitle = cheerioInstance('meta[property="og:title"]').first().attr('content');
         const ogDescription = cheerioInstance('meta[property="og:description"]').first().attr('content');
+        const technologies = detectTechnologiesFromHtml(html);
 
         let score = 0;
         if (hasHttps) score += 5;
@@ -1380,11 +1422,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             hasSitemap: html.includes('sitemap.xml'),
             hasCanonical,
             hasViewport,
-            hasCharset: $('meta[charset]').length > 0 || $('meta[http-equiv="Content-Type"]').length > 0,
-            hasLangAttribute: $('html').attr('lang') !== undefined,
-            hasFavicon: $('link[rel="icon"]').length > 0 || $('link[rel="shortcut icon"]').length > 0,
+            hasCharset: cheerioInstance('meta[charset]').length > 0 || cheerioInstance('meta[http-equiv="Content-Type"]').length > 0,
+            hasLangAttribute: cheerioInstance('html').attr('lang') !== undefined,
+            hasFavicon: cheerioInstance('link[rel="icon"]').length > 0 || cheerioInstance('link[rel="shortcut icon"]').length > 0,
             hasServiceWorker: html.includes('serviceWorker'),
-            isAMPEnabled: $('link[rel="amphtml"]').length > 0,
+            isAMPEnabled: cheerioInstance('link[rel="amphtml"]').length > 0,
           },
           content: {
             title: { exists: !!title, length: title?.length || 0, text: title },
@@ -1411,8 +1453,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             internal: internalLinks,
             external: externalLinks,
             broken: 0,
-            nofollow: $('a[rel="nofollow"]').length,
-            dofollow: internalLinks + externalLinks - $('a[rel="nofollow"]').length,
+            nofollow: cheerioInstance('a[rel="nofollow"]').length,
+            dofollow: internalLinks + externalLinks - cheerioInstance('a[rel="nofollow"]').length,
           },
           mobile: {
             isMobileFriendly: responsive,
@@ -1484,7 +1526,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             createdDate: 'N/A',
             expiryDate: 'N/A',
           },
-          technologies: [],
+          technologies,
         });
       }
 
@@ -1510,7 +1552,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const scripts = $('script').length;
       const stylesheets = $('link[rel="stylesheet"]').length;
       const images = $('img');
-      const imagesWithAlt = images.filter((_, img) => $(img).attr('alt')).length;
+      const imagesWithAlt = images.filter((_, img) => Boolean($(img).attr('alt'))).length;
       let oversizedImages = 0;
       let totalImageSize = 0;
 
@@ -1527,11 +1569,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const internalLinks = $('a').filter((_, link) => {
         const href = $(link).attr('href');
-        return href && (href.startsWith('/') || href.startsWith(new URL(targetUrl).hostname) || !href.startsWith('http'));
+        if (!href) return false;
+        return href.startsWith('/') || href.startsWith(new URL(targetUrl).hostname) || !href.startsWith('http');
       }).length;
       const externalLinks = $('a').filter((_, link) => {
         const href = $(link).attr('href');
-        return href && href.startsWith('http') && !href.startsWith(new URL(targetUrl).hostname);
+        if (!href) return false;
+        return href.startsWith('http') && !href.startsWith(new URL(targetUrl).hostname);
       }).length;
 
       const bodyText = $('body').text().replace(/\s+/g, ' ').trim();

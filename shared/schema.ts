@@ -89,6 +89,9 @@ export interface Project {
   liveUrl?: string;
   githubUrl?: string;
   techStack: string[];
+  technologies?: string[];
+  features?: string[];
+  impact?: string;
   caseStudy?: string;
 }
 
@@ -114,6 +117,8 @@ export interface Solution {
   description: string;
   offerings: string[];
   icon: string;
+  category?: string;
+  image?: string;
 }
 
 export interface TimelineItem {

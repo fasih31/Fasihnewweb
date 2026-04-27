@@ -116,6 +116,8 @@ export const solutions: Solution[] = [
   {
     id: "fintech",
     title: "FinTech & Islamic Finance Solutions",
+    category: "FinTech",
+    image: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=1200&h=675&fit=crop",
     description: "Expert FinTech product management delivering Shariah-compliant digital banking, payment systems, and Islamic finance solutions. Specializing in Halal fintech platforms with AI-driven analytics, blockchain integration, and full regulatory compliance.",
     offerings: [
       "Islamic digital banking & Shariah-compliant solutions",
@@ -130,6 +132,8 @@ export const solutions: Solution[] = [
   {
     id: "edtech",
     title: "EdTech Solutions",
+    category: "EdTech",
+    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&h=675&fit=crop",
     description: "Our EdTech platforms empower educators and students through AI-driven assessments, gamification, and analytics, creating engaging, adaptive learning experiences.",
     offerings: [
       "Online learning platforms & LMS",
@@ -142,6 +146,8 @@ export const solutions: Solution[] = [
   {
     id: "ecommerce",
     title: "E-commerce Platform Design & Development",
+    category: "eCommerce",
+    image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=1200&h=675&fit=crop",
     description: "Expert e-commerce designer and product manager building modern, scalable online stores and marketplaces. Specializing in Halal e-commerce platforms, Islamic marketplace design, and AI-powered personalization for maximum conversion and customer engagement.",
     offerings: [
       "Custom e-commerce platform design & development",
@@ -156,6 +162,8 @@ export const solutions: Solution[] = [
   {
     id: "daas",
     title: "DaaS Solutions",
+    category: "DaaS",
+    image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=1200&h=675&fit=crop",
     description: "Our Data-as-a-Service solutions provide clean, actionable data for analytics and AI insights, helping businesses make data-driven decisions securely and efficiently.",
     offerings: [
       "Real-time data pipelines & APIs",
