@@ -23,7 +23,7 @@ import { Request, Response } from 'express'; // Import Request and Response type
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER || 'Fasih31@gmail.com',
+    user: process.env.EMAIL_USER || 'fasih31@gmail.com',
     pass: process.env.EMAIL_PASSWORD, // Set this in environment variables for production
   },
 });
@@ -31,14 +31,110 @@ const transporter = nodemailer.createTransport({
 async function sendEmailNotification(subject: string, html: string) {
   try {
     await transporter.sendMail({
-      from: process.env.EMAIL_USER || 'Fasih31@gmail.com',
-      to: 'Fasih31@gmail.com',
+      from: process.env.EMAIL_USER || 'fasih31@gmail.com',
+      to: 'fasih31@gmail.com',
       subject,
       html,
     });
   } catch (error) {
     console.error('Failed to send email notification:', error);
   }
+}
+
+function detectTechnologiesFromHtml(html: string): string[] {
+  const checks: Array<{ name: string; pattern: RegExp }> = [
+    { name: "React", pattern: /react|__REACT_DEVTOOLS_GLOBAL_HOOK__/i },
+    { name: "Next.js", pattern: /_next\/|next-head-count|next\/static/i },
+    { name: "Vue.js", pattern: /vue|__vue__/i },
+    { name: "Angular", pattern: /ng-version|angular/i },
+    { name: "Tailwind CSS", pattern: /tailwind/i },
+    { name: "Bootstrap", pattern: /bootstrap/i },
+    { name: "Google Analytics", pattern: /googletagmanager|gtag\(/i },
+    { name: "Facebook Pixel", pattern: /connect\.facebook\.net|fbq\(/i },
+    { name: "Cloudflare", pattern: /cloudflare/i },
+    { name: "WordPress", pattern: /wp-content|wp-includes/i },
+  ];
+
+  return checks
+    .filter((check) => check.pattern.test(html))
+    .map((check) => check.name);
+}
+
+const LINKEDIN_PROFILE_URL = "https://ae.linkedin.com/in/fasihurrehman05";
+const LINKEDIN_ARTICLES_URL = `${LINKEDIN_PROFILE_URL}/recent-activity/articles/`;
+const LINKEDIN_ACTIVITY_URL = `${LINKEDIN_PROFILE_URL}/recent-activity/`;
+
+type LinkedInItem = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  url: string;
+  publishedAt: string;
+  source: "linkedin";
+};
+
+function slugifyTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 90) || `linkedin-${Date.now()}`;
+}
+
+async function fetchLinkedInItems(targetUrl: string, limit = 12): Promise<LinkedInItem[]> {
+  const response = await fetch(targetUrl, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "Accept-Language": "en-US,en;q=0.9",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`LinkedIn request failed with status ${response.status}`);
+  }
+
+  const html = await response.text();
+  const $ = cheerio.load(html);
+  const links = $("a[href*='linkedin.com']");
+  const items: LinkedInItem[] = [];
+  const seen = new Set<string>();
+
+  links.each((index, el) => {
+    if (items.length >= limit) return;
+    const href = ($(el).attr("href") || "").trim();
+    const title = $(el).text().replace(/\s+/g, " ").trim();
+
+    const isArticleLike = href.includes("/pulse/") || href.includes("/posts/") || href.includes("/articles/");
+    const isValidTitle = title.length >= 25;
+    const normalizedUrl = href.startsWith("http") ? href : `https://www.linkedin.com${href}`;
+
+    if (!isArticleLike || !isValidTitle || seen.has(normalizedUrl)) {
+      return;
+    }
+
+    const surroundingText = $(el).closest("article, section, div").text().replace(/\s+/g, " ").trim();
+    const excerpt = surroundingText && surroundingText.length > title.length
+      ? surroundingText.slice(0, 260)
+      : `Latest insight from LinkedIn by Fasih ur Rehman.`;
+
+    const slug = slugifyTitle(title);
+    items.push({
+      id: `linkedin-${index}-${slug}`,
+      slug,
+      title,
+      excerpt,
+      url: normalizedUrl,
+      publishedAt: new Date().toISOString(),
+      source: "linkedin",
+    });
+
+    seen.add(normalizedUrl);
+  });
+
+  return items;
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -64,7 +160,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           email: user.email,
           name: user.name,
           picture: user.picture,
-          isAdmin: user.email === "Fasih31@gmail.com",
+          isAdmin: user.email?.toLowerCase() === "fasih31@gmail.com",
         });
       });
     })(req, res, next);
@@ -86,7 +182,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json(null);
       }
       const user = req.user;
-      const isUserAdmin = user.email === "Fasih31@gmail.com";
+      const isUserAdmin = user.email?.toLowerCase() === "fasih31@gmail.com";
       res.json({
         id: user.id,
         email: user.email,
@@ -100,10 +196,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Contact form submission endpoint - simple logging
+  // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {
-      const { name, email, message } = req.body;
+      const validatedData = insertContactMessageSchema.parse(req.body);
+      const { name, email, message } = validatedData;
 
       // Basic validation
       if (!name || !email || !message) {
@@ -120,7 +217,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Log the contact form submission
+      // Store message and log submission
+      await storage.createContactMessage(validatedData);
+
       console.log('\n=== NEW CONTACT FORM SUBMISSION ===');
       console.log(`From: ${name}`);
       console.log(`Email: ${email}`);
@@ -128,11 +227,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`Time: ${new Date().toLocaleString()}`);
       console.log('===================================\n');
 
+      const emailHtml = `
+        <h2>New Contact Form Message</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>WhatsApp:</strong> +971506184687</p>
+        <p><strong>Message:</strong></p>
+        <p>${message.replace(/\n/g, "<br/>")}</p>
+      `;
+      await sendEmailNotification(`New Contact Form Message from ${name}`, emailHtml);
+
       res.status(200).json({
         success: true,
         message: "Message sent successfully! I'll get back to you soon.",
       });
     } catch (error: any) {
+      if (error?.name === "ZodError") {
+        const validationError = fromZodError(error);
+        return res.status(400).json({
+          success: false,
+          message: validationError.message,
+        });
+      }
       console.error("Contact form error:", error);
       res.status(500).json({
         success: false,
@@ -500,6 +616,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({
         success: false,
         message: "Failed to fetch article",
+      });
+    }
+  });
+
+  app.get("/api/linkedin/articles", async (_req, res) => {
+    try {
+      const articles = await fetchLinkedInItems(LINKEDIN_ARTICLES_URL, 12);
+      res.json({ success: true, data: articles, source: LINKEDIN_ARTICLES_URL });
+    } catch (error: any) {
+      console.error("Error fetching LinkedIn articles:", error);
+      res.status(200).json({
+        success: false,
+        data: [],
+        message: "Unable to fetch LinkedIn articles right now.",
+        source: LINKEDIN_ARTICLES_URL,
+      });
+    }
+  });
+
+  app.get("/api/linkedin/articles/:slug", async (req, res) => {
+    try {
+      const articles = await fetchLinkedInItems(LINKEDIN_ARTICLES_URL, 30);
+      const article = articles.find((item) => item.slug === req.params.slug);
+
+      if (!article) {
+        return res.status(404).json({ success: false, message: "LinkedIn article not found" });
+      }
+
+      return res.json({
+        success: true,
+        data: {
+          ...article,
+          category: "LinkedIn",
+          tags: ["linkedin", "thought-leadership"],
+          readTime: 4,
+          authorName: "Fasih ur Rehman",
+          content: `<p>${article.excerpt}</p><p><a href="${article.url}" target="_blank" rel="noopener noreferrer">Continue reading on LinkedIn</a></p>`,
+          metaTitle: article.title,
+          metaDescription: article.excerpt,
+          published: true,
+        },
+      });
+    } catch (error: any) {
+      console.error("Error fetching LinkedIn article detail:", error);
+      return res.status(500).json({ success: false, message: "Failed to fetch LinkedIn article" });
+    }
+  });
+
+  app.get("/api/linkedin/activity", async (_req, res) => {
+    try {
+      const posts = await fetchLinkedInItems(LINKEDIN_ACTIVITY_URL, 8);
+      res.json({ success: true, data: posts, source: LINKEDIN_ACTIVITY_URL });
+    } catch (error: any) {
+      console.error("Error fetching LinkedIn activity:", error);
+      res.status(200).json({
+        success: false,
+        data: [],
+        message: "Unable to fetch LinkedIn activity right now.",
+        source: LINKEDIN_ACTIVITY_URL,
       });
     }
   });
@@ -1309,14 +1484,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const scripts = (html.match(/<script[^>]*>/gi) || []).length;
         const stylesheets = (html.match(/<link[^>]*stylesheet[^>]*>/gi) || []).length;
         const images = cheerioInstance('img');
-        const imagesWithAlt = images.filter((_, img) => cheerioInstance(img).attr('alt')).length;
+        const imagesWithAlt = images.filter((_, img) => Boolean(cheerioInstance(img).attr('alt'))).length;
         const internalLinks = cheerioInstance('a').filter((_, link) => {
           const href = cheerioInstance(link).attr('href');
-          return href && (href.startsWith('/') || href.startsWith(new URL(targetUrl).hostname) || !href.startsWith('http'));
+          if (!href) return false;
+          return href.startsWith('/') || href.startsWith(new URL(targetUrl).hostname) || !href.startsWith('http');
         }).length;
         const externalLinks = cheerioInstance('a').filter((_, link) => {
           const href = cheerioInstance(link).attr('href');
-          return href && href.startsWith('http') && !href.startsWith(new URL(targetUrl).hostname);
+          if (!href) return false;
+          return href.startsWith('http') && !href.startsWith(new URL(targetUrl).hostname);
         }).length;
         const title = cheerioInstance('title').first().text();
         const metaDescription = cheerioInstance('meta[name="description"]').first().attr('content');
@@ -1340,6 +1517,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const hasViewport = cheerioInstance('meta[name="viewport"]').length > 0;
         const ogTitle = cheerioInstance('meta[property="og:title"]').first().attr('content');
         const ogDescription = cheerioInstance('meta[property="og:description"]').first().attr('content');
+        const technologies = detectTechnologiesFromHtml(html);
 
         let score = 0;
         if (hasHttps) score += 5;
@@ -1380,11 +1558,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             hasSitemap: html.includes('sitemap.xml'),
             hasCanonical,
             hasViewport,
-            hasCharset: $('meta[charset]').length > 0 || $('meta[http-equiv="Content-Type"]').length > 0,
-            hasLangAttribute: $('html').attr('lang') !== undefined,
-            hasFavicon: $('link[rel="icon"]').length > 0 || $('link[rel="shortcut icon"]').length > 0,
+            hasCharset: cheerioInstance('meta[charset]').length > 0 || cheerioInstance('meta[http-equiv="Content-Type"]').length > 0,
+            hasLangAttribute: cheerioInstance('html').attr('lang') !== undefined,
+            hasFavicon: cheerioInstance('link[rel="icon"]').length > 0 || cheerioInstance('link[rel="shortcut icon"]').length > 0,
             hasServiceWorker: html.includes('serviceWorker'),
-            isAMPEnabled: $('link[rel="amphtml"]').length > 0,
+            isAMPEnabled: cheerioInstance('link[rel="amphtml"]').length > 0,
           },
           content: {
             title: { exists: !!title, length: title?.length || 0, text: title },
@@ -1411,8 +1589,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             internal: internalLinks,
             external: externalLinks,
             broken: 0,
-            nofollow: $('a[rel="nofollow"]').length,
-            dofollow: internalLinks + externalLinks - $('a[rel="nofollow"]').length,
+            nofollow: cheerioInstance('a[rel="nofollow"]').length,
+            dofollow: internalLinks + externalLinks - cheerioInstance('a[rel="nofollow"]').length,
           },
           mobile: {
             isMobileFriendly: responsive,
@@ -1484,7 +1662,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             createdDate: 'N/A',
             expiryDate: 'N/A',
           },
-          technologies: [],
+          technologies,
         });
       }
 
@@ -1510,7 +1688,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const scripts = $('script').length;
       const stylesheets = $('link[rel="stylesheet"]').length;
       const images = $('img');
-      const imagesWithAlt = images.filter((_, img) => $(img).attr('alt')).length;
+      const imagesWithAlt = images.filter((_, img) => Boolean($(img).attr('alt'))).length;
       let oversizedImages = 0;
       let totalImageSize = 0;
 
@@ -1527,11 +1705,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const internalLinks = $('a').filter((_, link) => {
         const href = $(link).attr('href');
-        return href && (href.startsWith('/') || href.startsWith(new URL(targetUrl).hostname) || !href.startsWith('http'));
+        if (!href) return false;
+        return href.startsWith('/') || href.startsWith(new URL(targetUrl).hostname) || !href.startsWith('http');
       }).length;
       const externalLinks = $('a').filter((_, link) => {
         const href = $(link).attr('href');
-        return href && href.startsWith('http') && !href.startsWith(new URL(targetUrl).hostname);
+        if (!href) return false;
+        return href.startsWith('http') && !href.startsWith(new URL(targetUrl).hostname);
       }).length;
 
       const bodyText = $('body').text().replace(/\s+/g, ' ').trim();

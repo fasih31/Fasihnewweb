@@ -1,7 +1,7 @@
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Linkedin, Github, Mail } from "lucide-react";
+import { Linkedin, Github, Mail, MessageCircle } from "lucide-react";
 
 export function Footer() {
   const scrollToTop = () => {
@@ -46,6 +46,15 @@ export function Footer() {
                 aria-label="Email"
               >
                 <Mail className="h-5 w-5" />
+              </a>
+              <a
+                href="https://wa.me/971506184687"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover-elevate active-elevate-2 text-muted-foreground hover:text-[#25D366] transition-colors"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle className="h-5 w-5" />
               </a>
             </div>
           </div>
