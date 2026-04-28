@@ -73,8 +73,8 @@ export function ContactSection() {
     { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/in/fasihurrehman05", color: "hover:text-[#0077b5]" },
     { name: "Twitter", icon: Twitter, url: "https://twitter.com/Fasih31", color: "hover:text-[#1da1f2]" },
     { name: "WhatsApp", icon: MessageCircle, url: "https://wa.me/971506184687", color: "hover:text-[#25D366]" },
-    { name: "Telegram", icon: TelegramIcon, url: "https://t.me/+971506184687", color: "hover:text-[#0088cc]" },
-    { name: "Discord", icon: MessageSquare, url: "https://discord.gg/your-discord-invite", color: "hover:text-[#5865F2]" },
+    { name: "Telegram", icon: TelegramIcon, url: "https://t.me/fasih31", color: "hover:text-[#0088cc]" },
+    { name: "WhatsApp Direct", icon: MessageSquare, url: "https://wa.me/971506184687?text=Hi%20Fasih%2C%20I%20need%20help%20with%20my%20project.", color: "hover:text-[#5865F2]" },
   ];
 
   return (
@@ -227,6 +227,10 @@ export function ContactSection() {
                   Web3 solutions, or technical project delivery, I'm here to help
                   turn your vision into reality.
                 </p>
+                <div className="space-y-1 text-sm">
+                  <p><span className="font-semibold">Email:</span> fasih31@gmail.com</p>
+                  <p><span className="font-semibold">WhatsApp:</span> +971506184687</p>
+                </div>
               </CardContent>
             </Card>
           </div>
