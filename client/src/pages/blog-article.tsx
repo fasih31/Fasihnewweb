@@ -19,15 +19,22 @@ export default function BlogArticle() {
   const { data: article, isLoading, error } = useQuery({
     queryKey: ["article", slug],
     queryFn: async () => {
-      const response = await fetch(`/api/articles/${slug}`);
-      if (!response.ok) {
-        if (response.status === 404) {
+      const primaryResponse = await fetch(`/api/articles/${slug}`);
+      if (primaryResponse.ok) {
+        const result = await primaryResponse.json();
+        return result.data;
+      }
+
+      const linkedInResponse = await fetch(`/api/linkedin/articles/${slug}`);
+      if (!linkedInResponse.ok) {
+        if (linkedInResponse.status === 404) {
           throw new Error("Article not found");
         }
         throw new Error("Failed to fetch article");
       }
-      const result = await response.json();
-      return result.data;
+
+      const linkedInResult = await linkedInResponse.json();
+      return linkedInResult.data;
     },
     enabled: !!slug,
   });
@@ -70,7 +77,7 @@ export default function BlogArticle() {
             <p className="text-muted-foreground mb-8">
               The article you're looking for doesn't exist or has been removed.
             </p>
-            <Button onClick={() => setLocation("/")}>
+            <Button onClick={() => setLocation("/blog")}>
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
             </Button>
@@ -89,7 +96,7 @@ export default function BlogArticle() {
         keywords={article.metaKeywords}
         ogImage={article.ogImage || article.featuredImage}
         article={true}
-        canonicalUrl={`https://fasih.com.pk/blog/${slug}`}
+        canonicalUrl={`https://iamfasih.com/blog/${slug}`}
         schema={getArticleSchema({
           title: article.title,
           description: article.metaDescription || article.excerpt,
@@ -104,7 +111,7 @@ export default function BlogArticle() {
           {/* Back Button */}
           <Button
             variant="ghost"
-            onClick={() => setLocation("/#blog")}
+            onClick={() => setLocation("/blog")}
             className="mb-6 sm:mb-8 -ml-2"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -135,7 +142,7 @@ export default function BlogArticle() {
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                {new Date(article.publishedAt).toLocaleDateString('en-US', {
+                {new Date(article.publishedAt || article.createdAt || Date.now()).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric'
@@ -180,7 +187,7 @@ export default function BlogArticle() {
           <footer className="mt-16 pt-8 border-t border-border">
             <Button
               variant="ghost"
-              onClick={() => setLocation("/#blog")}
+              onClick={() => setLocation("/blog")}
               className="gap-2"
             >
               <ArrowLeft className="h-4 w-4" />

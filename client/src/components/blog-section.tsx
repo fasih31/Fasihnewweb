@@ -1,27 +1,46 @@
 import { useState } from "react";
-import { Calendar, Clock, Search } from "lucide-react";
-import { blogPosts } from "@/data/portfolio-data";
+import { Calendar, Search } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+
+type BlogListItem = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  publishedAt: string;
+};
 
 export function BlogSection() {
   const [, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("LinkedIn");
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["/api/linkedin/articles"],
+    queryFn: async () => {
+      const response = await apiRequest("GET", "/api/linkedin/articles");
+      return response.json();
+    },
+  });
+
+  const blogPosts: BlogListItem[] = data?.data || [];
 
   const filteredPosts = blogPosts.filter((post) => {
     const matchesSearch =
       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || post.category === selectedCategory;
+    const matchesCategory = selectedCategory === "all" || selectedCategory === "LinkedIn";
     return matchesSearch && matchesCategory;
   });
 
   // Get unique categories
-  const categories = ["all", ...Array.from(new Set(blogPosts.map(a => a.category)))];
+  const categories = ["all", "LinkedIn"];
 
   return (
     <section
@@ -65,26 +84,28 @@ export function BlogSection() {
           </div>
         </div>
 
+        {isLoading ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="h-64 animate-pulse bg-muted" />
+            ))}
+          </div>
+        ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {filteredPosts.map((post) => {
-            const slug = post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
             return (
               <Card
                 key={post.id}
                 className="group hover-elevate transition-all duration-300 hover:shadow-xl cursor-pointer border-card-border"
                 data-testid={`blog-card-${post.id}`}
-                onClick={() => setLocation(`/blog/${slug}`)}
+                onClick={() => setLocation(`/blog/${post.slug}`)}
               >
                 <CardContent className="p-6 space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-2">
                       <Badge variant="secondary" data-testid={`blog-category-${post.id}`}>
-                        {post.category}
+                        LinkedIn
                       </Badge>
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        <span>{post.readTime} min read</span>
-                      </div>
                     </div>
 
                     <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
@@ -97,7 +118,7 @@ export function BlogSection() {
 
                     <div className="flex items-center gap-2 text-xs text-muted-foreground pt-2">
                       <Calendar className="h-3 w-3" />
-                      <span>{new Date(post.date).toLocaleDateString("en-US", {
+                      <span>{new Date(post.publishedAt).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
@@ -118,6 +139,7 @@ export function BlogSection() {
             );
           })}
         </div>
+        )}
       </div>
     </section>
   );

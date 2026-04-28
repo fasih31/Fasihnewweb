@@ -60,6 +60,92 @@ function detectTechnologiesFromHtml(html: string): string[] {
     .map((check) => check.name);
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+const LINKEDIN_PROFILE_URL = "https://ae.linkedin.com/in/fasihurrehman05";
+const LINKEDIN_ARTICLES_URL = `${LINKEDIN_PROFILE_URL}/recent-activity/articles/`;
+const LINKEDIN_ACTIVITY_URL = `${LINKEDIN_PROFILE_URL}/recent-activity/`;
+
+type LinkedInItem = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  url: string;
+  publishedAt: string;
+  source: "linkedin";
+};
+
+function slugifyTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 90) || `linkedin-${Date.now()}`;
+}
+
+async function fetchLinkedInItems(targetUrl: string, limit = 12): Promise<LinkedInItem[]> {
+  const response = await fetch(targetUrl, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "Accept-Language": "en-US,en;q=0.9",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`LinkedIn request failed with status ${response.status}`);
+  }
+
+  const html = await response.text();
+  const $ = cheerio.load(html);
+  const links = $("a[href*='linkedin.com']");
+  const items: LinkedInItem[] = [];
+  const seen = new Set<string>();
+
+  links.each((index, el) => {
+    if (items.length >= limit) return;
+    const href = ($(el).attr("href") || "").trim();
+    const title = $(el).text().replace(/\s+/g, " ").trim();
+
+    const isArticleLike = href.includes("/pulse/") || href.includes("/posts/") || href.includes("/articles/");
+    const isValidTitle = title.length >= 25;
+    const normalizedUrl = href.startsWith("http") ? href : `https://www.linkedin.com${href}`;
+
+    if (!isArticleLike || !isValidTitle || seen.has(normalizedUrl)) {
+      return;
+    }
+
+    const surroundingText = $(el).closest("article, section, div").text().replace(/\s+/g, " ").trim();
+    const excerpt = surroundingText && surroundingText.length > title.length
+      ? surroundingText.slice(0, 260)
+      : `Latest insight from LinkedIn by Fasih ur Rehman.`;
+
+    const slug = slugifyTitle(title);
+    items.push({
+      id: `linkedin-${index}-${slug}`,
+      slug,
+      title,
+      excerpt,
+      url: normalizedUrl,
+      publishedAt: new Date().toISOString(),
+      source: "linkedin",
+    });
+
+    seen.add(normalizedUrl);
+  });
+
+  return items;
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   await setupAuth(app);
 
@@ -148,7 +234,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`Email: ${email}`);
       console.log(`Message: ${message}`);
       console.log(`Time: ${new Date().toLocaleString()}`);
-      console.log('===================================\n');
+      console.log('-----------------------------------\n');
+
+      const emailHtml = `
+        <h2>New Contact Form Message</h2>
+        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>WhatsApp:</strong> +971506184687</p>
+        <p><strong>Message:</strong></p>
+        <p>${escapeHtml(message).replace(/\n/g, "<br/>")}</p>
+      `;
+      await sendEmailNotification(`New Contact Form Message from ${name}`, emailHtml);
 
       const emailHtml = `
         <h2>New Contact Form Message</h2>
@@ -539,6 +635,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({
         success: false,
         message: "Failed to fetch article",
+      });
+    }
+  });
+
+  app.get("/api/linkedin/articles", async (_req, res) => {
+    try {
+      const articles = await fetchLinkedInItems(LINKEDIN_ARTICLES_URL, 12);
+      res.json({ success: true, data: articles, source: LINKEDIN_ARTICLES_URL });
+    } catch (error: any) {
+      console.error("Error fetching LinkedIn articles:", error);
+      res.status(200).json({
+        success: false,
+        data: [],
+        message: "Unable to fetch LinkedIn articles right now.",
+        source: LINKEDIN_ARTICLES_URL,
+      });
+    }
+  });
+
+  app.get("/api/linkedin/articles/:slug", async (req, res) => {
+    try {
+      const articles = await fetchLinkedInItems(LINKEDIN_ARTICLES_URL, 30);
+      const article = articles.find((item) => item.slug === req.params.slug);
+
+      if (!article) {
+        return res.status(404).json({ success: false, message: "LinkedIn article not found" });
+      }
+
+      return res.json({
+        success: true,
+        data: {
+          ...article,
+          category: "LinkedIn",
+          tags: ["linkedin", "thought-leadership"],
+          readTime: 4,
+          authorName: "Fasih ur Rehman",
+          content: `<p>${article.excerpt}</p><p><a href="${article.url}" target="_blank" rel="noopener noreferrer">Continue reading on LinkedIn</a></p>`,
+          metaTitle: article.title,
+          metaDescription: article.excerpt,
+          published: true,
+        },
+      });
+    } catch (error: any) {
+      console.error("Error fetching LinkedIn article detail:", error);
+      return res.status(500).json({ success: false, message: "Failed to fetch LinkedIn article" });
+    }
+  });
+
+  app.get("/api/linkedin/activity", async (_req, res) => {
+    try {
+      const posts = await fetchLinkedInItems(LINKEDIN_ACTIVITY_URL, 8);
+      res.json({ success: true, data: posts, source: LINKEDIN_ACTIVITY_URL });
+    } catch (error: any) {
+      console.error("Error fetching LinkedIn activity:", error);
+      res.status(200).json({
+        success: false,
+        data: [],
+        message: "Unable to fetch LinkedIn activity right now.",
+        source: LINKEDIN_ACTIVITY_URL,
       });
     }
   });
