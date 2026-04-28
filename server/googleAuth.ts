@@ -150,15 +150,6 @@ export async function setupAuth(app: Express) {
     }
   );
 
-  // Local login route
-  app.post(
-    "/api/auth/login",
-    passport.authenticate("local", { failureRedirect: "/" }),
-    (req, res) => {
-      res.redirect("/");
-    }
-  );
-
   app.get("/api/auth/logout", (req, res) => {
     req.logout(() => {
       res.redirect("/");
