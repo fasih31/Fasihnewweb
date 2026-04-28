@@ -60,6 +60,15 @@ function detectTechnologiesFromHtml(html: string): string[] {
     .map((check) => check.name);
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 const LINKEDIN_PROFILE_URL = "https://ae.linkedin.com/in/fasihurrehman05";
 const LINKEDIN_ARTICLES_URL = `${LINKEDIN_PROFILE_URL}/recent-activity/articles/`;
 const LINKEDIN_ACTIVITY_URL = `${LINKEDIN_PROFILE_URL}/recent-activity/`;
@@ -229,11 +238,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const emailHtml = `
         <h2>New Contact Form Message</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
         <p><strong>WhatsApp:</strong> +971506184687</p>
         <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, "<br/>")}</p>
+        <p>${escapeHtml(message).replace(/\n/g, "<br/>")}</p>
       `;
       await sendEmailNotification(`New Contact Form Message from ${name}`, emailHtml);
 
