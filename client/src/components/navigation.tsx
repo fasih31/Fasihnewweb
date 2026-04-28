@@ -71,11 +71,9 @@ export function Navigation() {
 
   const updatedNavLinks = navLinks;
 
-  const toolsMenuItems = [
+  const exploreMenuItems = [
+    { name: "Digital Library", path: "/library", description: "Embedded open-source resources and archives." },
     { name: "All Tools", path: "/tools", description: "Access a suite of professional tools for productivity." },
-  ];
-
-  const productsMenuItems = [
     { name: "Islamic FinTech Solutions", path: "/islamic-fintech", description: "Explore innovative Islamic finance solutions." },
   ];
 
@@ -104,7 +102,7 @@ export function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1 bg-background/60 rounded-full px-2 py-1 border border-border/60">
             {updatedNavLinks.map((link) => (
               <Button
                 key={link.id}
@@ -116,55 +114,30 @@ export function Navigation() {
                 {link.name}
               </Button>
             ))}
-            <Link href="/library">
-              <Button variant="ghost" className="hover-elevate active-elevate-2 text-sm">
-                Library
-              </Button>
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="hover-elevate active-elevate-2 text-sm gap-1">
+                  Explore
+                  <ChevronDown className="h-3 w-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 z-[100]">
+                {exploreMenuItems.map((item) => (
+                  <DropdownMenuItem key={item.path} asChild>
+                    <Link href={item.path}>
+                      <div className="w-full px-3 py-2.5 hover:bg-accent rounded-sm transition-colors cursor-pointer">
+                        <div className="font-medium">{item.name}</div>
+                        <div className="text-xs text-muted-foreground">{item.description}</div>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </nav>
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="hover-elevate active-elevate-2 text-sm gap-1">
-                  Tools
-                  <ChevronDown className="h-3 w-3" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 z-[100]">
-                {toolsMenuItems.map((tool) => (
-                  <DropdownMenuItem key={tool.path} asChild>
-                    <Link href={tool.path}>
-                      <div className="w-full px-3 py-2.5 hover:bg-accent rounded-sm transition-colors cursor-pointer">
-                        <div className="font-medium">{tool.name}</div>
-                        <div className="text-xs text-muted-foreground">{tool.description}</div>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="hover-elevate active-elevate-2 text-sm gap-1">
-                  Products
-                  <ChevronDown className="h-3 w-3" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 z-[100]">
-                {productsMenuItems.map((product) => (
-                  <DropdownMenuItem key={product.path} asChild>
-                    <Link href={product.path}>
-                      <div className="w-full px-3 py-2.5 hover:bg-accent rounded-sm transition-colors cursor-pointer">
-                        <div className="font-medium">{product.name}</div>
-                        <div className="text-xs text-muted-foreground">{product.description}</div>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
             <ThemeToggle />
             <AuthButton />
             <Button
@@ -217,29 +190,13 @@ export function Navigation() {
                 {link.name}
               </Button>
             ))}
-            <Link href="/library">
-              <Button variant="ghost" className="w-full justify-start hover-elevate active-elevate-2 h-12 text-base">
-                Library
-              </Button>
-            </Link>
             <div className="pt-3 mt-2 border-t border-border/50">
-              <p className="text-sm font-semibold text-muted-foreground px-3 py-2 mb-1">Tools</p>
-              {toolsMenuItems.map((tool) => (
-                <Link key={tool.path} href={tool.path}>
+              <p className="text-sm font-semibold text-muted-foreground px-3 py-2 mb-1">Explore</p>
+              {exploreMenuItems.map((item) => (
+                <Link key={item.path} href={item.path}>
                   <div className="w-full px-3 py-2.5 hover:bg-accent rounded-md transition-colors cursor-pointer">
-                    <div className="font-medium">{tool.name}</div>
-                    <div className="text-xs text-muted-foreground">{tool.description}</div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div className="pt-3 mt-2 border-t border-border/50">
-              <p className="text-sm font-semibold text-muted-foreground px-3 py-2 mb-1">Products</p>
-              {productsMenuItems.map((product) => (
-                <Link key={product.path} href={product.path}>
-                  <div className="w-full px-3 py-2.5 hover:bg-accent rounded-md transition-colors cursor-pointer">
-                    <div className="font-medium">{product.name}</div>
-                    <div className="text-xs text-muted-foreground">{product.description}</div>
+                    <div className="font-medium">{item.name}</div>
+                    <div className="text-xs text-muted-foreground">{item.description}</div>
                   </div>
                 </Link>
               ))}

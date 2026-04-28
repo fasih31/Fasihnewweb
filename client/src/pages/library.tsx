@@ -23,12 +23,38 @@ export default function Library() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("islamic-banking");
+  const [selectedEmbedUrl, setSelectedEmbedUrl] = useState("https://archive.org/embed/islamic-banking-and-finance");
+  const [selectedSource, setSelectedSource] = useState("archive");
 
   const categories = [
     { id: "islamic-banking", label: "Islamic Banking", query: "islamic banking OR islamic finance" },
     { id: "business", label: "Business & Economics", query: "business economics finance" },
     { id: "fintech", label: "FinTech", query: "financial technology fintech" },
     { id: "riba-free", label: "Riba-Free Finance", query: "riba interest-free islamic economy" },
+  ];
+
+  const openSources = [
+    {
+      id: "archive",
+      label: "Internet Archive",
+      url: "https://archive.org/details/texts",
+      embedUrl: "https://archive.org/embed/islamic-banking-and-finance",
+      description: "Millions of books, manuscripts, and historical collections.",
+    },
+    {
+      id: "openlibrary",
+      label: "Open Library",
+      url: "https://openlibrary.org/subjects/finance",
+      embedUrl: "https://openlibrary.org/subjects/finance",
+      description: "Open, editable library catalog from the Internet Archive ecosystem.",
+    },
+    {
+      id: "gutenberg",
+      label: "Project Gutenberg",
+      url: "https://www.gutenberg.org/ebooks/search/?query=economics",
+      embedUrl: "https://www.gutenberg.org/ebooks/search/?query=economics",
+      description: "Public domain classics and research books in open formats.",
+    },
   ];
 
   useEffect(() => {
@@ -105,6 +131,26 @@ export default function Library() {
         {/* Categories and Books */}
         <section className="py-16 px-4">
           <div className="max-w-7xl mx-auto">
+            <Card className="mb-8 border-primary/20">
+              <CardHeader>
+                <CardTitle className="text-2xl">Embedded Reader Window</CardTitle>
+                <CardDescription>
+                  Preview selected resources directly in-page without leaving the Digital Library.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="aspect-video w-full rounded-lg overflow-hidden border bg-muted/30">
+                  <iframe
+                    src={selectedEmbedUrl}
+                    title="Digital Library Embedded Reader"
+                    className="w-full h-full"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
             <Tabs value={activeCategory} onValueChange={setActiveCategory}>
               <TabsList className="mb-8 w-full md:w-auto overflow-x-auto flex-nowrap">
                 {categories.map((category) => (
@@ -176,16 +222,12 @@ export default function Library() {
                                 variant="default"
                                 size="sm"
                                 className="flex-1"
-                                asChild
+                                onClick={() => setSelectedEmbedUrl(`https://archive.org/embed/${book.identifier}`)}
                               >
-                                <a
-                                  href={`https://archive.org/details/${book.identifier}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
+                                <>
                                   <ExternalLink className="h-4 w-4 mr-2" />
-                                  View
-                                </a>
+                                  Embed
+                                </>
                               </Button>
                               <Button
                                 variant="outline"
@@ -216,19 +258,33 @@ export default function Library() {
 
         {/* About Internet Archive */}
         <section className="py-16 px-4 bg-muted/30">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4">About the Internet Archive</h2>
-            <p className="text-muted-foreground mb-6">
-              The Internet Archive is a non-profit library of millions of free books, movies, software,
-              music, websites, and more. All books in this library are freely available to read, download,
-              and share under various open licenses.
-            </p>
-            <Button variant="outline" asChild>
-              <a href="https://archive.org" target="_blank" rel="noopener noreferrer">
-                Visit Internet Archive
-                <ExternalLink className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold mb-6 text-center">Open-Source Knowledge Sources (Embedded)</h2>
+            <div className="grid md:grid-cols-3 gap-4 mb-6">
+              {openSources.map((source) => (
+                <Card
+                  key={source.id}
+                  className={`cursor-pointer transition-all ${selectedSource === source.id ? "border-primary shadow-md" : ""}`}
+                  onClick={() => {
+                    setSelectedSource(source.id);
+                    setSelectedEmbedUrl(source.embedUrl);
+                  }}
+                >
+                  <CardHeader>
+                    <CardTitle className="text-lg">{source.label}</CardTitle>
+                    <CardDescription>{source.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button variant="outline" size="sm" asChild>
+                      <a href={source.url} target="_blank" rel="noopener noreferrer">
+                        Open in New Tab
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </section>
       </div>
