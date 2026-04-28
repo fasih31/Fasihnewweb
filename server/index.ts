@@ -1,12 +1,14 @@
 import express, { type Request, Response, NextFunction } from "express";
 import compression from "compression";
 import path from "path";
+import { fileURLToPath } from "url";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { logger } from "./utils/logger";
 import { randomUUID } from "crypto";
 
 const app = express();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 declare module 'http' {
   interface IncomingMessage {
@@ -208,10 +210,10 @@ app.use((req, res, next) => {
   });
 
   // Serve static files from client/public (for sitemap.xml, robots.txt, etc.)
-  app.use(express.static(path.join(import.meta.dirname, '..', 'client', 'public')));
+  app.use(express.static(path.join(__dirname, '..', 'client', 'public')));
 
   // Serve attached assets
-  app.use('/attached_assets', express.static(path.join(import.meta.dirname, '..', 'attached_assets')));
+  app.use('/attached_assets', express.static(path.join(__dirname, '..', 'attached_assets')));
 
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route

@@ -246,16 +246,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       `;
       await sendEmailNotification(`New Contact Form Message from ${name}`, emailHtml);
 
-      const emailHtml = `
-        <h2>New Contact Form Message</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>WhatsApp:</strong> +971506184687</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, "<br/>")}</p>
-      `;
-      await sendEmailNotification(`New Contact Form Message from ${name}`, emailHtml);
-
       res.status(200).json({
         success: true,
         message: "Message sent successfully! I'll get back to you soon.",
