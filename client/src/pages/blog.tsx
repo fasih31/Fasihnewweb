@@ -13,27 +13,14 @@ import {
   Calendar, 
   Clock, 
   ArrowRight,
-  TrendingUp,
-  Shield,
   Briefcase,
-  GraduationCap,
-  Cpu,
-  Bitcoin,
-  Radio
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 
 const blogCategories = [
-  { id: "all", name: "All Articles", icon: TrendingUp, color: "bg-blue-500" },
-  { id: "islamic-fintech", name: "Islamic FinTech Insights", icon: Shield, color: "bg-green-500" },
-  { id: "bnpl", name: "BNPL & Digital Lending", icon: Briefcase, color: "bg-purple-500" },
-  { id: "compliance", name: "Shariah Compliance", icon: Shield, color: "bg-emerald-500" },
-  { id: "ecommerce", name: "E-commerce Best Practices", icon: TrendingUp, color: "bg-orange-500" },
-  { id: "edtech", name: "EdTech Innovation", icon: GraduationCap, color: "bg-cyan-500" },
-  { id: "ai", name: "AI in Financial Services", icon: Cpu, color: "bg-pink-500" },
-  { id: "crypto", name: "Crypto & Blockchain", icon: Bitcoin, color: "bg-yellow-500" },
-  { id: "telecom", name: "5G & Telecom Transformation", icon: Radio, color: "bg-indigo-500" },
+  { id: "all", name: "All LinkedIn Articles", icon: Briefcase, color: "bg-blue-500" },
+  { id: "linkedin", name: "LinkedIn", icon: Briefcase, color: "bg-blue-500" },
 ];
 
 export default function BlogPage() {
@@ -41,10 +28,11 @@ export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const { data: articles, isLoading } = useQuery({
-    queryKey: ["/api/articles"],
+    queryKey: ["/api/linkedin/articles"],
     queryFn: async () => {
-      const response = await apiRequest("GET", "/api/articles");
-      return response.json();
+      const response = await apiRequest("GET", "/api/linkedin/articles");
+      const result = await response.json();
+      return result.data || [];
     },
   });
 
@@ -55,9 +43,7 @@ export default function BlogPage() {
 
     // Filter by category
     if (selectedCategory !== "all") {
-      filtered = filtered.filter((article: any) => 
-        article.category === selectedCategory
-      );
+      filtered = filtered.filter(() => selectedCategory === "linkedin");
     }
 
     // Filter by search query
@@ -74,7 +60,7 @@ export default function BlogPage() {
   }, [articles, selectedCategory, searchQuery]);
 
   const featuredArticles = useMemo(() => {
-    return articles?.filter((article: any) => article.featured)?.slice(0, 3) || [];
+    return articles?.slice(0, 3) || [];
   }, [articles]);
 
   return (
@@ -161,10 +147,10 @@ export default function BlogPage() {
                       )}
                       <CardHeader>
                         <div className="flex gap-2 mb-2">
-                          <Badge>{article.category}</Badge>
+                          <Badge>LinkedIn</Badge>
                           <Badge variant="outline" className="gap-1">
                             <Clock className="h-3 w-3" />
-                            {article.readTime || "5"} min
+                            4 min
                           </Badge>
                         </div>
                         <CardTitle className="line-clamp-2">{article.title}</CardTitle>
@@ -214,10 +200,8 @@ export default function BlogPage() {
                       )}
                       <CardHeader>
                         <div className="flex gap-2 mb-2">
-                          <Badge>{article.category}</Badge>
-                          {article.tags?.slice(0, 2).map((tag: string) => (
-                            <Badge key={tag} variant="secondary">{tag}</Badge>
-                          ))}
+                          <Badge>LinkedIn</Badge>
+                          <Badge variant="secondary">Thought Leadership</Badge>
                         </div>
                         <CardTitle className="line-clamp-2">{article.title}</CardTitle>
                         <CardDescription className="line-clamp-3">{article.excerpt}</CardDescription>
@@ -226,11 +210,11 @@ export default function BlogPage() {
                         <div className="flex items-center justify-between text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
-                            {new Date(article.publishedAt || article.createdAt).toLocaleDateString()}
+                            {new Date(article.publishedAt).toLocaleDateString()}
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
-                            {article.readTime || "5"} min read
+                            4 min read
                           </div>
                         </div>
                       </CardContent>

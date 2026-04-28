@@ -1,12 +1,14 @@
 import express, { type Request, Response, NextFunction } from "express";
 import compression from "compression";
 import path from "path";
+import { fileURLToPath } from "url";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { logger } from "./utils/logger";
 import { randomUUID } from "crypto";
 
 const app = express();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 declare module 'http' {
   interface IncomingMessage {
@@ -63,6 +65,8 @@ app.use((req, res, next) => {
 
   // Restrict browser features
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=(), payment=(), usb=(), interest-cohort=()');
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
   res.setHeader('X-DNS-Prefetch-Control', 'on');
   res.setHeader('X-Download-Options', 'noopen');
   res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
@@ -71,7 +75,7 @@ app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; " +
+    `script-src 'self' 'unsafe-inline' ${app.get("env") === "development" ? "'unsafe-eval'" : ""} https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net; ` +
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
     "font-src 'self' https://fonts.gstatic.com; " +
     "img-src 'self' data: https: blob:; " +
@@ -112,6 +116,16 @@ const CONTACT_RATE_WINDOW = 300000; // 5 minutes
 app.use((req, res, next) => {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
   const now = Date.now();
+  const cleanupExpiredEntries = (store: Map<string, { count: number; resetTime: number }>) => {
+    for (const [key, value] of store.entries()) {
+      if (now > value.resetTime) {
+        store.delete(key);
+      }
+    }
+  };
+
+  cleanupExpiredEntries(contactRateLimitStore);
+  cleanupExpiredEntries(rateLimitStore);
 
   // Stricter rate limiting for contact form submissions
   if (req.path === '/api/contact' && req.method === 'POST') {
@@ -160,21 +174,11 @@ app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
-
-  const originalResJson = res.json;
-  res.json = function (bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
-  };
 
   res.on("finish", () => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
 
       if (logLine.length > 80) {
         logLine = logLine.slice(0, 79) + "…";
@@ -206,10 +210,10 @@ app.use((req, res, next) => {
   });
 
   // Serve static files from client/public (for sitemap.xml, robots.txt, etc.)
-  app.use(express.static(path.join(import.meta.dirname, '..', 'client', 'public')));
+  app.use(express.static(path.join(__dirname, '..', 'client', 'public')));
 
   // Serve attached assets
-  app.use('/attached_assets', express.static(path.join(import.meta.dirname, '..', 'attached_assets')));
+  app.use('/attached_assets', express.static(path.join(__dirname, '..', 'attached_assets')));
 
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route

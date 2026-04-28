@@ -27,6 +27,10 @@ export function SEOHead({
 }: SEOHeadProps) {
   const currentUrl = canonicalUrl || (typeof window !== "undefined" ? window.location.href : "");
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://iamfasih.com";
+  const googleVerification = import.meta.env.VITE_GOOGLE_SITE_VERIFICATION as string | undefined;
+  const bingVerification = import.meta.env.VITE_BING_SITE_VERIFICATION as string | undefined;
+  const yandexVerification = import.meta.env.VITE_YANDEX_SITE_VERIFICATION as string | undefined;
+  const facebookPixelId = import.meta.env.VITE_FACEBOOK_PIXEL_ID as string | undefined;
 
   return (
     <HelmetProvider>
@@ -116,12 +120,12 @@ export function SEOHead({
         <link rel="preload" href="/favicon.png" as="image" />
         
         {/* Webmaster Verification Tags */}
-        <meta name="google-site-verification" content="GOOGLE_VERIFICATION_CODE_PLACEHOLDER" />
-        <meta name="msvalidate.01" content="BING_VERIFICATION_CODE_PLACEHOLDER" />
-        <meta name="yandex-verification" content="YANDEX_VERIFICATION_CODE_PLACEHOLDER" />
+        {googleVerification && <meta name="google-site-verification" content={googleVerification} />}
+        {bingVerification && <meta name="msvalidate.01" content={bingVerification} />}
+        {yandexVerification && <meta name="yandex-verification" content={yandexVerification} />}
         
-        {/* Facebook Pixel - Add your pixel ID when ready */}
-        {typeof window !== "undefined" && (
+        {/* Facebook Pixel */}
+        {typeof window !== "undefined" && facebookPixelId && (
           <script dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
@@ -132,7 +136,7 @@ export function SEOHead({
               t.src=v;s=b.getElementsByTagName(e)[0];
               s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', 'YOUR_PIXEL_ID_HERE');
+              fbq('init', '${facebookPixelId}');
               fbq('track', 'PageView');
             `
           }} />

@@ -105,7 +105,7 @@ export default function SolutionDetail() {
             <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-16">
               <div className="order-2 md:order-1">
                 <Badge className="mb-4" variant="secondary">
-                  {solution.category}
+                  {solution.category || "Digital Solution"}
                 </Badge>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 md:mb-6">
                   {solution.title}
@@ -116,7 +116,7 @@ export default function SolutionDetail() {
               </div>
               <div className="relative order-1 md:order-2">
                 <img
-                  src={solution.image}
+                  src={solution.image || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=675&fit=crop"}
                   alt={solution.title}
                   className="rounded-lg shadow-2xl w-full h-auto object-cover aspect-video"
                 />

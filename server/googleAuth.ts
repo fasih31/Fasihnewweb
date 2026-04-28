@@ -9,14 +9,14 @@ import type { RequestHandler } from "express";
 import { storage } from "./storage";
 import type { User } from "@shared/schema";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "Fasih31@gmail.com"; // Default to Fasih31@gmail.com if not set
+const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || "fasih31@gmail.com").toLowerCase(); // Default to fasih31@gmail.com if not set
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   console.warn("Google OAuth not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET");
 }
 
 if (!process.env.ADMIN_EMAIL) {
-  console.warn("ADMIN_EMAIL not set. Using default admin email: Fasih31@gmail.com. For production, set ADMIN_EMAIL environment variable.");
+  console.warn("ADMIN_EMAIL not set. Using default admin email: fasih31@gmail.com. For production, set ADMIN_EMAIL environment variable.");
 }
 
 export function getSession() {
@@ -76,7 +76,7 @@ export async function setupAuth(app: Express) {
           }
 
           // Only allow the admin email via Google OAuth
-          if (email !== ADMIN_EMAIL) {
+          if (email.toLowerCase() !== ADMIN_EMAIL) {
             return done(null, false, { message: "Unauthorized access. Only admin can log in." });
           }
 
@@ -107,7 +107,7 @@ export async function setupAuth(app: Express) {
           const user = await storage.getUserByEmail(email);
 
           // Check if the user is the admin and if the password matches
-          if (!user || user.email !== ADMIN_EMAIL || !user.passwordHash) {
+          if (!user || user.email.toLowerCase() !== ADMIN_EMAIL || !user.passwordHash) {
             return done(null, false, { message: "Invalid credentials." });
           }
 
@@ -150,15 +150,6 @@ export async function setupAuth(app: Express) {
     }
   );
 
-  // Local login route
-  app.post(
-    "/api/auth/login",
-    passport.authenticate("local", { failureRedirect: "/" }),
-    (req, res) => {
-      res.redirect("/");
-    }
-  );
-
   app.get("/api/auth/logout", (req, res) => {
     req.logout(() => {
       res.redirect("/");
@@ -180,11 +171,11 @@ export const isAdmin: RequestHandler = (req, res, next) => {
 
   const user = req.user as any;
 
-  if (!process.env.ADMIN_EMAIL && user.email !== ADMIN_EMAIL) {
+  if (!process.env.ADMIN_EMAIL && user.email.toLowerCase() !== ADMIN_EMAIL) {
     return res.status(403).json({ message: "Admin not configured or incorrect user" });
   }
 
-  if (user.email === ADMIN_EMAIL) {
+  if (user.email.toLowerCase() === ADMIN_EMAIL) {
     return next();
   }
 
@@ -193,7 +184,7 @@ export const isAdmin: RequestHandler = (req, res, next) => {
 
 async function initializeAdminUser() {
   try {
-    const adminEmail = process.env.ADMIN_EMAIL || "Fasih31@gmail.com";
+    const adminEmail = (process.env.ADMIN_EMAIL || "fasih31@gmail.com").toLowerCase();
     if (!process.env.ADMIN_EMAIL) {
       console.log(`ADMIN_EMAIL not set. Using default admin email: ${adminEmail}. For production, set ADMIN_EMAIL environment variable.`);
     }
