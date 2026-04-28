@@ -234,7 +234,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`Email: ${email}`);
       console.log(`Message: ${message}`);
       console.log(`Time: ${new Date().toLocaleString()}`);
-      console.log('===================================\n');
+      console.log('-----------------------------------\n');
 
       const emailHtml = `
         <h2>New Contact Form Message</h2>
