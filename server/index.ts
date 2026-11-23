@@ -79,7 +79,8 @@ app.use((req, res, next) => {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
     "font-src 'self' https://fonts.gstatic.com; " +
     "img-src 'self' data: https: blob:; " +
-    "connect-src 'self' https://api.coingecko.com https://api.exchangerate-api.com https://finnhub.io https://newsapi.org https://api.alquran.cloud https://random-hadith-generator.vercel.app; " +
+    "connect-src 'self' https://archive.org https://api.coingecko.com https://api.exchangerate-api.com https://finnhub.io https://newsapi.org https://api.alquran.cloud https://random-hadith-generator.vercel.app; " +
+    "frame-src 'self' https://archive.org https://openlibrary.org https://www.gutenberg.org; " +
     "frame-ancestors 'none'; " +
     "base-uri 'self'; " +
     "form-action 'self'; " +

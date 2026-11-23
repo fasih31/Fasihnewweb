@@ -227,11 +227,8 @@ export default function Library() {
                                 className="flex-1"
                                 onClick={() => setSelectedEmbedUrl(`https://archive.org/embed/${book.identifier}`)}
                               >
-                                <>
-                                  <ExternalLink className="h-4 w-4 mr-2" />
-                                  Embed
-                                  <Footer />
-    </>
+                                <ExternalLink className="h-4 w-4 mr-2" />
+                                Embed
                               </Button>
                               <Button
                                 variant="outline"
