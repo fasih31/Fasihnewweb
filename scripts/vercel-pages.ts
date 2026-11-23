@@ -1,12 +1,13 @@
-import { readFile, writeFile } from "node:fs/promises";
-import { join } from "node:path";
-import { portfolioHtml } from "../server/portfolio-html";
-import { studies } from "../shared/work";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { join, dirname } from "node:path";
+import { portfolioHtml, publicPages, sitemap } from "../server/portfolio-html";
 
-const output = "dist/public";
-const template = await readFile(join(output, "index.html"), "utf8");
-await writeFile(join(output, "app.html"), template);
-await writeFile(join(output, "index.html"), portfolioHtml(template)!);
-for (const study of studies) {
-  await writeFile(join(output, "work", study.slug + ".html"), portfolioHtml(template, study.slug)!);
+const output="dist/public";
+const template=await readFile(join(output,"index.html"),"utf8");
+await writeFile(join(output,"app.html"),template);
+for (const page of publicPages) {
+  const file=join(output,page.path==="/"?"index.html":page.path.slice(1)+".html");
+  await mkdir(dirname(file),{recursive:true});
+  await writeFile(file,portfolioHtml(template,page.path)!);
 }
+await writeFile(join(output,"sitemap.xml"),sitemap());

@@ -1,35 +1,27 @@
-import { Helmet } from 'react-helmet-async';
+import { useEffect } from "react";
+import { useLocation } from "wouter";
 
+const id = import.meta.env.VITE_GA_MEASUREMENT_ID || "";
+let previous = "";
+let tag: ((...args: unknown[])=>void) | undefined;
 export function GoogleAnalytics() {
-  const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID || 'G-XXXXXXXXXX';
-
-  return (
-    <>
-      <Helmet>
-        <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
-        />
-        <script>
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${measurementId}', {
-              page_path: window.location.pathname,
-              send_page_view: true,
-              cookie_flags: 'SameSite=None;Secure'
-            });
-
-            // Track custom events
-            gtag('event', 'page_view', {
-              page_title: document.title,
-              page_location: window.location.href,
-              page_path: window.location.pathname
-            });
-          `}
-        </script>
-      </Helmet>
-    </>
-  );
+  const [path] = useLocation();
+  useEffect(()=>{
+    if (!/^G-[A-Z0-9]+$/.test(id) || /^G-X+$/.test(id) || !["iamfasih.com","www.iamfasih.com"].includes(location.hostname) || path.startsWith("/admin")) return;
+    if (!tag) {
+      const layer = ((window as Window & {dataLayer?:unknown[]}).dataLayer ??= []);
+      tag = function(){layer.push(arguments);};
+      tag("js",new Date());
+      tag("config",id,{send_page_view:false});
+      const script=document.createElement("script");
+      script.async=true;
+      script.src="https://www.googletagmanager.com/gtag/js?id="+id;
+      document.head.append(script);
+    }
+    if (previous!==path) {
+      tag("event","page_view",{page_location:location.origin+path,page_path:path});
+      previous=path;
+    }
+  },[path]);
+  return null;
 }

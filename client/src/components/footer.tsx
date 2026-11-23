@@ -3,9 +3,9 @@ import { ThemeToggle } from "./theme-toggle";
 
 const destinations = [
   ["Contact", "/#contact"], ["Career", "/career"], ["Expertise", "/expertise"],
-  ["Tools", "/tools"], ["Library", "/library"], ["Calculators", "/calculators"],
+  ["Education", "/education"], ["Independent projects", "/projects"], ["Writing", "/blog"], ["Tools", "/tools"], ["Library", "/library"], ["Calculators", "/calculators"],
   ["Market data", "/stocks"], ["News", "/news"], ["IDE", "/ide"],
-  ["Marketing assets", "/marketing-assets"], ["LinkedIn", "https://www.linkedin.com/in/fasihurrehman05"],
+  ["Visual archive", "/marketing-assets"], ["LinkedIn", "https://www.linkedin.com/in/fasihurrehman05"],
   ["GitHub", "https://github.com/fasih31"],
 ];
 export function Footer() {

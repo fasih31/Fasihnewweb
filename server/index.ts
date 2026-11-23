@@ -1,3 +1,5 @@
+import { sitemap } from "./portfolio-html";
+import { storage } from "./storage";
 import express, { type Request, Response, NextFunction } from "express";
 import compression from "compression";
 import path from "path";
@@ -79,7 +81,7 @@ app.use((req, res, next) => {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
     "font-src 'self' https://fonts.gstatic.com; " +
     "img-src 'self' data: https: blob:; " +
-    "connect-src 'self' https://archive.org https://api.coingecko.com https://api.exchangerate-api.com https://finnhub.io https://newsapi.org https://api.alquran.cloud https://random-hadith-generator.vercel.app; " +
+    "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://archive.org https://api.coingecko.com https://api.exchangerate-api.com https://finnhub.io https://newsapi.org https://api.alquran.cloud https://random-hadith-generator.vercel.app; " +
     "frame-src 'self' https://archive.org https://openlibrary.org https://www.gutenberg.org; " +
     "frame-ancestors 'none'; " +
     "base-uri 'self'; " +
@@ -193,6 +195,12 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  app.get("/sitemap.xml",async (_req,res) => {
+    let paths:string[] = [];
+    try { paths=(await storage.getAllArticles(true)).map(a=>"/blog/"+encodeURIComponent(a.slug)); }
+    catch { /* Static pages remain available when the article store is offline. */ }
+    res.type("application/xml").send(sitemap(paths));
+  });
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

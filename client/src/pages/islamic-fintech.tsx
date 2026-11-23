@@ -54,8 +54,8 @@ export default function IslamicFinTech() {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Islamic FinTech Products | Shariah-Compliant Financial Solutions"
-        description="Explore our range of Shariah-compliant financial products including BNPL, home finance, car finance, Takaful insurance, and more."
+        title="Islamic finance product walkthroughs | Fasih ur Rehman"
+        description="Explore illustrative purchase and financing journeys from my fintech portfolio."
         keywords="Islamic finance, Shariah compliant, Halal banking, Murabaha, Ijarah, BNPL, Takaful"
       />
       <Navigation />
@@ -71,15 +71,15 @@ export default function IslamicFinTech() {
                   Islamic Finance Technology
                 </Badge>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 md:mb-6">
-                  Shariah-Compliant FinTech Solutions
+                  Islamic finance product walkthroughs
                 </h1>
                 <p className="text-base sm:text-lg text-muted-foreground mb-6 md:mb-8">
-                  Empowering ethical finance through cutting-edge technology. Our Islamic FinTech solutions combine traditional Islamic finance principles with modern innovation.
+                  At Greens Fin Innovations I worked on the design of Islamic financial products. These examples illustrate the information a customer needs to compare terms and understand a transaction.
                 </p>
               </div>
               <div className="relative order-1 md:order-2">
                 <img
-                  src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=500&fit=crop"
+                  src="/work/murabaha.webp"
                   alt="Islamic Finance"
                   className="rounded-lg shadow-2xl w-full h-auto object-cover aspect-video"
                 />

@@ -5,8 +5,73 @@
   "outputDirectory": "dist/public",
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://fasihnewweb.onrender.com/api/:path*" },
-    { "source": "/attached_assets/:path*", "destination": "https://fasihnewweb.onrender.com/attached_assets/:path*" },
-    { "source": "/:path((?!api/|attached_assets/|assets/|.*\\.).*)", "destination": "/app" }
+    {
+      "source": "/api/:path*",
+      "destination": "https://fasihnewweb.onrender.com/api/:path*"
+    },
+    {
+      "source": "/attached_assets/:path*",
+      "destination": "https://fasihnewweb.onrender.com/attached_assets/:path*"
+    },
+    {
+      "source": "/admin",
+      "destination": "/app"
+    },
+    {
+      "source": "/blog/:slug",
+      "destination": "/app"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/solutions/daas",
+      "destination": "/domains/telecom",
+      "permanent": true
+    },
+    {
+      "source": "/solutions/edtech",
+      "destination": "/domains/edtech",
+      "permanent": true
+    },
+    {
+      "source": "/solutions/fintech",
+      "destination": "/domains/fintech",
+      "permanent": true
+    },
+    {
+      "source": "/solutions/ecommerce",
+      "destination": "/domains/ecommerce",
+      "permanent": true
+    },
+    {
+      "source": "/project/1",
+      "destination": "/work/virtualiec",
+      "permanent": true
+    },
+    {
+      "source": "/project/2",
+      "destination": "/domains/crypto-web3",
+      "permanent": true
+    },
+    {
+      "source": "/project/3",
+      "destination": "/domains/ai-ml",
+      "permanent": true
+    },
+    {
+      "source": "/project/4",
+      "destination": "/domains/fintech",
+      "permanent": true
+    },
+    {
+      "source": "/project/5",
+      "destination": "/domains/edtech",
+      "permanent": true
+    },
+    {
+      "source": "/project/6",
+      "destination": "/domains/ecommerce",
+      "permanent": true
+    }
   ]
 }

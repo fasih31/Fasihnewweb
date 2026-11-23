@@ -1,0 +1,22 @@
+.personal { padding-bottom:3rem; }
+.personal .folio-width {max-width:1160px}
+.profile-intro {padding:clamp(40px,7vw,100px) 0;max-width:850px}
+.profile-intro.with-art {display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,.85fr);align-items:center;gap:clamp(30px,7vw,95px);max-width:none}
+.profile-intro h1 {font-size:clamp(3rem,7.2vw,7.1rem);line-height:.98;text-wrap:balance}
+.profile-back {display:inline-block;color:#c5d5cf;margin-bottom:2rem}
+.profile-intro img {width:100%;height:auto;max-height:490px;object-fit:cover;border-radius:2px}
+.profile-intro .portrait {aspect-ratio:4/5;object-position:center 32%}
+.profile-band,.profile-section {border-top:1px solid var(--folio-rule);padding:clamp(1.8rem,4vw,4rem) 0}
+.profile-band {display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr);gap:clamp(18px,6vw,6rem)}
+.personal h2,.personal h3 {font-family:Georgia,serif;font-weight:400;line-height:1.13}
+.personal h2 {font-size:clamp(1.65rem,3.2vw,3rem);letter-spacing:-.035em}
+.personal h3 {font-size:clamp(1.35rem,2.25vw,2rem)}
+.profile-band p {font-size:1.12rem;line-height:1.7;max-width:65ch}
+.profile-band div p,.profile-band div h3 {margin:.6rem 0 1rem}
+.personal small,.profile-grid small {color:var(--folio-mint)}
+.personal-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--folio-rule);border:1px solid var(--folio-rule);margin-top:1.6rem}
+.personal-grid a {background:#0b2021;padding:clamp(1rem,2vw,2rem);display:flex;flex-direction:column;justify-content:space-between;gap:1.5rem}
+.personal-grid a:hover {background:#153331}.personal-grid h3 span {color:var(--folio-mint);font-size:.7em}
+.personal-links {display:flex;gap:.8rem 1.7rem;flex-wrap:wrap;margin:1.6rem 0}.personal-links a {color:var(--folio-mint);border-bottom:1px solid var(--folio-rule);padding:.4rem 0}
+@media(max-width:760px){.personal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.profile-intro.with-art{grid-template-columns:1fr}.profile-intro .portrait{max-width:350px;max-height:350px}.profile-band{grid-template-columns:1fr}.profile-band div p{margin-bottom:.3rem}}
+@media(max-width:500px){.personal-grid{grid-template-columns:1fr}.personal-grid a{gap:.55rem}.profile-intro h1{font-size:clamp(2.75rem,12vw,4rem)}}

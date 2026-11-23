@@ -8,16 +8,15 @@ import { ThemeProvider } from "@/lib/theme-provider";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { HelmetProvider } from "react-helmet-async";
-import Home from "@/pages/home";
+import { Helmet, HelmetProvider } from "react-helmet-async";
+import PersonalPage from "@/pages/personal";
+import { chapters, aliases } from "@shared/profile";
+import { Redirect } from "wouter";
 import NotFound from "@/pages/not-found";
 
 const WorkStory = lazy(() => import("@/pages/work-story"));
 const AdminDashboard = lazy(() => import("@/pages/admin"));
 const BlogArticle = lazy(() => import("@/pages/blog-article"));
-const ProjectDetail = lazy(() => import("@/pages/project-detail"));
-const SolutionDetail = lazy(() => import("@/pages/solution-detail"));
-const Career = lazy(() => import("@/pages/career"));
 const Tools = lazy(() => import("@/pages/tools"));
 const Calculators = lazy(() => import("@/pages/calculators"));
 const IslamicFinTech = lazy(() => import("@/pages/islamic-fintech"));
@@ -31,15 +30,8 @@ const QRGeneratorTool = lazy(() => import("@/pages/tools/qr-generator"));
 const PasswordGeneratorTool = lazy(() => import("@/pages/tools/password-generator"));
 const JSONFormatterTool = lazy(() => import("@/pages/tools/json-formatter"));
 const LoremIpsumTool = lazy(() => import("@/pages/tools/lorem-ipsum"));
-const FinTechDomain = lazy(() => import("@/pages/domains/fintech"));
-const EdTechDomain = lazy(() => import("@/pages/domains/edtech"));
-const EcommerceDomain = lazy(() => import("@/pages/domains/ecommerce"));
-const TelecomDomain = lazy(() => import("@/pages/domains/telecom"));
-const AIMLDomain = lazy(() => import("@/pages/domains/ai-ml"));
-const CryptoWeb3Domain = lazy(() => import("@/pages/domains/crypto-web3"));
 const BlogPage = lazy(() => import("@/pages/blog"));
 const IDEPage = lazy(() => import("@/pages/ide"));
-const ExpertisePage = lazy(() => import("@/pages/expertise"));
 const StocksDetail = lazy(() => import("@/pages/stocks-detail"));
 const NewsDetail = lazy(() => import("@/pages/news-detail"));
 const Library = lazy(() => import("@/pages/library"));
@@ -57,14 +49,12 @@ function Router() {
   return (
     <Suspense fallback={<LoadingFallback />}>
       <Switch>
-        <Route path="/" component={Home} />
+        {chapters.map(chapter => <Route key={chapter.path} path={chapter.path}><PersonalPage chapter={chapter}/></Route>)}
+        {Object.entries(aliases).map(([path,to]) => <Route key={path} path={path}><Redirect to={to}/></Route>)}
         <Route path="/work/:slug" component={WorkStory} />
         <Route path="/blog" component={BlogPage} />
-        <Route path="/admin" component={AdminDashboard} />
-        <Route path="/solutions/:id" component={SolutionDetail} />
+        <Route path="/admin"><Helmet><meta name="robots" content="noindex"/></Helmet><AdminDashboard/></Route>
         <Route path="/blog/:slug" component={BlogArticle} />
-        <Route path="/project/:id" component={ProjectDetail} />
-        <Route path="/career" component={Career} />
         <Route path="/tools" component={Tools} />
         <Route path="/calculators" component={Calculators} />
         <Route path="/tools/seo-analyzer" component={SEOAnalyzerTool} />
@@ -77,14 +67,7 @@ function Router() {
         <Route path="/tools/json-formatter" component={JSONFormatterTool} />
         <Route path="/tools/lorem-ipsum" component={LoremIpsumTool} />
         <Route path="/marketing-assets" component={MarketingAssets} />
-        <Route path="/expertise" component={ExpertisePage} />
         <Route path="/islamic-fintech" component={IslamicFinTech} />
-        <Route path="/domains/fintech" component={FinTechDomain} />
-        <Route path="/domains/edtech" component={EdTechDomain} />
-        <Route path="/domains/ecommerce" component={EcommerceDomain} />
-        <Route path="/domains/telecom" component={TelecomDomain} />
-        <Route path="/domains/ai-ml" component={AIMLDomain} />
-        <Route path="/domains/crypto-web3" component={CryptoWeb3Domain} />
         <Route path="/ide" component={IDEPage} />
         <Route path="/stocks" component={StocksDetail} />
         <Route path="/news" component={NewsDetail} />
@@ -99,6 +82,10 @@ function App() {
   return (
     <ErrorBoundary>
       <HelmetProvider>
+        <Helmet>
+          {import.meta.env.VITE_GOOGLE_SITE_VERIFICATION && <meta name="google-site-verification" content={import.meta.env.VITE_GOOGLE_SITE_VERIFICATION}/>}
+          {import.meta.env.VITE_BING_SITE_VERIFICATION && <meta name="msvalidate.01" content={import.meta.env.VITE_BING_SITE_VERIFICATION}/>}
+        </Helmet>
         <ThemeProvider defaultTheme="dark">
           <QueryClientProvider client={queryClient}>
             <GoogleAnalytics />

@@ -85,12 +85,12 @@ export default function BlogPage() {
         <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-background border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div className="text-center max-w-3xl mx-auto">
-              <Badge className="mb-4">Thought Leadership</Badge>
+              <Badge className="mb-4">Fasih ur Rehman</Badge>
               <h1 className="text-5xl md:text-6xl font-bold mb-6">
-                Insights & Articles
+                My writing
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
-                Expert perspectives on Islamic FinTech, digital transformation, AI, and emerging technologies
+                I write about the choices behind enterprise products, what Islamic finance taught me about explaining terms, and where AI helps a delivery team.
               </p>
               <div className="max-w-xl mx-auto">
                 <div className="relative">
@@ -201,7 +201,7 @@ export default function BlogPage() {
                       <CardHeader>
                         <div className="flex gap-2 mb-2">
                           <Badge>LinkedIn</Badge>
-                          <Badge variant="secondary">Thought Leadership</Badge>
+                          <Badge variant="secondary">Fasih ur Rehman</Badge>
                         </div>
                         <CardTitle className="line-clamp-2">{article.title}</CardTitle>
                         <CardDescription className="line-clamp-3">{article.excerpt}</CardDescription>

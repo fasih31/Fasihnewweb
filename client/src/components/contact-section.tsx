@@ -32,7 +32,6 @@ export function ContactSection() {
 
   const contactMutation = useMutation({
     mutationFn: async (data: InsertContactMessage) => {
-      console.log("Submitting contact form:", data);
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -47,7 +46,6 @@ export function ContactSection() {
       return response.json();
     },
     onSuccess: (data) => {
-      console.log("Contact form submitted successfully:", data);
       toast({
         title: "Message sent!",
         description: "Thank you for reaching out. I'll get back to you soon.",
@@ -68,15 +66,6 @@ export function ContactSection() {
     contactMutation.mutate(data);
   };
 
-  const socialLinks = [
-    { name: "GitHub", icon: Github, url: "https://github.com/fasih31", color: "hover:text-foreground" },
-    { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/in/fasihurrehman05", color: "hover:text-[#0077b5]" },
-    { name: "Twitter", icon: Twitter, url: "https://twitter.com/Fasih31", color: "hover:text-[#1da1f2]" },
-    { name: "WhatsApp", icon: MessageCircle, url: "https://wa.me/971506184687", color: "hover:text-[#25D366]" },
-    { name: "Telegram", icon: TelegramIcon, url: "https://t.me/fasih31", color: "hover:text-[#0088cc]" },
-    { name: "WhatsApp Direct", icon: MessageSquare, url: "https://wa.me/971506184687?text=Hi%20Fasih%2C%20I%20need%20help%20with%20my%20project.", color: "hover:text-[#5865F2]" },
-  ];
-
   return (
     <section
       id="contact"
@@ -86,11 +75,10 @@ export function ContactSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Get in Touch
+            Contact me
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Have a project in mind or want to collaborate? Let's talk about how we
-            can work together.
+            If you’d like to discuss a role, a paper or a question about my work, send me a message.
           </p>
           <div className="w-20 h-1 bg-gradient-to-r from-primary to-chart-2 mx-auto mt-4"></div>
         </div>
@@ -149,7 +137,7 @@ export function ContactSection() {
                         <FormLabel>Message</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Tell me about your project or inquiry..."
+                            placeholder="Your message"
                             rows={6}
                             {...field}
                             data-testid="input-message"
@@ -182,58 +170,7 @@ export function ContactSection() {
             </CardContent>
           </Card>
 
-          {/* Social Links & Info */}
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-2xl font-bold text-foreground mb-4">
-                Connect With Me
-              </h3>
-              <p className="text-muted-foreground mb-6">
-                Feel free to reach out through any of these platforms. I'm always
-                open to discussing new opportunities, innovative ideas, or potential
-                collaborations.
-              </p>
-
-              <div className="grid grid-cols-3 sm:flex gap-3 sm:gap-4">
-                {socialLinks.map((social) => (
-                  <Button
-                    key={social.name}
-                    variant="outline"
-                    size="icon"
-                    asChild
-                    className={`hover-elevate active-elevate-2 ${social.color} transition-colors`}
-                    data-testid={`link-${social.name.toLowerCase()}`}
-                  >
-                    <a
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={social.name}
-                    >
-                      <social.icon className="h-5 w-5" />
-                    </a>
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            <Card className="bg-gradient-to-br from-primary/10 to-chart-2/10 border-primary/20">
-              <CardContent className="p-6 space-y-4">
-                <h4 className="text-lg font-bold text-foreground">
-                  Let's Build Something Great
-                </h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Whether you need product management expertise, AI/AGI development,
-                  Web3 solutions, or technical project delivery, I'm here to help
-                  turn your vision into reality.
-                </p>
-                <div className="space-y-1 text-sm">
-                  <p><span className="font-semibold">Email:</span> fasih31@gmail.com</p>
-                  <p><span className="font-semibold">WhatsApp:</span> +971506184687</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <aside><h3 className="text-2xl mb-3">Find me on LinkedIn</h3><a className="underline" href="https://www.linkedin.com/in/fasihurrehman05">Fasih ur Rehman ↗</a></aside>
         </div>
       </div>
     </section>

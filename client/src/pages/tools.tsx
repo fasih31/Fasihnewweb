@@ -533,13 +533,13 @@ export default function Tools() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                 <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                Built with Excellence by Fasih ur Rehman
+                About my toolkit
               </CardTitle>
               <CardDescription className="text-sm sm:text-base leading-relaxed">
-                All tools are free, open-source, and built with cutting-edge web technologies. 
-                Need a custom tool for your business? 
+                I keep these utilities here for everyday product and development work.
+                Have feedback on a tool?
                 <a href="/#contact" className="text-primary hover:underline font-semibold ml-1">
-                  Let's build it together →
+                  Send me a note →
                 </a>
               </CardDescription>
             </CardHeader>

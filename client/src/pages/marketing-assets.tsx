@@ -248,7 +248,7 @@ export default function MarketingAssets() {
       'from-emerald-600': '#059669',
       'via-teal-600': '#0d9488',
       'to-cyan-600': '#0891b2',
-      'from-rose-600': '#e11d48',
+
       'via-pink-600': '#db2777',
       'to-red-600': '#dc2626',
       'from-orange-600': '#ea580c',
@@ -314,7 +314,7 @@ ${poster.hashtags.join(' ')}
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Marketing Assets - LinkedIn Promotional Posters"
-        description="Professional LinkedIn-sized promotional posters for our free online tools"
+        description="Professional LinkedIn-sized posters from my archive for free online tools"
       />
       <Navigation />
 
@@ -322,7 +322,7 @@ ${poster.hashtags.join(' ')}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              LinkedIn Marketing Assets
+              My visual archive
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Professional promotional posters designed for LinkedIn (1200x627px)

@@ -1,3 +1,4 @@
+import { aliases } from "../shared/profile";
 import { portfolioHtml } from "./portfolio-html";
 import express, { type Express } from "express";
 import fs from "fs";
@@ -80,15 +81,18 @@ export function serveStatic(app: Express) {
   }
 
   const template = fs.readFileSync(path.join(distPath, "index.html"), "utf8");
-  app.get("/", (_req, res) => res.type("html").send(portfolioHtml(template)));
-  app.get("/work/:slug", (req, res) => {
-    const html = portfolioHtml(template, req.params.slug);
-    res.status(html ? 200 : 404).type("html").send(html ?? template);
+  app.use((req,res,next) => {
+    if (req.method !== "GET") return next();
+    if (aliases[req.path]) return res.redirect(301,aliases[req.path]);
+    const html = portfolioHtml(template,req.path);
+    if (html) return res.type("html").send(html);
+    next();
   });
   app.use(express.static(distPath));
 
   // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
+  app.use("*", (req, res) => {
+    if (!(req.originalUrl.split("?")[0] === "/admin" || /^\/blog\/[^/]+$/.test(req.originalUrl.split("?")[0]))) res.status(404);
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }
