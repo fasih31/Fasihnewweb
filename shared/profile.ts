@@ -1,3 +1,4 @@
+import { deliveryNotes } from "./delivery-notes";
 import { roleDetails } from "./role-details";
 import { studies } from "./work";
 export interface Role {
@@ -73,14 +74,17 @@ export const expertise = chapter("/expertise","My work by domain","Experience","
 export const education = chapter("/education","Education and credentials","Professional development","I studied computer science at ILMA University in Karachi, completing my BS in 2019. My later training has focused on product development, finance and delivery.",[
   ["Project management","I earned the Project Management Professional (PMP) credential from PMI in 2024. My training also includes Google Project Management, the University of Colorado Boulder’s Project Management Specialization and UC Irvine’s Project Management Principles and Practices."],
   ["Product management and fintech","I completed the University of Virginia’s Digital Product Management Specialization, a fintech diploma through TAIF Digital Institute, and Financial Technology Innovations through the University of Michigan."],
-  ["Technical foundations","My training includes Cisco CCNA Routing and Switching, CCNP, Google IT Support and Google Analytics. It complements my early experience with web development and my later work with engineering teams."]],[["Career history","/career"],["Research","/research"]]);
+  ["Technical foundations","My training includes Cisco CCNA Routing and Switching, CCNP, Google IT Support and Google Analytics. It complements my early experience with web development and my later work with engineering teams."],
+  ["My route into computer science","I completed Intermediate Pre-Engineering at Government National College in Karachi in 2014. I began building websites that same year and completed my BS in Computer Science at ILMA University in 2019 while working."],
+  ["From analytics to programme delivery","My training progressed from Google Analytics in 2020 to IT support, Cisco networking and project management in 2022. In 2023 I studied digital product management, fintech product development and financial technology innovations. I earned my PMP the following year."]],[["Career history","/career"],["Research","/research"]]);
 export const research = chapter("/research","My research and publications","Co-authored work · 2023","My published work explores how digital systems affect the people who depend on them. Two papers connect that interest with my experience in financial products.",[
   ["Data Defense: Examining Fintech’s Security and Privacy Strategies","With Hafiz Muhammad Attaullah, Faisal Ahmed and Sundus Ali, I examined how fintech companies approach security and privacy. The paper was presented at the second International Conference on Emerging Trends in Electronic and Telecommunication Engineering in Karachi and published in Engineering Proceedings."],
   ["The Implications of Artificial Intelligence on Society, Ethics, and Industry","With Hafiz Muhammad Attaullah, I examined potential applications in healthcare, banking and transportation. The paper considers how privacy, accountability and bias affect the people using these systems."]],[["Read Data Defense in Engineering Proceedings","https://www.mdpi.com/2673-4591/32/1/3"],["Read the AI paper in the ILMA journal","https://ijtsm.ilmauniversity.edu.pk/arc/Vol4/i1P1"]]);
 export const projectsPage = chapter("/projects","My independent projects","Outside my employed roles","These projects let me explore product questions in my own time. My professional roles and employer work are documented separately in my career history.",[
-  ["YEESP","I established the Youth Education and Employment Support Program around affordable learning and opportunities to earn. My later platform design connects tutoring, course delivery and freelance work."],
-  ["VirtualIEC","I began by exploring immersive business interactions. My more recent prototypes look at conversational interfaces, memory and digital identity."],
-  ["Labs360.io","I co-founded Labs360.io as a Web3 growth initiative. It is one part of my independent work alongside my interests in marketplaces and technical prototyping."]],[["Inside YEESP","/work/yeesp"],["Inside VirtualIEC","/work/virtualiec"],["Web3 exploration","/domains/crypto-web3"]]);
+  ["YEESP","I established the Youth Education and Employment Support Program around affordable learning and opportunities to earn. The initial programme ran from May 2019 to August 2022. My later platform design connects tutoring, course delivery and freelance work. A learner can also tutor or contribute to a freelance project, so I define permissions around each activity."],
+  ["VirtualIEC","From August 2022 to March 2023 I worked on a metaverse platform for immersive business interactions in Pakistan. My more recent prototypes look at conversational interfaces, memory and digital identity."],
+  ["Labs360.io","I co-founded Labs360.io as a Web3 growth initiative. It is one part of my independent work alongside my interests in marketplaces and technical prototyping."],
+  ["Nova Cart and Terasita","My commerce concepts explore two different shopping questions. With Nova Cart I am interested in personalised product discovery. With Terasita I am interested in where automation can simplify shopping while leaving the purchase decision with the customer."]],[["Inside YEESP","/work/yeesp"],["Inside VirtualIEC","/work/virtualiec"],["Web3 exploration","/domains/crypto-web3"]]);
 export const about = chapter("/about","About me","Fasih ur Rehman · PMP","I grew into product management through web development. Working directly with people who used and maintained websites taught me to ask who owns a process after the software goes live.",[
   ["Karachi","In Pakistan I worked across commerce, education and Islamic finance. As a developer I dealt with implementation details. Later I owned product roadmaps, coordinated with suppliers and advisors, and managed programmes for professional learners."],
   ["Saudi Arabia and the UAE","At Tahakam I worked between enterprise clients and delivery teams. Today at e& (Etisalat), I bring those experiences together in enterprise telecom, coordinating product journeys, solution design, reviews and delivery."],
@@ -100,7 +104,13 @@ const contact = chapter("/contact","Get in touch","Fasih ur Rehman","For a quest
 const resourceIndex = chapter("/resources","Personal resources","From my portfolio","I keep a small collection of tools, reading material and experiments here. My professional experience is in the career section.",[],[
   ["Tools","/tools"],["Reading library","/library"],["Calculators","/calculators"],["Code editor","/ide"],["Visual archive","/marketing-assets"],["Markets","/stocks"],["News reader","/news"],["Islamic finance walkthroughs","/islamic-fintech"]
 ]);
-export const chapters = [home, career, expertise, about, research, education, projectsPage, contact, resourceIndex, ...rolePages, ...domains, ...studies.map(s=>chapter("/work/"+s.slug,s.title,s.name,s.context,[[s.question,s.decision],["How I would test it",s.check]],[[s.link,s.href]],image(s.art)))];
+export const notebook = chapter("/notes","My product and delivery notebook","Fasih ur Rehman · Field notes","Four decisions from fields I have worked in. I explain how I would investigate each one, write a requirement and check the result. The scenarios are illustrative.",[],deliveryNotes.map(note=>[note.title,note.path]));
+for (const note of deliveryNotes) {
+  const rolePage=rolePages.find(page=>note.links.some(([,path])=>page.path===path));
+  rolePage?.links.push([note.title,note.path]);
+  note.links.push(["All delivery notes",notebook.path]);
+}
+export const chapters = [notebook,...deliveryNotes,home, career, expertise, about, research, education, projectsPage, contact, resourceIndex, ...rolePages, ...domains, ...studies.map(s=>chapter("/work/"+s.slug,s.title,s.name,s.context,[[s.question,s.decision],["How I would test it",s.check]],[[s.link,s.href]],image(s.art)))];
 export const aliases: Record<string,string> = {
   "/solutions/daas": "/domains/telecom", "/solutions/edtech": "/domains/edtech",
   "/solutions/fintech": "/domains/fintech", "/solutions/ecommerce": "/domains/ecommerce",

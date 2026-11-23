@@ -25,3 +25,10 @@
 .career-stories article {border-top:2px solid var(--folio-mint);padding:1.25rem 0}
 .career-stories h3 {margin:.65rem 0}
 .career-stories p {line-height:1.6;margin:0 0 1.25rem}
+.career-search {max-width:46rem;margin:0 0 2rem}
+.career-search label {display:block;margin-bottom:.6rem;font-weight:600}
+.career-search>div {display:flex;gap:.7rem}
+.career-search input {min-width:0;width:100%;padding:.85rem 1rem;border:1px solid var(--folio-rule);border-radius:.35rem;background:#0b2021;color:var(--folio-paper);font-size:1rem}
+.career-search button {padding:.5rem;color:var(--folio-mint);text-decoration:underline}
+.career-search p {margin-top:.5rem;font-size:.95rem}
+.personal-grid .note-thumbnail {display:block;width:100%;height:clamp(7rem,12vw,10rem);object-fit:cover;border-radius:.2rem}

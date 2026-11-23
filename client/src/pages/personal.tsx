@@ -2,14 +2,17 @@ import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { CareerExplorer } from "@/components/career-explorer";
+import { deliveryNotes } from "@shared/delivery-notes";
 import { ContactSection } from "@/components/contact-section";
 
 import { OrderDemo } from "@/components/order-demo";
-import { home, career, expertise, education, projectsPage, research, domains, roles, rolePages, portrait, titleFor, schemaFor, type Chapter } from "@shared/profile";
+import { home, career, notebook, expertise, education, projectsPage, research, domains, roles, rolePages, portrait, titleFor, schemaFor, type Chapter } from "@shared/profile";
 import "./personal.css";
 
-function Directory({items}: {items:Chapter[]}) {
+function Directory({items, illustrated=false}: {items:Chapter[]; illustrated?:boolean}) {
   return <div className="personal-grid">{items.map(item=><a key={item.path} href={item.path}>
+    {illustrated && item.image && <img className="note-thumbnail" src={item.image} alt="" loading="lazy" width="360" height="150"/>}
     <small>{item.label}</small><h3>{item.title} <span aria-hidden="true">↗</span></h3>
   </a>)}</div>;
 }
@@ -36,10 +39,11 @@ export default function PersonalPage({chapter:c}:{chapter:Chapter}) {
     </div><a className="folio-link" href="/career">View all ten roles ↗</a></section>}
     {(isHome || c===expertise) && <section id="portfolio" className="profile-section"><h2>{isHome?"My experience across domains":"Explore the domains"}</h2><Directory items={domains.filter(d=>!["/domains/ai-ml","/domains/crypto-web3"].includes(d.path))}/></section>}
     {(isHome || c===expertise) && <section className="profile-section"><h2>My research and independent interests</h2><Directory items={domains.filter(d=>["/domains/ai-ml","/domains/crypto-web3"].includes(d.path))}/></section>}
-    {c===career ? <div className="profile-timeline">{roles.map((r,i)=><section className="profile-band" key={r.company+r.title}><div><small>{r.dates}</small><p>{r.domain}</p></div><div><h2>{r.title}</h2><h3>{r.company}</h3><p>{r.account}</p><a className="folio-link" href={rolePages[i].path}>Read my role at {r.company} ↗</a></div></section>)}</div> :
+    {(isHome || c===notebook) && <section className="profile-section"><h2>{isHome?"From my delivery notebook":"Read the notes"}</h2><Directory illustrated items={isHome?deliveryNotes.slice(0,3):deliveryNotes}/>{isHome && <nav className="personal-links"><a href="/notes">Browse all field notes ↗</a></nav>}</section>}
+    {c===career ? <CareerExplorer/> :
       c.sections.map(([heading,body])=><section className="profile-band" key={heading}><h2>{heading}</h2><p>{body}</p></section>)}
     {c.path==="/domains/telecom" && <section className="profile-band"><div><h2>A device order, step by step</h2><p>An illustrative walkthrough of how responsibilities change after a quotation is accepted.</p></div><OrderDemo/></section>}
     {isHome && <section className="profile-section"><h2>Publications, qualifications and projects</h2><Directory items={[research,education,projectsPage]}/></section>}
-    {c!==expertise && c!==career && c.links.length>0 && <nav className="personal-links" aria-label="Further reading">{c.links.map(([label,href])=><a href={href} key={href}>{label} ↗</a>)}</nav>}
+    {c!==expertise && c!==notebook && c!==career && c.links.length>0 && <nav className="personal-links" aria-label="Further reading">{c.links.map(([label,href])=><a href={href} key={href}>{label} ↗</a>)}</nav>}
     </div>{c.path==="/contact" && <ContactSection/>}</main><Footer/></>;
 }

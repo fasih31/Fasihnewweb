@@ -4,7 +4,7 @@ import { ThemeToggle } from "./theme-toggle";
 const destinations = [
   ["About me", "/about"], ["Career history", "/career"], ["Domain experience", "/expertise"],
   ["Education", "/education"], ["Research", "/research"], ["Independent projects", "/projects"],
-  ["Writing", "/blog"], ["Personal resources", "/resources"], ["Contact", "/contact"],
+  ["Delivery notebook", "/notes"], ["Writing", "/blog"], ["Personal resources", "/resources"], ["Contact", "/contact"],
   ["LinkedIn", "https://www.linkedin.com/in/fasihurrehman05"],
   ["GitHub", "https://github.com/fasih31"],
 ];
