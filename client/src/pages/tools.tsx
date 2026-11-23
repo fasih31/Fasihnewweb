@@ -341,7 +341,7 @@ export default function Tools() {
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    data-testid="input-search-tools"
+                    aria-label="Search tools" data-testid="input-search-tools"
                     placeholder="Search tools by name, description, or features..."
                     value={searchQuery}
                     onChange={(e) => handleSearchChange(e.target.value)}
@@ -349,7 +349,7 @@ export default function Tools() {
                   />
                   {searchQuery && (
                     <Button
-                      data-testid="button-clear-search"
+                      aria-label="Clear tool search" data-testid="button-clear-search"
                       variant="ghost"
                       size="sm"
                       className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7 p-0"
@@ -362,7 +362,7 @@ export default function Tools() {
                 <div className="flex gap-2 items-center">
                   <Filter className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                   <Select value={selectedCategory} onValueChange={handleCategoryChange}>
-                    <SelectTrigger data-testid="select-category-filter" className="w-full sm:w-[200px]">
+                    <SelectTrigger aria-label="Filter tools by category" data-testid="select-category-filter" className="w-full sm:w-[200px]">
                       <SelectValue placeholder="All Categories" />
                     </SelectTrigger>
                     <SelectContent>
@@ -415,61 +415,14 @@ export default function Tools() {
             </Card>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {paginatedTools.map((tool) => {
-                  const Icon = tool.icon;
-                  return (
-                    <Card 
-                      key={tool.id} 
-                      className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-primary/50"
-                      onClick={() => {
-                        if (!tool.openAsPage) {
-                          setSelectedTool(tool);
-                        }
-                      }}
-                    >
-                      <CardHeader>
-                        <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}>
-                          <Icon className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
-                        </div>
-                        <CardTitle className="text-lg sm:text-xl flex items-center justify-between">
-                          {tool.title}
-                          <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                        </CardTitle>
-                        <CardDescription className="text-sm sm:text-base line-clamp-2">
-                          {tool.description}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2">
-                          {tool.features.slice(0, 3).map((feature, idx) => (
-                            <div key={idx} className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                              <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
-                              <span className="line-clamp-1">{feature}</span>
-                            </div>
-                          ))}
-                        </div>
-                        <Button 
-                          className="w-full mt-4 sm:mt-6 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                          variant="outline"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (tool.openAsPage && tool.pagePath) {
-                              window.open(tool.pagePath, '_self');
-                            } else {
-                              setSelectedTool(tool);
-                            }
-                          }}
-                        >
-                          Launch Tool
-                          <ExternalLink className="ml-2 h-4 w-4" />
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-
+              <ul className="divide-y border-y">
+                {paginatedTools.map(tool=><li key={tool.id} className="grid gap-2 py-5 md:grid-cols-[1fr_1.5fr_auto] md:items-center md:gap-8">
+                  <div><small className="text-muted-foreground">{tool.category}</small><h2 className="text-xl font-medium">{tool.title}</h2></div>
+                  <p>{tool.description}</p>
+                  {tool.openAsPage && tool.pagePath ? <a className="underline underline-offset-4 py-2" href={tool.pagePath}>Open {tool.title} ↗</a>
+                    : <button className="text-left underline underline-offset-4 py-2" onClick={()=>setSelectedTool(tool)}>Open {tool.title}</button>}
+                </li>)}
+              </ul>
               {/* Pagination Controls */}
               {totalPages > 1 && (
                 <div className="flex items-center justify-center gap-2 mt-8">
@@ -524,46 +477,6 @@ export default function Tools() {
             </>
           )}
 
-          {/* Footer Note */}
-          <Card className="mt-8 sm:mt-12 bg-gradient-to-br from-primary/5 via-chart-2/5 to-chart-3/5 border-primary/20 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-                <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-                About my toolkit
-              </CardTitle>
-              <CardDescription className="text-sm sm:text-base leading-relaxed">
-                I keep these utilities here for everyday product and development work.
-                Have feedback on a tool?
-                <a href="/#contact" className="text-primary hover:underline font-semibold ml-1">
-                  Send me a note →
-                </a>
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-                <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                  <span className="text-xs sm:text-sm text-muted-foreground">Real-time Data</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-                  <span className="text-xs sm:text-sm text-muted-foreground">100% Free</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-purple-500"></div>
-                  <span className="text-xs sm:text-sm text-muted-foreground">No Ads</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-orange-500"></div>
-                  <span className="text-xs sm:text-sm text-muted-foreground">Fast & Secure</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-pink-500"></div>
-                  <span className="text-xs sm:text-sm text-muted-foreground">Mobile Optimized</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </main>
 

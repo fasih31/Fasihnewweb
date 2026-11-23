@@ -66,12 +66,12 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Blog & Articles | Thought Leadership in FinTech, Islamic Finance & AI | Fasih ur Rehman"
-        description="Expert insights on Islamic FinTech, BNPL, Shariah compliance, AI in finance, blockchain, EdTech innovation, and digital transformation. Professional articles and case studies."
+        title="My writing | Fasih ur Rehman"
+        description="Articles by Fasih ur Rehman on product decisions in enterprise telecom, Islamic finance and AI."
         keywords="Islamic FinTech blog, BNPL articles, Shariah compliance insights, AI financial services, blockchain regulation, EdTech innovation, digital banking trends, telecom transformation"
         canonicalUrl="https://iamfasih.com/blog"
         schema={[
-          getWebPageSchema("Blog & Articles", "Thought leadership articles on FinTech, Islamic Finance, AI, and digital innovation"),
+          getWebPageSchema("Blog & Articles", "Articles by Fasih ur Rehman on financial products and enterprise delivery"),
           getBreadcrumbSchema([
             { name: "Home", url: "https://iamfasih.com" },
             { name: "Blog", url: "https://iamfasih.com/blog" }
@@ -92,6 +92,7 @@ export default function BlogPage() {
               <p className="text-xl text-muted-foreground mb-8">
                 I write about the choices behind enterprise products, what Islamic finance taught me about explaining terms, and where AI helps a delivery team.
               </p>
+              <p className="mb-5"><a className="underline" href="/notes">Read my product and delivery notebook</a></p>
               <div className="max-w-xl mx-auto">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />

@@ -1,3 +1,4 @@
+import { publications } from "./publications";
 import { deliveryNotes } from "./delivery-notes";
 import { roleDetails } from "./role-details";
 import { studies } from "./work";
@@ -77,18 +78,17 @@ export const education = chapter("/education","Education and credentials","Profe
   ["Technical foundations","My training includes Cisco CCNA Routing and Switching, CCNP, Google IT Support and Google Analytics. It complements my early experience with web development and my later work with engineering teams."],
   ["My route into computer science","I completed Intermediate Pre-Engineering at Government National College in Karachi in 2014. I began building websites that same year and completed my BS in Computer Science at ILMA University in 2019 while working."],
   ["From analytics to programme delivery","My training progressed from Google Analytics in 2020 to IT support, Cisco networking and project management in 2022. In 2023 I studied digital product management, fintech product development and financial technology innovations. I earned my PMP the following year."]],[["Career history","/career"],["Research","/research"]]);
-export const research = chapter("/research","My research and publications","Co-authored work · 2023","My published work explores how digital systems affect the people who depend on them. Two papers connect that interest with my experience in financial products.",[
-  ["Data Defense: Examining Fintech’s Security and Privacy Strategies","With Hafiz Muhammad Attaullah, Faisal Ahmed and Sundus Ali, I examined how fintech companies approach security and privacy. The paper was presented at the second International Conference on Emerging Trends in Electronic and Telecommunication Engineering in Karachi and published in Engineering Proceedings."],
-  ["The Implications of Artificial Intelligence on Society, Ethics, and Industry","With Hafiz Muhammad Attaullah, I examined potential applications in healthcare, banking and transportation. The paper considers how privacy, accountability and bias affect the people using these systems."]],[["Read Data Defense in Engineering Proceedings","https://www.mdpi.com/2673-4591/32/1/3"],["Read the AI paper in the ILMA journal","https://ijtsm.ilmauniversity.edu.pk/arc/Vol4/i1P1"]]);
+export const research = chapter("/research","My research publications","Fasih ur Rehman · Co-authored papers","My work in financial products led me to questions about who holds customer data and how automated decisions affect people. These are the two papers I co-authored in 2023.",publications.map(p=>[p.title,p.text]),publications.map(p=>[p.title,p.url]));
 export const projectsPage = chapter("/projects","My independent projects","Outside my employed roles","These projects let me explore product questions in my own time. My professional roles and employer work are documented separately in my career history.",[
   ["YEESP","I established the Youth Education and Employment Support Program around affordable learning and opportunities to earn. The initial programme ran from May 2019 to August 2022. My later platform design connects tutoring, course delivery and freelance work. A learner can also tutor or contribute to a freelance project, so I define permissions around each activity."],
   ["VirtualIEC","From August 2022 to March 2023 I worked on a metaverse platform for immersive business interactions in Pakistan. My more recent prototypes look at conversational interfaces, memory and digital identity."],
   ["Labs360.io","I co-founded Labs360.io as a Web3 growth initiative. It is one part of my independent work alongside my interests in marketplaces and technical prototyping."],
   ["Nova Cart and Terasita","My commerce concepts explore two different shopping questions. With Nova Cart I am interested in personalised product discovery. With Terasita I am interested in where automation can simplify shopping while leaving the purchase decision with the customer."]],[["Inside YEESP","/work/yeesp"],["Inside VirtualIEC","/work/virtualiec"],["Web3 exploration","/domains/crypto-web3"]]);
-export const about = chapter("/about","About me","Fasih ur Rehman · PMP","I grew into product management through web development. Working directly with people who used and maintained websites taught me to ask who owns a process after the software goes live.",[
+export const about = chapter("/about","About me","Fasih ur Rehman · PMP","I’m Fasih ur Rehman, a Senior Project Manager at e& (Etisalat) in the UAE. I started my career building websites in Karachi. Today I work with business owners, engineers and operations teams on the steps an enterprise customer takes to buy a telecom service.",[
   ["Karachi","In Pakistan I worked across commerce, education and Islamic finance. As a developer I dealt with implementation details. Later I owned product roadmaps, coordinated with suppliers and advisors, and managed programmes for professional learners."],
   ["Saudi Arabia and the UAE","At Tahakam I worked between enterprise clients and delivery teams. Today at e& (Etisalat), I bring those experiences together in enterprise telecom, coordinating product journeys, solution design, reviews and delivery."],
-  ["How I work","I start by tracing a customer action through the teams and systems behind it. I ask what decision is needed, who can make it, and what the next person needs to know. It is a habit I use across industries."]],[["Full career history","/career"],["Education and credentials","/education"],["My independent projects","/projects"]],portrait);
+  ["Why I write about AI and product work","On LinkedIn I wrote about a question I face in delivery: if a team can produce requirements or prototypes faster, what actually improves for the customer? For a business ordering devices, one measure I would look at is how often an accepted quotation reaches fulfilment without anyone having to ask for the same information again."],
+  ["How I work","I trace a customer action through the people and systems behind it. At e&, that means following a quotation through acceptance, verification and fulfilment. In Islamic finance, it meant coordinating product requirements with specialist review. In both settings, the next person needs to know what decision was made and what they can act on."]],[["Full career history","/career"],["My LinkedIn profile","https://www.linkedin.com/in/fasihurrehman05/"],["Education and credentials","/education"],["My independent projects","/projects"]],portrait);
 export const rolePages = roles.map(role => {
   const detail = roleDetails[role.title+" · "+role.company] ?? roleDetails[role.company];
   return chapter("/career/"+detail.slug,role.title+" at "+role.company,role.dates+" · "+role.domain,detail.headline+".",detail.sections,[
@@ -119,10 +119,24 @@ export const aliases: Record<string,string> = {
   "/project/5": "/domains/edtech", "/project/6": "/domains/ecommerce",
 };
 export const titleFor = (c:Chapter) => c === home ? "Fasih ur Rehman | Senior Project Manager at e& (Etisalat), UAE" : c.title + " | Fasih ur Rehman";
+export function parentOf(c:Chapter): [string,string] {
+  if(c.path.startsWith("/career/")) return ["Career","/career"];
+  if(c.path.startsWith("/domains/")) return ["Domains","/expertise"];
+  if(c.path.startsWith("/notes/")) return ["Delivery notebook","/notes"];
+  if(c.path.startsWith("/work/")) return ["Selected work",c.path.endsWith("/islamic-fintech")?"/domains/fintech":"/projects"];
+  if(c.path.startsWith("/tools/")) return ["Toolkit","/tools"];
+  return ["Fasih ur Rehman","/"];
+}
 export function schemaFor(c:Chapter) {
-  const origin = "https://iamfasih.com";
+  const origin = "https://iamfasih.com", url=origin+c.path;
   const person = {"@type":"Person","@id":origin+"/#fasih",name:home.title,jobTitle:"Senior Project Manager",worksFor:{"@type":"Organization",name:"e& (Etisalat)"},image:origin+portrait,url:origin+"/",sameAs:["https://www.linkedin.com/in/fasihurrehman05","https://github.com/fasih31"]};
-  return {"@context":"https://schema.org","@graph":[person,{"@type":c===home||c===about?"ProfilePage":"WebPage","@id":origin+c.path,url:origin+c.path,name:titleFor(c),description:c.intro,author:{"@id":person["@id"]},mainEntity:{"@id":person["@id"]}}]};
+  const profile=c===home||c===about;
+  const papers=c===research?publications.map(p=>({"@type":"ScholarlyArticle","@id":p.url,url:p.url,headline:p.title,datePublished:p.year,author:p.authors.map(name=>({"@type":"Person",name})),isPartOf:{"@type":"Periodical",name:p.journal}})):[];
+  const parent=parentOf(c);
+  const trail=[["Home","/"],...(parent[1]!=="/"?[parent]:[]),[c.title,c.path]];
+  const breadcrumb={"@type":"BreadcrumbList","@id":url+"#breadcrumbs",itemListElement:trail.map(([name,path],i)=>({"@type":"ListItem",position:i+1,name,item:origin+path}))};
+  const page={"@type":profile?"ProfilePage":"WebPage","@id":url,url,name:titleFor(c),description:c.intro,author:{"@id":person["@id"]},...(profile?{mainEntity:{"@id":person["@id"]}}:{}),...(papers.length?{mentions:papers.map(p=>({"@id":p["@id"]}))}:{}),...(c!==home?{breadcrumb:{"@id":breadcrumb["@id"]}}:{})};
+  return {"@context":"https://schema.org","@graph":[person,page,...(c===home?[]:[breadcrumb]),...papers]};
 }
 export const resources: Chapter[] = [
   ["/blog","My writing","Articles on enterprise product delivery, fintech and emerging technology."],

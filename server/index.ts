@@ -1,4 +1,4 @@
-import { sitemap } from "./portfolio-html";
+import { notebookFeed, sitemap } from "./portfolio-html";
 import { storage } from "./storage";
 import express, { type Request, Response, NextFunction } from "express";
 import compression from "compression";
@@ -195,6 +195,7 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  app.get("/notebook.xml",(_req,res)=>res.type("application/rss+xml").send(notebookFeed()));
   app.get("/sitemap.xml",async (_req,res) => {
     let paths:string[] = [];
     try { paths=(await storage.getAllArticles(true)).map(a=>"/blog/"+encodeURIComponent(a.slug)); }

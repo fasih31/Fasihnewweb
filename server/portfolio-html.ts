@@ -1,9 +1,17 @@
+import { deliveryNotes } from "../shared/delivery-notes";
 import { careerOverview } from "../shared/career-overview";
 import { chapters, resources, home, notebook, domains, career, projectsPage, education, research, titleFor, schemaFor, portrait } from "../shared/profile";
 
 const origin = "https://iamfasih.com";
 const esc = (s:string)=>s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
 export const publicPages=[...chapters,...resources];
+export function notebookFeed() {
+  const items=deliveryNotes.map(note=>{
+    const link=origin+note.path;
+    return '<item><title>'+esc(note.title)+'</title><link>'+link+'</link><guid>'+link+'</guid><description>'+esc(note.intro)+'</description></item>';
+  });
+  return '<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Fasih ur Rehman — Delivery notebook</title><link>'+origin+'/notes</link><description>Field notes on enterprise telecom, fintech, ICT and education products.</description><language>en</language>'+items.join('')+'</channel></rss>';
+}
 export function sitemap(extra:string[]=[]) {
   return '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+Array.from(new Set([...publicPages.map(c=>c.path),...extra])).map(p=>'<url><loc>'+esc(origin+p)+'</loc></url>').join('')+'</urlset>';
 }
@@ -11,7 +19,7 @@ export function portfolioHtml(template:string,path="/") {
   const c=publicPages.find(c=>c.path===path);
   if (!c) return;
   const title=esc(titleFor(c)), desc=esc(c.intro), url=origin+c.path;
-  const head = `<title>${title}</title>
+  const head = `<title>${title}</title><link rel="alternate" type="application/rss+xml" title="Delivery notebook" href="/notebook.xml">
     <meta data-rh="true" name="description" content="${desc}"><link data-rh="true" rel="canonical" href="${url}">
     <meta data-rh="true" property="og:title" content="${title}"><meta data-rh="true" property="og:description" content="${desc}">
     <meta data-rh="true" property="og:url" content="${url}"><meta data-rh="true" property="og:type" content="${c===home?"profile":"website"}">

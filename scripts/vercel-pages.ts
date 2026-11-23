@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
-import { portfolioHtml, publicPages, sitemap } from "../server/portfolio-html";
+import { portfolioHtml, publicPages, notebookFeed, sitemap } from "../server/portfolio-html";
 
 const output="dist/public";
 const template=await readFile(join(output,"index.html"),"utf8");
@@ -11,3 +11,5 @@ for (const page of publicPages) {
   await writeFile(file,portfolioHtml(template,page.path)!);
 }
 await writeFile(join(output,"sitemap.xml"),sitemap());
+
+await writeFile(join(output,"notebook.xml"),notebookFeed());
