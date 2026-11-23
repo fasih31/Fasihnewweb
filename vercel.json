@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npx vite build && node --import tsx scripts/vercel-pages.ts",
+  "outputDirectory": "dist/public",
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://fasihnewweb.onrender.com/api/:path*" },
+    { "source": "/attached_assets/:path*", "destination": "https://fasihnewweb.onrender.com/attached_assets/:path*" },
+    { "source": "/:path((?!api/|attached_assets/|assets/|.*\\.).*)", "destination": "/app.html" }
+  ]
+}
