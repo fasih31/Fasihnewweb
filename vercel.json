@@ -7,6 +7,6 @@
   "rewrites": [
     { "source": "/api/:path*", "destination": "https://fasihnewweb.onrender.com/api/:path*" },
     { "source": "/attached_assets/:path*", "destination": "https://fasihnewweb.onrender.com/attached_assets/:path*" },
-    { "source": "/:path((?!api/|attached_assets/|assets/|.*\\.).*)", "destination": "/app.html" }
+    { "source": "/:path((?!api/|attached_assets/|assets/|.*\\.).*)", "destination": "/app" }
   ]
 }
