@@ -27,7 +27,7 @@ const toolPosters: ToolPoster[] = [
   {
     id: "seo-analyzer",
     title: "Advanced SEO Analyzer",
-    tagline: "Boost Your Rankings with AI-Powered Insights",
+    tagline: "Reading a page’s search metadata",
     features: [
       "AI-Powered Content Analysis",
       "Real-time Performance Metrics",
@@ -36,13 +36,13 @@ const toolPosters: ToolPoster[] = [
     ],
     gradient: "from-purple-600 via-violet-600 to-indigo-600",
     icon: "🚀",
-    description: "Transform your website's SEO with comprehensive analysis powered by AI. Get instant insights on performance, accessibility, security, and content quality. Perfect for digital marketers, agencies, and businesses in UAE, Saudi Arabia, and across the Middle East.",
+    description: "This poster introduces the page metadata and content checks in my SEO toolkit.",
     hashtags: ["#SEO", "#DigitalMarketing", "#AITools", "#WebOptimization", "#MiddleEastTech", "#DubaiTech", "#MarketingTools", "#SEOAnalysis", "#FinTechAdvisor", "#FasihUrRehman"]
   },
   {
     id: "code-playground",
     title: "Professional Code IDE",
-    tagline: "14+ Languages, One Powerful Editor",
+    tagline: "Working through a code example",
     features: [
       "Multi-Language Support",
       "Real-time Execution",
@@ -51,13 +51,13 @@ const toolPosters: ToolPoster[] = [
     ],
     gradient: "from-emerald-600 via-teal-600 to-cyan-600",
     icon: "💻",
-    description: "Write, test, and execute code in 14+ programming languages including Python, JavaScript, TypeScript, Java, C++, and more. Perfect for developers, students, and tech professionals. Built with cutting-edge technology for the modern developer.",
+    description: "I use this visual to introduce the browser editor and its language options.",
     hashtags: ["#Programming", "#WebDevelopment", "#CodingTools", "#DeveloperTools", "#TechEducation", "#LearnToCode", "#MiddleEastDevelopers", "#UAETech", "#OnlineIDE", "#FasihUrRehman"]
   },
   {
     id: "website-scanner",
     title: "Deep Website Scanner",
-    tagline: "Security, Performance & Tech Stack Analysis",
+    tagline: "Reading a website report",
     features: [
       "Security Vulnerability Detection",
       "Lighthouse Performance Audit",
@@ -66,13 +66,13 @@ const toolPosters: ToolPoster[] = [
     ],
     gradient: "from-rose-600 via-pink-600 to-red-600",
     icon: "🔍",
-    description: "Comprehensive website analysis tool featuring security scanning, Lighthouse audit, OCR text extraction, and technology detection. Essential for cybersecurity professionals, web developers, and digital agencies across the Middle East.",
+    description: "A visual guide to the categories in a website report.",
     hashtags: ["#WebSecurity", "#CyberSecurity", "#PerformanceOptimization", "#TechAnalysis", "#DigitalTransformation", "#UAECyber", "#SecurityTools", "#WebDevelopment", "#FinTechSecurity", "#FasihUrRehman"]
   },
   {
     id: "crypto-tracker",
     title: "Crypto Market Tracker",
-    tagline: "Real-Time Cryptocurrency Data",
+    tagline: "Following cryptocurrency prices",
     features: [
       "Live Price Updates",
       "24h Price Changes",
@@ -81,13 +81,13 @@ const toolPosters: ToolPoster[] = [
     ],
     gradient: "from-orange-600 via-amber-600 to-yellow-600",
     icon: "📈",
-    description: "Stay ahead of the crypto market with real-time price tracking powered by CoinGecko API. Monitor top cryptocurrencies, track market movements, and make informed investment decisions. Perfect for traders and investors in the Middle East's growing crypto market.",
+    description: "A reference card for the market-data view in my personal toolkit.",
     hashtags: ["#Cryptocurrency", "#Bitcoin", "#Ethereum", "#CryptoTrading", "#BlockchainTechnology", "#DigitalAssets", "#UAECrypto", "#FinTech", "#CryptoMarket", "#FasihUrRehman"]
   },
   {
     id: "password-generator",
     title: "Secure Password Generator",
-    tagline: "Military-Grade Password Security",
+    tagline: "Choosing password length and characters",
     features: [
       "Customizable Length",
       "Strength Meter",
@@ -96,13 +96,13 @@ const toolPosters: ToolPoster[] = [
     ],
     gradient: "from-amber-600 via-orange-600 to-red-600",
     icon: "🔐",
-    description: "Generate ultra-secure passwords with customizable complexity. Features real-time strength analysis and support for uppercase, lowercase, numbers, and symbols. Essential for cybersecurity-conscious professionals and businesses.",
+    description: "An illustration of the length and character options in the password generator.",
     hashtags: ["#CyberSecurity", "#PasswordSecurity", "#InfoSec", "#DataProtection", "#SecurityTools", "#DigitalSecurity", "#UAESecurity", "#PrivacyProtection", "#SecurityFirst", "#FasihUrRehman"]
   },
   {
     id: "qr-generator",
     title: "QR Code Generator",
-    tagline: "Create Custom QR Codes Instantly",
+    tagline: "Sharing a link with a QR code",
     features: [
       "Custom Size Options",
       "Error Correction Levels",
@@ -111,13 +111,13 @@ const toolPosters: ToolPoster[] = [
     ],
     gradient: "from-violet-600 via-purple-600 to-fuchsia-600",
     icon: "📱",
-    description: "Generate professional QR codes for URLs, text, and contact information. Perfect for marketing campaigns, business cards, and digital touchpoints. Used by businesses across UAE and Middle East for seamless customer engagement.",
+    description: "This example shows how a web address can be shared as a scannable image.",
     hashtags: ["#QRCode", "#DigitalMarketing", "#BusinessTools", "#MarketingAutomation", "#ContactlessPayment", "#UAEBusiness", "#DigitalTransformation", "#SmartBusiness", "#TechTools", "#FasihUrRehman"]
   },
   {
     id: "currency-converter",
     title: "Currency Converter",
-    tagline: "150+ Global Currencies in Real-Time",
+    tagline: "Comparing currencies",
     features: [
       "Live Exchange Rates",
       "150+ Currencies",
@@ -126,13 +126,13 @@ const toolPosters: ToolPoster[] = [
     ],
     gradient: "from-green-600 via-emerald-600 to-teal-600",
     icon: "💱",
-    description: "Convert between 150+ global currencies with real-time exchange rates. Special support for AED, SAR, PKR, and other Middle Eastern currencies. Essential for international business, traders, and travelers.",
+    description: "A visual introduction to currency conversion, including AED, SAR and PKR.",
     hashtags: ["#CurrencyExchange", "#ForexTrading", "#InternationalBusiness", "#UAEBusiness", "#FinTech", "#TradingTools", "#ExchangeRates", "#GlobalBusiness", "#MiddleEastFinance", "#FasihUrRehman"]
   },
   {
     id: "json-formatter",
     title: "JSON Formatter",
-    tagline: "Format, Validate & Minify JSON",
+    tagline: "Reading structured data",
     features: [
       "Syntax Highlighting",
       "Validation",
@@ -141,13 +141,13 @@ const toolPosters: ToolPoster[] = [
     ],
     gradient: "from-lime-600 via-green-600 to-emerald-600",
     icon: "📄",
-    description: "Professional JSON formatter with syntax highlighting, validation, and minification. Essential tool for developers, API integration specialists, and technical teams working with data.",
+    description: "I included this poster for a common development task: making a JSON response easier to read.",
     hashtags: ["#WebDevelopment", "#JSON", "#DeveloperTools", "#APIIntegration", "#TechTools", "#Programming", "#SoftwareDevelopment", "#UAEDevelopers", "#TechCommunity", "#FasihUrRehman"]
   },
   {
     id: "base64-converter",
     title: "Base64 Encoder/Decoder",
-    tagline: "Secure Text Encoding Made Simple",
+    tagline: "Encoding and decoding text",
     features: [
       "Instant Encoding",
       "Fast Decoding",
@@ -156,13 +156,13 @@ const toolPosters: ToolPoster[] = [
     ],
     gradient: "from-sky-600 via-blue-600 to-indigo-600",
     icon: "🔤",
-    description: "Convert text to Base64 encoding and decode Base64 strings instantly. Essential for web developers, security professionals, and technical teams handling data transmission and storage.",
+    description: "An example of switching between plain text and Base64 encoding.",
     hashtags: ["#WebDevelopment", "#Encoding", "#DataSecurity", "#DeveloperTools", "#TechUtilities", "#Programming", "#UAETech", "#TechnicalTools", "#SoftwareEngineering", "#FasihUrRehman"]
   },
   {
     id: "hash-generator",
     title: "Hash Generator",
-    tagline: "MD5, SHA-256 & More",
+    tagline: "Comparing file or text digests",
     features: [
       "Multiple Algorithms",
       "MD5 & SHA-256",
@@ -171,7 +171,7 @@ const toolPosters: ToolPoster[] = [
     ],
     gradient: "from-rose-600 via-red-600 to-pink-600",
     icon: "🔑",
-    description: "Generate cryptographic hashes using MD5, SHA-256, and other algorithms. Critical tool for security professionals, developers, and anyone working with data integrity and verification.",
+    description: "A reference for the hash formats in my development toolkit.",
     hashtags: ["#Cryptography", "#DataSecurity", "#Hashing", "#InfoSec", "#CyberSecurity", "#DeveloperTools", "#SecurityProfessionals", "#UAESecurity", "#TechSecurity", "#FasihUrRehman"]
   }
 ];
@@ -313,7 +313,7 @@ ${poster.hashtags.join(' ')}
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Marketing Assets - LinkedIn Promotional Posters"
+        title="My visual archive | Fasih ur Rehman"
         description="Professional LinkedIn-sized posters from my archive for free online tools"
       />
       <Navigation />
@@ -325,7 +325,7 @@ ${poster.hashtags.join(' ')}
               My visual archive
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Professional promotional posters designed for LinkedIn (1200x627px)
+              I made these illustrations to explain the browser tools in my personal collection. Each one pairs a short caption with a downloadable image.
             </p>
           </div>
 

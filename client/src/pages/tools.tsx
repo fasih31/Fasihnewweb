@@ -317,8 +317,8 @@ export default function Tools() {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Free Online Tools: QR Code, Password Generator, SEO Analyzer, Currency Converter & More"
-        description="Access 13+ free professional online tools including QR code generator, password generator, SEO analyzer, website scanner, JSON formatter, Base64 converter, hash generator, crypto tracker, currency converter, loan calculator, and code playground. Built by Fasih ur Rehman - FinTech Advisor & Product Manager."
+        title="My personal toolkit | Fasih ur Rehman"
+        description="Calculators, formatting utilities and browser tools from Fasih ur Rehman’s personal portfolio."
       />
       <Navigation />
 
@@ -326,15 +326,11 @@ export default function Tools() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-8 sm:mb-12">
-            <Badge className="mb-3 sm:mb-4 text-xs sm:text-sm" variant="secondary">
-              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
-              Professional Tools Marketplace
-            </Badge>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-3 sm:mb-4 leading-tight">
-              Free Professional Tools
+              My personal toolkit
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4">
-              Real-time data, accurate calculations, and professional-grade utilities for developers, traders, and businesses.
+              I keep these calculators and development utilities alongside my portfolio. Search for a task, such as formatting JSON, converting currencies or creating a QR code.
             </p>
           </div>
 

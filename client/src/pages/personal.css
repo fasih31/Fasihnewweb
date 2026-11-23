@@ -32,3 +32,11 @@
 .career-search button {padding:.5rem;color:var(--folio-mint);text-decoration:underline}
 .career-search p {margin-top:.5rem;font-size:.95rem}
 .personal-grid .note-thumbnail {display:block;width:100%;height:clamp(7rem,12vw,10rem);object-fit:cover;border-radius:.2rem}
+
+.experience-ledger {margin-top:1.75rem}
+.experience-ledger article {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.65fr);gap:clamp(1rem,5vw,5rem);padding:clamp(1.3rem,3vw,2.5rem) 0;border-top:1px solid var(--folio-rule)}
+.experience-ledger h3 {margin:.5rem 0}
+.experience-ledger p {font-size:1.08rem;line-height:1.65;max-width:66ch}
+.experience-ledger nav {display:flex;gap:.5rem 1.5rem;flex-wrap:wrap;margin-top:.75rem;color:var(--folio-mint)}
+.experience-ledger nav a {text-decoration:underline;text-underline-offset:.2em}
+@media(max-width:700px){.experience-ledger article{grid-template-columns:1fr;gap:.3rem}}
