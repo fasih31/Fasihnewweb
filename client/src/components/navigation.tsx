@@ -13,7 +13,7 @@ export function Navigation() {
           aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
         <nav id="folio-nav" aria-label="Main navigation" data-open={open} onClick={() => setOpen(false)}
           onKeyDown={event => { if (event.key === "Escape") { setOpen(false); document.querySelector<HTMLButtonElement>(".folio-menu")?.focus(); } }}>
-          <a href="/career">Career</a><a href="/expertise">Domains</a><a href="/research">Research</a><a href="/about">About</a>
+          <a href="/career">Career</a><a href="/expertise">Domains</a><a href="/research">Research</a><a href="/about">About</a><a href="/contact">Contact</a>
           <a className="resume-link" href={resume}>Résumé ↗</a>
         </nav>
       </div>

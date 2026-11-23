@@ -20,3 +20,8 @@
 .personal-links {display:flex;gap:.8rem 1.7rem;flex-wrap:wrap;margin:1.6rem 0}.personal-links a {color:var(--folio-mint);border-bottom:1px solid var(--folio-rule);padding:.4rem 0}
 @media(max-width:760px){.personal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.profile-intro.with-art{grid-template-columns:1fr}.profile-intro .portrait{max-width:350px;max-height:350px}.profile-band{grid-template-columns:1fr}.profile-band div p{margin-bottom:.3rem}}
 @media(max-width:500px){.personal-grid{grid-template-columns:1fr}.personal-grid a{gap:.55rem}.profile-intro h1{font-size:clamp(2.75rem,12vw,4rem)}}
+
+.career-stories {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:clamp(1.4rem,3vw,3rem);margin:2rem 0}
+.career-stories article {border-top:2px solid var(--folio-mint);padding:1.25rem 0}
+.career-stories h3 {margin:.65rem 0}
+.career-stories p {line-height:1.6;margin:0 0 1.25rem}

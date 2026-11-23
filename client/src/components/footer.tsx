@@ -2,10 +2,10 @@ import { AuthButton } from "./auth-dialog";
 import { ThemeToggle } from "./theme-toggle";
 
 const destinations = [
-  ["Contact", "/#contact"], ["Career", "/career"], ["Expertise", "/expertise"],
-  ["Education", "/education"], ["Independent projects", "/projects"], ["Writing", "/blog"], ["Tools", "/tools"], ["Library", "/library"], ["Calculators", "/calculators"],
-  ["Market data", "/stocks"], ["News", "/news"], ["IDE", "/ide"],
-  ["Visual archive", "/marketing-assets"], ["LinkedIn", "https://www.linkedin.com/in/fasihurrehman05"],
+  ["About me", "/about"], ["Career history", "/career"], ["Domain experience", "/expertise"],
+  ["Education", "/education"], ["Research", "/research"], ["Independent projects", "/projects"],
+  ["Writing", "/blog"], ["Personal resources", "/resources"], ["Contact", "/contact"],
+  ["LinkedIn", "https://www.linkedin.com/in/fasihurrehman05"],
   ["GitHub", "https://github.com/fasih31"],
 ];
 export function Footer() {

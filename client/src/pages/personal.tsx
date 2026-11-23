@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { ContactSection } from "@/components/contact-section";
-import { NewsletterForm } from "@/components/newsletter-form";
+
 import { OrderDemo } from "@/components/order-demo";
-import { home, career, expertise, education, projectsPage, research, domains, roles, portrait, titleFor, schemaFor, type Chapter } from "@shared/profile";
+import { home, career, expertise, education, projectsPage, research, domains, roles, rolePages, portrait, titleFor, schemaFor, type Chapter } from "@shared/profile";
 import "./personal.css";
 
 function Directory({items}: {items:Chapter[]}) {
@@ -15,6 +16,9 @@ function Directory({items}: {items:Chapter[]}) {
 
 export default function PersonalPage({chapter:c}:{chapter:Chapter}) {
   const isHome = c === home;
+  useEffect(()=>{
+    if(isHome && window.location.hash==="#contact") window.location.replace("/contact");
+  },[isHome]);
   const photo = isHome ? portrait : c.image;
   const url = "https://iamfasih.com"+c.path;
   return <><Helmet><title>{titleFor(c)}</title><meta name="description" content={c.intro}/><link rel="canonical" href={url}/>
@@ -27,12 +31,15 @@ export default function PersonalPage({chapter:c}:{chapter:Chapter}) {
       <p className="eyebrow">{c.label}</p><h1>{c.title}</h1><p className="hero-bio">{c.intro}</p>
       {isHome && <div className="personal-links"><a href="/career">Read my career history ↗</a><a href="/about">About me ↗</a></div>}
     </div>{photo && <img className={photo===portrait?'portrait':'chapter-art'} src={photo} alt={photo===portrait?"Fasih ur Rehman":""} fetchPriority="high"/>}</header>
-    {isHome && <section className="profile-band" id="about"><h2>Where I work today</h2><div><h3>e& (Etisalat) · UAE</h3><p>{roles[0].account}</p><a className="folio-link" href="/domains/telecom">My work in enterprise telecom ↗</a></div></section>}
-    {(isHome || c===expertise) && <section id="portfolio" className="profile-section"><h2>{isHome?"My experience across domains":"Explore the domains"}</h2><Directory items={domains}/></section>}
-    {c===career ? <div className="profile-timeline">{roles.map(r=><section className="profile-band" key={r.company+r.title}><div><small>{r.dates}</small><p>{r.domain}</p></div><div><h2>{r.title}</h2><h3>{r.company}</h3><p>{r.account}</p></div></section>)}</div> :
+    {isHome && <section className="profile-section" id="about"><h2>Inside my career</h2><div className="career-stories">
+      {rolePages.slice(0,3).map((page,i)=><article key={page.path}><small>{roles[i].dates}</small><h3><a href={page.path}>{roles[i].company}</a></h3><p>{page.intro}</p><a className="folio-link" href={page.path}>Read about my role ↗</a></article>)}
+    </div><a className="folio-link" href="/career">View all ten roles ↗</a></section>}
+    {(isHome || c===expertise) && <section id="portfolio" className="profile-section"><h2>{isHome?"My experience across domains":"Explore the domains"}</h2><Directory items={domains.filter(d=>!["/domains/ai-ml","/domains/crypto-web3"].includes(d.path))}/></section>}
+    {(isHome || c===expertise) && <section className="profile-section"><h2>My research and independent interests</h2><Directory items={domains.filter(d=>["/domains/ai-ml","/domains/crypto-web3"].includes(d.path))}/></section>}
+    {c===career ? <div className="profile-timeline">{roles.map((r,i)=><section className="profile-band" key={r.company+r.title}><div><small>{r.dates}</small><p>{r.domain}</p></div><div><h2>{r.title}</h2><h3>{r.company}</h3><p>{r.account}</p><a className="folio-link" href={rolePages[i].path}>Read my role at {r.company} ↗</a></div></section>)}</div> :
       c.sections.map(([heading,body])=><section className="profile-band" key={heading}><h2>{heading}</h2><p>{body}</p></section>)}
     {c.path==="/domains/telecom" && <section className="profile-band"><div><h2>A device order, step by step</h2><p>An illustrative walkthrough of how responsibilities change after a quotation is accepted.</p></div><OrderDemo/></section>}
-    {isHome && <section className="profile-section"><h2>Research, education and independent work</h2><Directory items={[research,education,projectsPage]}/></section>}
-    {c!==expertise && c.links.length>0 && <nav className="personal-links" aria-label="Further reading">{c.links.map(([label,href])=><a href={href} key={href}>{label} ↗</a>)}</nav>}
-    </div>{isHome && <><ContactSection/><div className="folio-width newsletter-wrap"><NewsletterForm/></div></>}</main><Footer/></>;
+    {isHome && <section className="profile-section"><h2>Publications, qualifications and projects</h2><Directory items={[research,education,projectsPage]}/></section>}
+    {c!==expertise && c!==career && c.links.length>0 && <nav className="personal-links" aria-label="Further reading">{c.links.map(([label,href])=><a href={href} key={href}>{label} ↗</a>)}</nav>}
+    </div>{c.path==="/contact" && <ContactSection/>}</main><Footer/></>;
 }
