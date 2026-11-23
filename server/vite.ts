@@ -1,3 +1,4 @@
+import { portfolioHtml } from "./portfolio-html";
 import express, { type Express } from "express";
 import fs from "fs";
 import path from "path";
@@ -78,6 +79,12 @@ export function serveStatic(app: Express) {
     );
   }
 
+  const template = fs.readFileSync(path.join(distPath, "index.html"), "utf8");
+  app.get("/", (_req, res) => res.type("html").send(portfolioHtml(template)));
+  app.get("/work/:slug", (req, res) => {
+    const html = portfolioHtml(template, req.params.slug);
+    res.status(html ? 200 : 404).type("html").send(html ?? template);
+  });
   app.use(express.static(distPath));
 
   // fall through to index.html if the file doesn't exist

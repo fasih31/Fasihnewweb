@@ -7,8 +7,7 @@ export const projects: Project[] = [
     description: "Self-learning AGI platform with multi-modal capabilities and autonomous decision-making systems.",
     category: "AI",
     image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=500&fit=crop",
-    liveUrl: "https://virtualiec.fasih.io",
-    githubUrl: "https://github.com",
+    liveUrl: "/work/virtualiec",
     techStack: ["Python", "TensorFlow", "React", "PostgreSQL"],
   },
   {
@@ -18,7 +17,6 @@ export const projects: Project[] = [
     category: "Web3",
     image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=500&fit=crop",
     liveUrl: "https://labs360.fasih.io",
-    githubUrl: "https://github.com",
     techStack: ["Next.js", "Web3.js", "Solidity", "GraphQL"],
   },
   {
@@ -28,7 +26,6 @@ export const projects: Project[] = [
     category: "AI",
     image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800&h=500&fit=crop",
     liveUrl: "https://chatbot.fasih.io",
-    githubUrl: "https://github.com",
     techStack: ["Node.js", "OpenAI API", "React", "WebSocket"],
   },
   {
@@ -161,15 +158,15 @@ export const solutions: Solution[] = [
   },
   {
     id: "daas",
-    title: "DaaS Solutions",
+    title: "Device-as-a-Service",
     category: "DaaS",
     image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=1200&h=675&fit=crop",
-    description: "Our Data-as-a-Service solutions provide clean, actionable data for analytics and AI insights, helping businesses make data-driven decisions securely and efficiently.",
+    description: "Enterprise device ordering from device selection and quotation through acceptance and fulfilment.",
     offerings: [
-      "Real-time data pipelines & APIs",
-      "Analytics dashboards & visualizations",
-      "AI-powered insights & predictions",
-      "Secure cloud storage & compliance",
+      "Device selection and business quotations",
+      "Quote versioning and acceptance",
+      "Role-based approvals",
+      "Order handoff and fulfilment",
     ],
     icon: "database",
   },
@@ -178,8 +175,8 @@ export const solutions: Solution[] = [
 export const timeline: TimelineItem[] = [
   {
     year: "May 2024 – Present",
-    title: "Project Manager",
-    company: "Etisalat – Dubai, UAE",
+    title: "Senior Project Manager",
+    company: "e& (Etisalat) – UAE",
     description: "Leading digital transformation initiatives and telecom infrastructure projects across MENA region.",
   },
   {

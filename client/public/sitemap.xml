@@ -6,6 +6,10 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
+  <url><loc>https://iamfasih.com/work/islamic-fintech</loc></url>
+  <url><loc>https://iamfasih.com/work/yeesp</loc></url>
+  <url><loc>https://iamfasih.com/work/virtualiec</loc></url>
+
   <!-- Homepage - Highest Priority -->
   <url>
     <loc>https://iamfasih.com/</loc>
