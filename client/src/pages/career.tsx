@@ -1,3 +1,5 @@
+import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -70,7 +72,7 @@ export default function Career() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-20"><Navigation />
       <SEOHead
         title="Work With Me | Fasih ur Rehman"
         description="Interested in collaboration, freelance work, or consulting? Let's discuss how we can work together on FinTech, EdTech, or Web3 projects."
@@ -329,6 +331,7 @@ export default function Career() {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

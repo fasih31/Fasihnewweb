@@ -18,18 +18,6 @@ const iconMap = {
   "coins": Coins,
 };
 
-const scrollToSection = (id: string) => {
-  const [, setLocation] = useLocation(); // Added setLocation here to use it within scrollToSection
-  // Navigate to home first, then scroll
-  setLocation("/");
-  setTimeout(() => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, 300);
-};
-
 export default function SolutionDetail() {
   const { id } = useParams();
   const [, setLocation] = useLocation();
@@ -166,8 +154,7 @@ export default function SolutionDetail() {
             <Button
               size="lg"
               onClick={() => {
-                setLocation("/");
-                setTimeout(() => scrollToSection("contact"), 300);
+                window.location.assign("/#contact");
               }}
               className="gap-2"
             >

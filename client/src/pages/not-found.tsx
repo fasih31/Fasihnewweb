@@ -1,21 +1,10 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
+import { Helmet } from "react-helmet-async";
+import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 
 export default function NotFound() {
-  return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md mx-4">
-        <CardContent className="pt-6">
-          <div className="flex mb-4 gap-2">
-            <AlertCircle className="h-8 w-8 text-red-500" />
-            <h1 className="text-2xl font-bold text-gray-900">404 Page Not Found</h1>
-          </div>
-
-          <p className="mt-4 text-sm text-gray-600">
-            Did you forget to add the page to the router?
-          </p>
-        </CardContent>
-      </Card>
-    </div>
-  );
+  return <><Helmet><title>Page not found | Fasih ur Rehman</title><meta name="robots" content="noindex" /></Helmet>
+    <Navigation /><main className="folio story min-h-screen"><div className="folio-width">
+    <p className="eyebrow">404</p><h1>Page not found.</h1><p>This address doesn’t lead to a published page.</p>
+    <a className="folio-link" href="/#portfolio">Explore selected work ↗</a></div></main><Footer /></>;
 }

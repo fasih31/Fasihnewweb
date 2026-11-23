@@ -1,3 +1,5 @@
+import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
@@ -86,6 +88,7 @@ export default function Library() {
 
   return (
     <>
+      <Navigation />
       <Helmet>
         <title>Digital Library - Free Books on Islamic Banking & Business</title>
         <meta
@@ -227,7 +230,8 @@ export default function Library() {
                                 <>
                                   <ExternalLink className="h-4 w-4 mr-2" />
                                   Embed
-                                </>
+                                  <Footer />
+    </>
                               </Button>
                               <Button
                                 variant="outline"
@@ -288,6 +292,7 @@ export default function Library() {
           </div>
         </section>
       </div>
+      <Footer />
     </>
   );
 }

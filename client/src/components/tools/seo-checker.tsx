@@ -336,8 +336,8 @@ export function SEOChecker() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-3">
-          <div className="flex gap-2">
-            <div className="flex-1 space-y-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <div className="min-w-0 flex-1 space-y-2">
               <Label htmlFor="url-input" className="flex items-center justify-between">
                 <span>Website URL</span>
                 <span className="text-xs text-muted-foreground font-normal">

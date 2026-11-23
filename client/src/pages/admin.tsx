@@ -41,7 +41,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-background">
       <div className="border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h1 className="text-3xl font-bold">Admin Dashboard</h1>
               <p className="text-muted-foreground">Manage your portfolio content and settings</p>
@@ -60,30 +60,30 @@ export default function AdminDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 max-w-4xl">
+          <TabsList className="grid h-auto w-full grid-cols-3 lg:grid-cols-6 max-w-4xl">
             <TabsTrigger value="overview" className="gap-2">
               <TrendingUp className="h-4 w-4" />
-              <span className="hidden sm:inline">Overview</span>
+              <span className="sr-only sm:not-sr-only">Overview</span>
             </TabsTrigger>
             <TabsTrigger value="articles" className="gap-2">
               <FileText className="h-4 w-4" />
-              <span className="hidden sm:inline">Articles</span>
+              <span className="sr-only sm:not-sr-only">Articles</span>
             </TabsTrigger>
             <TabsTrigger value="testimonials" className="gap-2">
               <Star className="h-4 w-4" />
-              <span className="hidden sm:inline">Testimonials</span>
+              <span className="sr-only sm:not-sr-only">Testimonials</span>
             </TabsTrigger>
             <TabsTrigger value="newsletter" className="gap-2">
               <Newspaper className="h-4 w-4" />
-              <span className="hidden sm:inline">Newsletter</span>
+              <span className="sr-only sm:not-sr-only">Newsletter</span>
             </TabsTrigger>
             <TabsTrigger value="career" className="gap-2">
               <Briefcase className="h-4 w-4" />
-              <span className="hidden sm:inline">Career</span>
+              <span className="sr-only sm:not-sr-only">Career</span>
             </TabsTrigger>
             <TabsTrigger value="messages" className="gap-2">
               <Mail className="h-4 w-4" />
-              <span className="hidden sm:inline">Messages</span>
+              <span className="sr-only sm:not-sr-only">Messages</span>
             </TabsTrigger>
           </TabsList>
 

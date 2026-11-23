@@ -12,6 +12,7 @@ import { HelmetProvider } from "react-helmet-async";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
 
+const WorkStory = lazy(() => import("@/pages/work-story"));
 const AdminDashboard = lazy(() => import("@/pages/admin"));
 const BlogArticle = lazy(() => import("@/pages/blog-article"));
 const ProjectDetail = lazy(() => import("@/pages/project-detail"));
@@ -57,6 +58,7 @@ function Router() {
     <Suspense fallback={<LoadingFallback />}>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/work/:slug" component={WorkStory} />
         <Route path="/blog" component={BlogPage} />
         <Route path="/admin" component={AdminDashboard} />
         <Route path="/solutions/:id" component={SolutionDetail} />

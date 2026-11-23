@@ -1,75 +1,39 @@
 import { Navigation } from "@/components/navigation";
-import { HeroSection } from "@/components/hero-section";
-import { AboutSection } from "@/components/about-section";
-import { ServicesSection } from "@/components/services-section";
-import { SkillsSection } from "@/components/skills-section";
-import { SolutionsSection } from "@/components/solutions-section";
-import { PortfolioSection } from "@/components/portfolio-section";
-import { LinkedInArticlesSection } from "@/components/linkedin-articles-section";
-import { LinkedInActivitySection } from "@/components/linkedin-activity-section";
-import { TestimonialsSection } from "@/components/testimonials-section";
-import { TestimonialsCarousel } from "@/components/testimonials-carousel";
-import { FAQSection } from "@/components/faq-section";
-import { NewsletterForm } from "@/components/newsletter-form";
-import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
-import { StockTicker } from "@/components/stock-ticker";
-import { NewsFeed } from "@/components/news-feed";
-import { SEOHead, getPersonSchema, getOrganizationSchema, getServiceSchema, getFAQSchema, getScholarlyArticleSchema } from "@/components/seo-head";
-import { ScrollProgress } from "@/components/scroll-progress";
-import { StatsSection } from "@/components/stats-section";
-import { FloatingCTA } from "@/components/floating-cta";
-import { TopToolsCarousel } from "@/components/top-tools-carousel";
+import { ContactSection } from "@/components/contact-section";
+import { NewsletterForm } from "@/components/newsletter-form";
+import { OrderDemo } from "@/components/order-demo";
+import { SEOHead } from "@/components/seo-head";
+import { studies } from "@shared/work";
+import { solutions, projects } from "@/data/portfolio-data";
 
 export default function Home() {
-  return (
-    <>
-      <SEOHead
-        title="Fasih ur Rehman | FinTech PM & Islamic Finance"
-        description="Expert FinTech Product Manager with 9+ years in Islamic Finance, BNPL, Digital Banking & AI. Free tools: SEO analyzer, QR generator, calculators."
-        keywords="Fasih ur Rehman, FinTech Advisor, Product Manager Dubai, Islamic Finance Expert, E-commerce Designer, SEO Tools, Website Analyzer, QR Code Generator, Password Generator, Online Calculators, Crypto Market Tracker, Currency Converter, JSON Formatter, Free Online Tools, EdTech Solutions, Digital Transformation UAE, Shariah Compliant Banking"
-        canonicalUrl="https://iamfasih.com"
-        schema={[getPersonSchema(), getOrganizationSchema(), getServiceSchema(), getFAQSchema(), ...getScholarlyArticleSchema()]}
-      />
-      <ScrollProgress />
-      <FloatingCTA />
-      <Navigation />
-      <main>
-        <HeroSection />
-        <TopToolsCarousel />
-        <AboutSection />
-        <StatsSection />
-        <ServicesSection />
-        <SkillsSection />
-        <SolutionsSection />
-        <PortfolioSection />
-        <LinkedInArticlesSection />
-        <LinkedInActivitySection />
-        <TestimonialsSection />
-        <section className="py-16 bg-muted/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Client Success Stories</h2>
-              <p className="text-lg text-muted-foreground">What industry leaders say about working with me</p>
-            </div>
-            <TestimonialsCarousel />
-          </div>
-        </section>
-        <FAQSection />
-        <section className="py-16 md:py-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-8 items-start">
-              <NewsletterForm />
-              <div className="space-y-6">
-                <StockTicker />
-                <NewsFeed />
-              </div>
-            </div>
-          </div>
-        </section>
-        <ContactSection />
-      </main>
-      <Footer />
-    </>
-  );
+  return <><SEOHead title="Fasih ur Rehman | Enterprise Product Management & Fintech, UAE"
+    description="Explore Fasih ur Rehman’s enterprise device-ordering demo, Islamic fintech work, YEESP marketplace decisions and VirtualIEC AI prototype."
+    ogImage="/work/device-order.webp" canonicalUrl="https://iamfasih.com/" />
+    <Navigation /><main className="folio">
+      <div className="folio-width">
+        <section id="hero" className="folio-hero"><div>
+          <p className="eyebrow">Senior Project Manager · e& (Etisalat), UAE</p>
+          <h1>What happens<br />after you<br /><em>click accept?</em></h1>
+          <p className="hero-bio">I’m Fasih. At e& (Etisalat), I work on how businesses choose, approve and order enterprise services.</p>
+          <a className="folio-link" href="#about">More about me ↗</a>
+        </div><OrderDemo /></section>
+        <section id="portfolio" className="work-section"><h2>Selected work</h2><div className="work-grid">
+          {studies.map(study => <a href={"/work/" + study.slug} className={"work-tile " + study.art} key={study.slug}>
+            <img src={"/work/" + study.art + ".webp"} alt="" width="248" height="250" />
+            <div><h3>{study.name}</h3><p>{study.title}</p></div></a>)}
+        </div></section>
+        <section id="about" className="folio-about"><h2>About Fasih</h2><div>
+          <p>I work with business and engineering teams to turn complex enterprise requirements into services people can use. My experience spans telecom in the UAE, enterprise ICT in Saudi Arabia and fintech in Pakistan.</p>
+          <p>Outside work, I explore marketplace design through YEESP and AI memory through VirtualIEC.</p>
+          <a className="folio-link" href="/expertise">Explore my expertise ↗</a>
+        </div></section>
+        <div className="folio-directory">
+          <section id="services"><h2>Services</h2><a href="/expertise">Product and delivery expertise ↗</a><a href="/#contact">Discuss a project ↗</a></section>
+          <section id="solutions"><h2>Solutions</h2>{solutions.map(item => <a key={item.id} href={"/solutions/" + item.id}>{item.title} ↗</a>)}</section>
+          <section><h2>Project archive</h2>{projects.map(item => <a key={item.id} href={"/project/" + item.id}>{item.title} ↗</a>)}</section>
+        </div>
+      </div><ContactSection /><div className="folio-width newsletter-wrap"><NewsletterForm /></div>
+    </main><Footer /></>;
 }
