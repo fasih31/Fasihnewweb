@@ -6,6 +6,10 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/contact/delivery",
+      "destination": "/api/contact-delivery"
+    },
+    {
       "source": "/guide/query",
       "destination": "/api/portfolio-answer"
     },

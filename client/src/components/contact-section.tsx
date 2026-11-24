@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Github, Linkedin, Twitter, Send, MessageCircle, Send as TelegramIcon, MessageSquare } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,17 @@ import { Textarea } from "@/components/ui/textarea";
 
 export function ContactSection() {
   const [notice,setNotice]=useState("");
+  const [mode,setMode]=useState<"checking"|"direct"|"compose"|"legacy">("checking");
+  useEffect(()=>{
+    const controller=new AbortController();
+    fetch("/contact/delivery",{signal:controller.signal}).then(async response=>{
+      if(!response.ok || !response.headers.get("content-type")?.includes("application/json")) return "legacy";
+      const data=await response.json();
+      return data.mode==="direct" ? "direct" : "compose";
+    }).then(value=>{if(!controller.signal.aborted)setMode(value as "direct"|"compose"|"legacy")})
+      .catch(()=>{if(!controller.signal.aborted)setMode("compose")});
+    return ()=>controller.abort();
+  },[]);
   const { toast } = useToast();
 
   const form = useForm<InsertContactMessage>({
@@ -36,7 +47,7 @@ export function ContactSection() {
   const compose=new URLSearchParams({view:"cm",fs:"1",to:"fasih31@gmail.com",su:"Portfolio enquiry"+(fields.name?" from "+fields.name:""),body:[fields.message,fields.name,fields.email].filter(Boolean).join("\n\n")});
   const contactMutation = useMutation({
     mutationFn: async (data: InsertContactMessage) => {
-      const response = await fetch("/api/contact", {
+      const response = await fetch(mode==="direct"?"/contact/delivery":"/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -59,7 +70,8 @@ export function ContactSection() {
       if(data.delivered===true)form.reset();
     },
     onError: (error: any) => {
-      console.error("Contact form error:", error);
+      setNotice("Delivery could not be confirmed. Your details are still here. Continue in Gmail to send them.");
+      setMode("compose");
       toast({
         title: "Error",
         description: error.message || "Failed to send message. Please try again.",
@@ -70,6 +82,10 @@ export function ContactSection() {
 
   const onSubmit = (data: InsertContactMessage) => {
     setNotice("");
+    if(mode==="compose"){
+      window.location.assign("https://mail.google.com/mail/?"+compose.toString());
+      return;
+    }
     contactMutation.mutate(data);
   };
 
@@ -160,7 +176,7 @@ export function ContactSection() {
                     type="submit"
                     size="lg"
                     className="w-full gap-2"
-                    disabled={contactMutation.isPending}
+                    disabled={contactMutation.isPending || mode==="checking"}
                     data-testid="button-send-message"
                   >
                     {contactMutation.isPending ? (
@@ -168,11 +184,12 @@ export function ContactSection() {
                     ) : (
                       <>
                         <Send className="h-4 w-4" />
-                        Send Message
+                        {mode==="compose"?"Continue in Gmail":"Send Message"}
                       </>
                     )}
                   </Button>
-                  <a className="block text-center underline" href={"https://mail.google.com/mail/?"+compose.toString()} target="_blank" rel="noreferrer">Send these details using Gmail ↗</a>
+                  {mode==="compose" && <p className="text-sm">Gmail opens a draft addressed to Fasih. Review it and press Send in Gmail.</p>}
+                  {mode!=="compose" && <a className="block text-center underline" href={"https://mail.google.com/mail/?"+compose.toString()} target="_blank" rel="noreferrer">Send these details using Gmail ↗</a>}
                 </form>
               </Form>
             </CardContent>
