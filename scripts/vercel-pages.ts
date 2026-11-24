@@ -10,6 +10,11 @@ for (const page of publicPages) {
   await mkdir(dirname(file),{recursive:true});
   await writeFile(file,portfolioHtml(template,page.path)!);
 }
-// The Vercel sitemap rewrite includes published articles from the production store.
+// Keep newly released static routes discoverable while the API serves its own release.
+const interactive=publicPages.filter(page=>page.path==="/ask" || page.path==="/demo/device-order");
+const interactiveSitemap='<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+interactive.map(page=>'<url><loc>https://iamfasih.com'+page.path+'</loc></url>').join('')+'</urlset>';
+await writeFile(join(output,"interactive-sitemap.xml"),interactiveSitemap);
+const robots=await readFile(join(output,"robots.txt"),"utf8");
+await writeFile(join(output,"robots.txt"),robots+"\nSitemap: https://iamfasih.com/interactive-sitemap.xml\n");
 
 await writeFile(join(output,"notebook.xml"),notebookFeed());

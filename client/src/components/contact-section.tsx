@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Github, Linkedin, Twitter, Send, MessageCircle, Send as TelegramIcon, MessageSquare } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 export function ContactSection() {
+  const [notice,setNotice]=useState("");
   const { toast } = useToast();
 
   const form = useForm<InsertContactMessage>({
@@ -30,6 +32,8 @@ export function ContactSection() {
     },
   });
 
+  const fields=form.watch();
+  const compose=new URLSearchParams({view:"cm",fs:"1",to:"fasih31@gmail.com",su:"Portfolio enquiry"+(fields.name?" from "+fields.name:""),body:[fields.message,fields.name,fields.email].filter(Boolean).join("\n\n")});
   const contactMutation = useMutation({
     mutationFn: async (data: InsertContactMessage) => {
       const response = await fetch("/api/contact", {
@@ -46,11 +50,13 @@ export function ContactSection() {
       return response.json();
     },
     onSuccess: (data) => {
+      const notice=data.delivered===true?"Your message was sent to Fasih’s inbox.":"Your message was saved in the portfolio inbox.";
+      setNotice(notice);
       toast({
-        title: "Message sent!",
-        description: "Thank you for reaching out. I'll get back to you soon.",
+        title: "Message received",
+        description: notice,
       });
-      form.reset();
+      if(data.delivered===true)form.reset();
     },
     onError: (error: any) => {
       console.error("Contact form error:", error);
@@ -63,6 +69,7 @@ export function ContactSection() {
   });
 
   const onSubmit = (data: InsertContactMessage) => {
+    setNotice("");
     contactMutation.mutate(data);
   };
 
@@ -165,12 +172,13 @@ export function ContactSection() {
                       </>
                     )}
                   </Button>
+                  <a className="block text-center underline" href={"https://mail.google.com/mail/?"+compose.toString()} target="_blank" rel="noreferrer">Send these details using Gmail ↗</a>
                 </form>
               </Form>
             </CardContent>
           </Card>
 
-          <aside><h3 className="text-2xl mb-3">Find me on LinkedIn</h3><a className="underline" href="https://www.linkedin.com/in/fasihurrehman05">Fasih ur Rehman ↗</a></aside>
+          <aside><h3 className="text-2xl mb-3">Email me directly</h3><a className="underline" href="mailto:fasih31@gmail.com">fasih31@gmail.com</a><p role="status" className="my-4">{notice}</p><h3 className="text-2xl mb-3">Find me on LinkedIn</h3><a className="underline" href="https://www.linkedin.com/in/fasihurrehman05">Fasih ur Rehman ↗</a></aside>
         </div>
       </div>
     </section>

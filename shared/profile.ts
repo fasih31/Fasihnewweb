@@ -110,7 +110,10 @@ for (const note of deliveryNotes) {
   rolePage?.links.push([note.title,note.path]);
   note.links.push(["All delivery notes",notebook.path]);
 }
-export const chapters = [notebook,...deliveryNotes,home, career, expertise, about, research, education, projectsPage, contact, resourceIndex, ...rolePages, ...domains, ...studies.map(s=>chapter("/work/"+s.slug,s.title,s.name,s.context,[[s.question,s.decision],["How I would test it",s.check]],[[s.link,s.href]],image(s.art)))];
+export const deliveryLab=chapter("/demo/device-order","From device quote to delivery","Interactive product demo","Try a business device subscription from the sales, buyer, approver and operations perspectives. Build a sample quote, send it back for revision or complete delivery and export the order record. Progress stays in this browser.",[],[["My enterprise telecom work","/domains/telecom"],["My delivery notes","/notes/device-quotation"]]);
+export const portfolioGuide=chapter("/ask","Ask about product and delivery","Fasih’s portfolio guide","Explore my career and seven subjects I work on or study. Ask a question or choose a starting point to see an explanation and related portfolio reading.",[],[["Read the notebook","/notes"],["Browse my career","/career"]]);
+projectsPage.links.push(["Try the device-order demo",deliveryLab.path]);
+export const chapters = [deliveryLab,portfolioGuide,notebook,...deliveryNotes,home, career, expertise, about, research, education, projectsPage, contact, resourceIndex, ...rolePages, ...domains, ...studies.map(s=>chapter("/work/"+s.slug,s.title,s.name,s.context,[[s.question,s.decision],["How I would test it",s.check]],[[s.link,s.href]],image(s.art)))];
 export const aliases: Record<string,string> = {
   "/solutions/daas": "/domains/telecom", "/solutions/edtech": "/domains/edtech",
   "/solutions/fintech": "/domains/fintech", "/solutions/ecommerce": "/domains/ecommerce",

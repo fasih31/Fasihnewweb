@@ -4,7 +4,7 @@ import { AuthButton } from "./auth-dialog";
 import { ThemeToggle } from "./theme-toggle";
 
 const destinations = [
-  ["About me", "/about"], ["Career history", "/career"], ["Domain experience", "/expertise"],
+  ["Device-order demo","/demo/device-order"], ["Portfolio guide","/ask"], ["About me", "/about"], ["Career history", "/career"], ["Domain experience", "/expertise"],
   ["Education", "/education"], ["Research", "/research"], ["Independent projects", "/projects"],
   ["Delivery notebook", "/notes"], ["Writing", "/blog"], ["Personal resources", "/resources"], ["Contact", "/contact"],
   ["LinkedIn", "https://www.linkedin.com/in/fasihurrehman05"],

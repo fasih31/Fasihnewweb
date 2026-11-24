@@ -1,0 +1,9 @@
+.lab-panel{background:#fffcf5;border:1px solid #aebfb2;border-radius:9px;padding:clamp(1.2rem,4vw,3rem);margin-bottom:2rem;color:#19382e}
+.lab-panel p,.lab-panel dl,.lab-panel h3,.lab-panel form{margin:1rem 0}
+.lab-panel button,.lab-controls>a{border:1px solid #285247;border-radius:.45rem;padding:.6rem 1rem;color:white;background:#214a3c}
+.lab-panel button:disabled{opacity:.55}.lab-controls,.lab-examples,.lab-steps,.lab-totals{display:flex;flex-wrap:wrap;gap:.7rem}
+.lab-panel label{display:grid;gap:.4rem;font-weight:600}.lab-panel select,.lab-panel input,.lab-panel textarea{background:white;color:#162e26;border:1px solid #789386;border-radius:.35rem;padding:.65rem;max-width:100%}
+.lab-panel form small{display:block;margin:.65rem 0}.lab-panel article{padding:.8rem 0;border-top:1px solid #cad6cc}.lab-panel article a{font-weight:bold;text-decoration:underline}
+.lab-steps{padding:0 0 1rem;font-size:.85rem}.lab-steps li{border-bottom:2px solid #c9d6cd;padding:.4rem}.lab-steps [aria-current]{border-color:#214a3c;font-weight:bold}
+.lab-totals>div{flex:1 1 12rem;background:#edf1e8;padding:1rem}.lab-totals dd{font:1.45rem Georgia,serif}
+.lab-examples{margin:1rem 0}.lab-examples button{background:transparent;color:#254739;text-align:left;font-size:.9rem}.lab-answer{white-space:pre-wrap}

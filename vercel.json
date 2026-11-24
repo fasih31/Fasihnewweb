@@ -6,6 +6,10 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/guide/query",
+      "destination": "/api/portfolio-answer"
+    },
+    {
       "source": "/sitemap.xml",
       "destination": "https://fasihnewweb.onrender.com/sitemap.xml"
     },

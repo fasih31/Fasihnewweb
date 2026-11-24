@@ -14,6 +14,7 @@ import {
 } from "@shared/schema";
 import { fromZodError } from "zod-validation-error";
 import { setupAuth, isAuthenticated, isAdmin } from "./googleAuth";
+import answerPortfolioQuestion from "../api/portfolio-answer";
 import nodemailer from "nodemailer";
 import * as cheerio from 'cheerio';
 import keywordExtractor from 'keyword-extractor';
@@ -206,6 +207,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Contact form submission endpoint
+  app.post("/guide/query",answerPortfolioQuestion);
   app.post("/api/contact", async (req, res) => {
     try {
       const validatedData = insertContactMessageSchema.parse(req.body);
@@ -229,27 +231,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Store message and log submission
       await storage.createContactMessage(validatedData);
 
-      console.log('\n=== NEW CONTACT FORM SUBMISSION ===');
-      console.log(`From: ${name}`);
-      console.log(`Email: ${email}`);
-      console.log(`Message: ${message}`);
-      console.log(`Time: ${new Date().toLocaleString()}`);
-      console.log('-----------------------------------\n');
-
-      const emailHtml = `
-        <h2>New Contact Form Message</h2>
-        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-        <p><strong>WhatsApp:</strong> +971506184687</p>
-        <p><strong>Message:</strong></p>
-        <p>${escapeHtml(message).replace(/\n/g, "<br/>")}</p>
-      `;
-      await sendEmailNotification(`New Contact Form Message from ${name}`, emailHtml);
-
-      res.status(200).json({
-        success: true,
-        message: "Message sent successfully! I'll get back to you soon.",
-      });
+      let delivered=false;
+      if(process.env.EMAIL_PASSWORD){
+        try {
+          await transporter.sendMail({
+            from:process.env.EMAIL_USER || "fasih31@gmail.com",to:"fasih31@gmail.com",
+            replyTo:email,subject:"Portfolio enquiry from "+name.replace(/[\r\n]/g," "),
+            text:[name,email,"",message].join("\n")
+          });
+          delivered=true;
+        } catch { console.warn("Contact saved; Gmail notification unavailable."); }
+      }
+      return res.status(201).json({success:true,delivered,message:delivered
+        ? "Your message was sent to Fasih’s inbox."
+        : "Your message was saved. You can also email Fasih directly."});
     } catch (error: any) {
       if (error?.name === "ZodError") {
         const validationError = fromZodError(error);

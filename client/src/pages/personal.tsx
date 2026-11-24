@@ -10,6 +10,7 @@ import { CareerExplorer } from "@/components/career-explorer";
 import { deliveryNotes } from "@shared/delivery-notes";
 import { ContactSection } from "@/components/contact-section";
 
+import { DeliveryLab, PortfolioGuide } from "@/components/portfolio-lab";
 import { OrderDemo } from "@/components/order-demo";
 import { home, career, notebook, expertise, research, domains, type Chapter } from "@shared/profile";
 import "./personal.css";
@@ -29,6 +30,8 @@ export default function PersonalPage({chapter:c}:{chapter:Chapter}) {
   return <><ChapterMeta chapter={c}/>
     <Navigation/>{isHome ? <HomeCover/> : <main className="folio personal"><div className="folio-width">
     <ChapterHeading chapter={c}/>
+    {c.path==="/demo/device-order" && <DeliveryLab/>}
+    {c.path==="/ask" && <PortfolioGuide/>}
     {c===expertise && <section className="profile-section"><h2>My professional experience</h2>
       <Directory illustrated items={domains.filter(d=>!["/domains/ai-ml","/domains/crypto-web3"].includes(d.path))}/>
             <h2>Research and independent interests</h2><Directory items={domains.filter(d=>["/domains/ai-ml","/domains/crypto-web3"].includes(d.path))}/></section>}
