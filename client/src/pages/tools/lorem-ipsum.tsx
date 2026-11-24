@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -81,15 +80,6 @@ export default function LoremIpsumPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Lorem Ipsum Generator - Placeholder Text Generator | Fasih ur Rehman</title>
-        <meta name="description" content="Generate Lorem Ipsum placeholder text for your designs and mockups. Create paragraphs, sentences, or words of dummy text instantly." />
-        <meta name="keywords" content="lorem ipsum generator, placeholder text, dummy text, lorem ipsum, text generator, filler text" />
-        <meta property="og:title" content="Lorem Ipsum Generator - Placeholder Text Generator" />
-        <meta property="og:description" content="Generate Lorem Ipsum placeholder text for designs, mockups, and layouts. Free and instant." />
-        <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://fasihurrehman.com/tools/lorem-ipsum" />
-      </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
         <Navigation />

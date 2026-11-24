@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -77,15 +76,6 @@ export default function PasswordGeneratorPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Secure Password Generator - Create Strong Random Passwords | Fasih ur Rehman</title>
-        <meta name="description" content="Generate secure, random passwords with customizable length and character types. Create strong passwords to protect your online accounts. Free password generator tool." />
-        <meta name="keywords" content="password generator, secure password, random password, strong password generator, password creator" />
-        <meta property="og:title" content="Secure Password Generator - Create Strong Random Passwords" />
-        <meta property="og:description" content="Generate secure passwords with custom length and character options. Free and secure password generation tool." />
-        <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://fasihurrehman.com/tools/password-generator" />
-      </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
         <Navigation />

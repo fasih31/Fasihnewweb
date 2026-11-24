@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { SEOHead, getWebPageSchema } from "@/components/seo-head";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BNPLCalculator } from "@/components/calculators/bnpl-calculator";
@@ -62,30 +61,6 @@ export default function Calculators() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead
-        title="Islamic Finance Calculators | BNPL, Murabaha, Ijarah, Takaful | Fasih ur Rehman"
-        description="Free Shariah-compliant financial calculators for BNPL, Murabaha, Ijarah leasing, ROI, Takaful insurance, and profit sharing. Calculate Islamic finance solutions instantly."
-        keywords="Islamic finance calculator, BNPL calculator, Murabaha calculator, Ijarah calculator, Takaful calculator, Islamic ROI, profit sharing calculator, Shariah compliant finance, halal finance tools"
-        canonicalUrl="https://iamfasih.com/calculators"
-        schema={[
-          getWebPageSchema(
-            "Islamic Finance Calculators",
-            "Comprehensive suite of Shariah-compliant financial calculators including BNPL, Murabaha, Ijarah, Takaful, and more"
-          ),
-          {
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Islamic Finance Calculator Suite",
-            applicationCategory: "FinanceApplication",
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD",
-            },
-            description: "Free Shariah-compliant financial calculators",
-          },
-        ]}
-      />
       <Navigation />
       
       <main className="pt-24 pb-16">

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { SEOHead } from "@/components/seo-head";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -53,11 +52,6 @@ export default function IslamicFinTech() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead
-        title="Islamic finance product walkthroughs | Fasih ur Rehman"
-        description="Explore illustrative purchase and financing journeys from my fintech portfolio."
-        keywords="Islamic finance, Shariah compliant, Halal banking, Murabaha, Ijarah, BNPL, Takaful"
-      />
       <Navigation />
 
       <main className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16">

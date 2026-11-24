@@ -2,7 +2,6 @@
 import { useState, useMemo } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { SEOHead, getWebPageSchema, getBreadcrumbSchema } from "@/components/seo-head";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -65,19 +64,6 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead
-        title="My writing | Fasih ur Rehman"
-        description="Articles by Fasih ur Rehman on product decisions in enterprise telecom, Islamic finance and AI."
-        keywords="Islamic FinTech blog, BNPL articles, Shariah compliance insights, AI financial services, blockchain regulation, EdTech innovation, digital banking trends, telecom transformation"
-        canonicalUrl="https://iamfasih.com/blog"
-        schema={[
-          getWebPageSchema("Blog & Articles", "Articles by Fasih ur Rehman on financial products and enterprise delivery"),
-          getBreadcrumbSchema([
-            { name: "Home", url: "https://iamfasih.com" },
-            { name: "Blog", url: "https://iamfasih.com/blog" }
-          ])
-        ]}
-      />
       <Navigation />
 
       <main className="pt-24 pb-16">

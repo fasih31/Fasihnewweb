@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -45,15 +44,6 @@ export default function CurrencyConverterPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Currency Converter - Real-Time Exchange Rates | Fasih ur Rehman</title>
-        <meta name="description" content="Convert currencies with real-time exchange rates. Support for 150+ currencies including USD, EUR, GBP, JPY, INR, PKR and more. Free online currency conversion tool." />
-        <meta name="keywords" content="currency converter, exchange rates, forex converter, currency exchange, USD to EUR, currency calculator" />
-        <meta property="og:title" content="Currency Converter - Real-Time Exchange Rates" />
-        <meta property="og:description" content="Convert between 150+ currencies with live exchange rates. Fast, accurate, and free currency conversion tool." />
-        <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://fasihurrehman.com/tools/currency-converter" />
-      </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
         <Navigation />

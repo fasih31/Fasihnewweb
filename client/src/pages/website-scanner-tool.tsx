@@ -1,16 +1,11 @@
 
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { SEOHead } from "@/components/seo-head";
 import { WebsiteScanner } from "@/components/tools/website-scanner";
 
 export default function WebsiteScannerTool() {
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead
-        title="Website Scanner Tool — Advanced Security & Performance Analysis"
-        description="Deep website analysis with OCR, screenshots, Lighthouse audit, security scanning, and technology detection for comprehensive website insights."
-      />
       <Navigation />
 
       <main className="pt-20 sm:pt-24 pb-12 sm:pb-16">

@@ -125,6 +125,7 @@ export function parentOf(c:Chapter): [string,string] {
   if(c.path.startsWith("/notes/")) return ["Delivery notebook","/notes"];
   if(c.path.startsWith("/work/")) return ["Selected work",c.path.endsWith("/islamic-fintech")?"/domains/fintech":"/projects"];
   if(c.path.startsWith("/tools/")) return ["Toolkit","/tools"];
+  if(resources.some(r=>r.path===c.path) && c.path!=="/blog") return ["Personal resources","/resources"];
   return ["Fasih ur Rehman","/"];
 }
 export function schemaFor(c:Chapter) {
@@ -135,8 +136,11 @@ export function schemaFor(c:Chapter) {
   const parent=parentOf(c);
   const trail=[["Home","/"],...(parent[1]!=="/"?[parent]:[]),[c.title,c.path]];
   const breadcrumb={"@type":"BreadcrumbList","@id":url+"#breadcrumbs",itemListElement:trail.map(([name,path],i)=>({"@type":"ListItem",position:i+1,name,item:origin+path}))};
-  const page={"@type":profile?"ProfilePage":"WebPage","@id":url,url,name:titleFor(c),description:c.intro,author:{"@id":person["@id"]},...(profile?{mainEntity:{"@id":person["@id"]}}:{}),...(papers.length?{mentions:papers.map(p=>({"@id":p["@id"]}))}:{}),...(c!==home?{breadcrumb:{"@id":breadcrumb["@id"]}}:{})};
-  return {"@context":"https://schema.org","@graph":[person,page,...(c===home?[]:[breadcrumb]),...papers]};
+  const website={"@type":"WebSite","@id":origin+"/#website",url:origin+"/",name:"Fasih ur Rehman",publisher:{"@id":person["@id"]},inLanguage:"en"};
+  const note=c.path.startsWith("/notes/") ? {"@type":"Article","@id":url+"#article",headline:c.title,description:c.intro,author:{"@id":person["@id"]},mainEntityOfPage:{"@id":url},...(c.image?{image:origin+c.image}:{})} : undefined;
+  const collection=[career,expertise,notebook,research,projectsPage,resourceIndex].includes(c)||["/tools","/library","/blog"].includes(c.path);
+  const page={"@type":profile?"ProfilePage":c.path==="/contact"?"ContactPage":collection?"CollectionPage":"WebPage",isPartOf:{"@id":website["@id"]},inLanguage:"en",...(note?{mainEntity:{"@id":note["@id"]}}:{}),"@id":url,url,name:titleFor(c),description:c.intro,author:{"@id":person["@id"]},...(profile?{mainEntity:{"@id":person["@id"]}}:{}),...(papers.length?{mentions:papers.map(p=>({"@id":p["@id"]}))}:{}),...(c!==home?{breadcrumb:{"@id":breadcrumb["@id"]}}:{})};
+  return {"@context":"https://schema.org","@graph":[website,person,page,...(note?[note]:[]),...(c===home?[]:[breadcrumb]),...papers]};
 }
 export const resources: Chapter[] = [
   ["/blog","My writing","Articles on enterprise product delivery, fintech and emerging technology."],
@@ -148,5 +152,20 @@ export const resources: Chapter[] = [
   ["/news","News feed","Explore the news reader in my personal resource library."],
   ["/ide","Code editor","Open the browser-based development environment."],
   ["/library","My library","Browse the reading resources in my portfolio."],
-  ...["SEO analyzer","Website scanner","Code playground","Crypto tracker","Currency converter","QR generator","Password generator","JSON formatter","Lorem ipsum"].map(label=>["/tools/"+label.toLowerCase().replaceAll(" ","-"),label,label+" from Fasih ur Rehman’s online toolkit."]),
+  ["/tools/seo-analyzer","SEO analyzer","Review a page’s search metadata and headings."],
+  ["/tools/website-scanner","Website scanner","Inspect a website’s public technical configuration."],
+  ["/tools/code-playground","Code playground","Try HTML, CSS and JavaScript together in a browser preview."],
+  ["/tools/crypto-tracker","Crypto tracker","Look up digital asset prices and market movements."],
+  ["/tools/currency-converter","Currency converter","Compare an amount across currencies."],
+  ["/tools/qr-generator","QR generator","Turn a link or text into a QR code."],
+  ["/tools/password-generator","Password generator","Choose the length and character options for a generated password."],
+  ["/tools/json-formatter","JSON formatter","Format JSON so you can read its structure and inspect nested values."],
+  ["/tools/lorem-ipsum","Lorem ipsum","Generate placeholder text for a layout or prototype."],
 ].map(([path,title,intro])=>chapter(path,title,"Resources",intro,[],[]));
+
+for (const resource of resources) {
+  resource.links = resource.path==="/tools"
+    ? resources.filter(item=>item.path.startsWith("/tools/")).map(item=>[item.title,item.path])
+    : resource.path.startsWith("/tools/") ? [["All tools","/tools"],["Personal resources","/resources"]]
+    : [["Personal resources","/resources"],["Delivery notebook","/notes"]];
+}

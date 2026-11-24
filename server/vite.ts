@@ -1,5 +1,6 @@
 import { aliases } from "../shared/profile";
-import { portfolioHtml } from "./portfolio-html";
+import { storage } from "./storage";
+import { portfolioHtml, publishedArticleHtml } from "./portfolio-html";
 import express, { type Express } from "express";
 import fs from "fs";
 import path from "path";
@@ -81,8 +82,16 @@ export function serveStatic(app: Express) {
   }
 
   const template = fs.readFileSync(path.join(distPath, "index.html"), "utf8");
+  app.get("/blog/:slug",async (req,res,next)=>{
+    try {
+      const article=await storage.getArticleBySlug(req.params.slug);
+      const html=article && publishedArticleHtml(template,article);
+      if(html) return res.type("html").send(html);
+    } catch { /* The reader can also load linked articles through the existing client. */ }
+    next();
+  });
   app.use((req,res,next) => {
-    if (req.method !== "GET") return next();
+    if (req.method !== "GET" && req.method !== "HEAD") return next();
     if (aliases[req.path]) return res.redirect(301,aliases[req.path]);
     const html = portfolioHtml(template,req.path);
     if (html) return res.type("html").send(html);

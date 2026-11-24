@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,15 +14,6 @@ export default function CryptoTrackerPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Crypto Market Tracker - Real-Time Cryptocurrency Prices | Fasih ur Rehman</title>
-        <meta name="description" content="Track real-time cryptocurrency prices, market cap, 24h volume, and price changes. Monitor Bitcoin, Ethereum, and top 10 cryptocurrencies with live market data." />
-        <meta name="keywords" content="cryptocurrency tracker, bitcoin price, ethereum price, crypto market, cryptocurrency prices, real-time crypto data" />
-        <meta property="og:title" content="Crypto Market Tracker - Real-Time Cryptocurrency Prices" />
-        <meta property="og:description" content="Track real-time cryptocurrency prices, market cap, and 24h volume for Bitcoin, Ethereum, and top cryptocurrencies." />
-        <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://fasihurrehman.com/tools/crypto-tracker" />
-      </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
         <Navigation />

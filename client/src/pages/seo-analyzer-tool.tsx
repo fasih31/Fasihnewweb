@@ -1,16 +1,11 @@
 
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { SEOHead } from "@/components/seo-head";
 import { SEOChecker } from "@/components/tools/seo-checker";
 
 export default function SEOAnalyzerTool() {
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead
-        title="SEO Analyzer Tool — Professional Website SEO Analysis"
-        description="Comprehensive SEO analysis tool with AI insights, performance metrics, security checks, and actionable recommendations to improve your website's search engine ranking."
-      />
       <Navigation />
 
       <main className="pt-20 sm:pt-24 pb-12 sm:pb-16">

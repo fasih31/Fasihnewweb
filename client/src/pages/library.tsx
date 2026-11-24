@@ -2,7 +2,6 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 
 import { useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
 import { Book, Search, ExternalLink, Download, Library as LibraryIcon } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -89,13 +88,6 @@ export default function Library() {
   return (
     <>
       <Navigation />
-      <Helmet>
-        <title>Digital Library - Free Books on Islamic Banking & Business</title>
-        <meta
-          name="description"
-          content="Access free books on Islamic Banking, FinTech, Business, and Riba-free finance from the Internet Archive."
-        />
-      </Helmet>
 
       <div className="min-h-screen bg-background">
         {/* Hero Section */}

@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -35,15 +34,6 @@ export default function QRGeneratorPage() {
 
   return (
     <>
-      <Helmet>
-        <title>QR Code Generator - Create Free QR Codes Online | Fasih ur Rehman</title>
-        <meta name="description" content="Generate free QR codes instantly for URLs, text, contact info, and more. Download high-quality QR codes for business cards, marketing materials, and websites." />
-        <meta name="keywords" content="QR code generator, create QR code, free QR code, QR code maker, generate QR code online" />
-        <meta property="og:title" content="QR Code Generator - Create Free QR Codes Online" />
-        <meta property="og:description" content="Generate custom QR codes for URLs, text, and more. Free, fast, and easy to use." />
-        <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://fasihurrehman.com/tools/qr-generator" />
-      </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
         <Navigation />

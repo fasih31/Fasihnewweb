@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -69,15 +68,6 @@ export default function JSONFormatterPage() {
 
   return (
     <>
-      <Helmet>
-        <title>JSON Formatter & Validator - Format and Validate JSON Online | Fasih ur Rehman</title>
-        <meta name="description" content="Format, validate, and beautify JSON data online. Free JSON formatter tool with syntax validation, minification, and error detection." />
-        <meta name="keywords" content="JSON formatter, JSON validator, JSON beautifier, JSON minifier, format JSON online, validate JSON" />
-        <meta property="og:title" content="JSON Formatter & Validator - Format and Validate JSON Online" />
-        <meta property="og:description" content="Format and validate JSON with syntax highlighting and error detection. Free online JSON formatter tool." />
-        <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://fasihurrehman.com/tools/json-formatter" />
-      </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
         <Navigation />

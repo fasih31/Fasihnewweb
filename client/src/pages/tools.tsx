@@ -2,7 +2,6 @@
 import { useState, useMemo } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { SEOHead } from "@/components/seo-head";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -316,10 +315,6 @@ export default function Tools() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead
-        title="My personal toolkit | Fasih ur Rehman"
-        description="Calculators, formatting utilities and browser tools from Fasih ur Rehman’s personal portfolio."
-      />
       <Navigation />
 
       <main className="pt-20 sm:pt-24 pb-12 sm:pb-16">

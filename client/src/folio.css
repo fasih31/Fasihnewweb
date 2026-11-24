@@ -73,3 +73,8 @@
   .story-intro img {max-height:190px;} .folio-directory h2 {margin-top:.5rem;}
 }
 @media (prefers-reduced-motion:reduce) { html {scroll-behavior:auto;} }
+
+.resource-return {background:#f6f3eb;color:#1b3a30;border-top:1px solid #afbeb0;padding:clamp(1.5rem,4vw,3.5rem) 0}
+.resource-return h2 {font:normal clamp(1.6rem,3vw,2.6rem) Georgia,serif;letter-spacing:-.035em;margin-bottom:1rem}
+.resource-return nav {display:flex;gap:.8rem 2rem;flex-wrap:wrap}
+.resource-return a {text-decoration:underline;text-underline-offset:4px;padding:.3rem 0}

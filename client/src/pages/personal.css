@@ -59,3 +59,24 @@
 .paper-list .byline {font-size:.94rem;margin-bottom:1rem;color:#3f554a}
 .paper-actions {display:flex;gap:1rem 2rem;flex-wrap:wrap;margin-top:1.5rem}.paper-actions a{border-bottom:1px solid}
 @media(max-width:720px){.folio-reading{grid-template-columns:1fr;gap:1.2rem}.folio-reading aside nav{border-left:2px solid var(--folio-mint);padding-left:1rem}}
+
+/* The reading surface follows the homepage; interactive demos retain their own palette. */
+.folio.personal {background:#f6f3eb;color:#19352e;--folio-rule:#bfcdc1;--folio-mint:#276451}
+.personal .profile-intro {padding:clamp(24px,4.2vw,64px) 0}
+.personal .profile-intro h1 {font-size:clamp(2.65rem,5.25vw,5.5rem);letter-spacing:-.055em;line-height:1.02}
+.personal .chapter-trail {display:flex;gap:.65rem;color:#42665b;font-size:.9rem;margin-bottom:1.2rem}
+.chapter-trail a,.personal .folio-reading aside a {text-decoration:underline;text-underline-offset:4px}
+.personal .profile-intro .hero-bio {max-width:57ch;font-size:clamp(1rem,1.45vw,1.24rem)}
+.personal .profile-intro .eyebrow {margin-bottom:.65rem;color:#365a4f;font-weight:600}
+.personal .profile-intro .editorial-photo,.personal .profile-intro .portrait {height:clamp(190px,22vw,300px);border-radius:4px 4px 46px 4px}
+.personal .profile-intro .chapter-art {object-fit:contain;background:#fff;border:1px solid var(--folio-rule)}
+.personal .personal-grid {background:transparent;border:none;gap:1rem;margin-bottom:2rem}
+.personal .personal-grid a,.personal .paper-list {background:#fffcf5;border:1px solid var(--folio-rule);border-radius:5px}
+.personal .personal-grid a:hover {background:#eaf0e8}
+.personal .folio-reading aside a {color:#385e51}
+.personal .career-search input {background:white;color:#172f28}
+.personal .order-demo {background:#082422;color:#f6f3eb;--folio-mint:#92eece;padding:1rem;border-radius:5px}
+.personal a:focus-visible {outline:3px solid #367864}
+@media(min-width:761px){.personal .folio-reading aside nav {position:sticky;top:5rem}.personal .folio-reading aside:has(.source-link) nav{position:static}}
+@media(max-width:760px){.personal .profile-intro.with-art{gap:.8rem}.personal .profile-intro .editorial-photo,.personal .profile-intro .portrait{width:100%;max-height:210px}.personal .profile-intro .chapter-art{max-height:200px}}
+.personal #contact {background:hsl(var(--background));color:hsl(var(--foreground))}

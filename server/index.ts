@@ -195,6 +195,8 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  app.get("/robots.txt",(_req,res)=>res.type("text/plain").sendFile(path.resolve(__dirname,"../client/public/robots.txt")));
+  app.use("/admin",(_req,res,next)=>{res.set("X-Robots-Tag","noindex");next();});
   app.get("/notebook.xml",(_req,res)=>res.type("application/rss+xml").send(notebookFeed()));
   app.get("/sitemap.xml",async (_req,res) => {
     let paths:string[] = [];

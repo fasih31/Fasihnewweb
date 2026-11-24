@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { SEOHead } from "@/components/seo-head";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useQuery } from "@tanstack/react-query";
@@ -35,12 +34,6 @@ export default function NewsDetail() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead
-        title="Latest News - Business & Technology | Fasih ur Rehman"
-        description="Stay updated with the latest business and technology news from BBC and other trusted sources."
-        keywords="business news, technology news, latest news, BBC news, tech updates"
-        canonicalUrl="https://iamfasih.com/news"
-      />
       <Navigation />
 
       <main className="pt-24 pb-16">

@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { SEOHead } from "@/components/seo-head";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -312,10 +311,6 @@ ${poster.hashtags.join(' ')}
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead
-        title="My visual archive | Fasih ur Rehman"
-        description="Professional LinkedIn-sized posters from my archive for free online tools"
-      />
       <Navigation />
 
       <main className="pt-24 pb-16">

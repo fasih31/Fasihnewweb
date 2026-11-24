@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { lazy, Suspense } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -9,8 +9,9 @@ import { GoogleAnalytics } from "@/components/google-analytics";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { ChapterMeta } from "@/components/chapter-meta";
 import PersonalPage from "@/pages/personal";
-import { chapters, aliases } from "@shared/profile";
+import { chapters, aliases, resources } from "@shared/profile";
 import { Redirect } from "wouter";
 import NotFound from "@/pages/not-found";
 
@@ -46,8 +47,11 @@ const LoadingFallback = () => (
 );
 
 function Router() {
+  const [path]=useLocation();
+  const resource=resources.find(item=>item.path===path);
   return (
     <Suspense fallback={<LoadingFallback />}>
+      {resource && <ChapterMeta chapter={resource}/>}
       <Switch>
         {chapters.map(chapter => <Route key={chapter.path} path={chapter.path}><PersonalPage chapter={chapter}/></Route>)}
         {Object.entries(aliases).map(([path,to]) => <Route key={path} path={path}><Redirect to={to}/></Route>)}

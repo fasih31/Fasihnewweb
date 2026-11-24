@@ -1,7 +1,6 @@
 
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { SEOHead } from "@/components/seo-head";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { TrendingUp, TrendingDown, DollarSign, RefreshCw, ArrowLeft } from "lucide-react";
@@ -24,12 +23,6 @@ export default function StocksDetail() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEOHead
-        title="Live Stock Market Prices | Real-Time Stock Tracker | Fasih ur Rehman"
-        description="Track real-time stock market prices for major tech companies. Get live updates on AAPL, GOOGL, MSFT, TSLA and more."
-        keywords="stock market, live stock prices, stock tracker, tech stocks, market analysis"
-        canonicalUrl="https://iamfasih.com/stocks"
-      />
       <Navigation />
 
       <main className="pt-24 pb-16">

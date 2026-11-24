@@ -1,38 +1,7 @@
-# Robots.txt for Fasih ur Rehman Portfolio
-# Professional Product Manager - FinTech, AI & Islamic Finance Expert
-
 User-agent: *
 Allow: /
-Allow: /domains/
-Allow: /solutions/
-Allow: /tools/
-Allow: /calculators
-Allow: /career
-Allow: /islamic-fintech
-Allow: /blog
-
-Disallow: /admin
 Disallow: /api/
-Disallow: /*.json$
 Disallow: /auth/
-Disallow: /*.pdf$ # Resume download tracking
+Disallow: /admin
 
-# Preferred Crawlers
-User-agent: Googlebot
-Allow: /
-
-User-agent: Googlebot-Image
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-# Sitemap Location
 Sitemap: https://iamfasih.com/sitemap.xml
-
-# Crawl Delay (optional, helps prevent server overload)
-Crawl-delay: 1
-
-# Contact Information
-# DMARC: Configure at your DNS provider: _dmarc.iamfasih.com TXT "v=DMARC1; p=quarantine; rua=mailto:dmarc@iamfasih.com"
-# SPF: Configure at your DNS provider: iamfasih.com TXT "v=spf1 include:_spf.google.com ~all"
