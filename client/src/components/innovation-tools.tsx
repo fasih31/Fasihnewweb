@@ -61,6 +61,37 @@ export function InnovationTool({path}:{path:string}){
   if(["/tools/card-controls","/tools/role-access"].includes(path))return <Controls card={path==="/tools/card-controls"}/>;
   return null;
 }
-export function InnovationDirectory(){
-  return <section className="innovation-directory">{["Products and case studies","Interactive tools"].map((name,i)=><div key={name}><h2>{name}</h2>{i===0&&<><a href="/demo/device-order"><strong>Device as a Service</strong><span>Enterprise order simulation</span></a><a href="/work/yeesp"><strong>YEESP</strong><span>Marketplace milestone review</span></a></>}{innovationPages.filter(p=>p.path.startsWith("/tools/")===(i===1)).map(p=><a href={p.path} key={p.path}><strong>{p.title}</strong><span>{p.label}</span></a>)}</div>)}</section>
+const flagship = [
+  { title: "Device as a Service", label: "Enterprise telecom", image: "device-order", path: "/demo/device-order", summary: "Configure devices, issue a quote and follow the order through approval and fulfillment." },
+  { title: "Islamic BNPL simulator", label: "Islamic finance", image: "murabaha", path: "/solutions/islamic-bnpl", summary: "Set the asset cost, disclosed profit and term to generate an installment schedule." },
+  { title: "VirtualIEC", label: "AI · Local beta candidate", image: "virtualiec", path: "/products/virtualiec", summary: "Build an action plan from an intention and see how the workflow tracks context and outcomes." },
+  { title: "YEESP", label: "Learning and freelance marketplace", image: "yeesp", path: "/work/yeesp", summary: "Submit a sample milestone and see which decisions belong to the contributor and reviewer." },
+];
+
+export function InnovationDirectory() {
+  const products = innovationPages.filter(page => !flagship.some(feature => feature.path === page.path) && !page.path.startsWith("/tools/"));
+  const tools = innovationPages.filter(page => page.path.startsWith("/tools/"));
+  return <div className="innovation-directory">
+    <section aria-labelledby="lab-featured">
+      <h2 id="lab-featured">Featured demos</h2>
+      <div className="innovation-feature-grid">{flagship.map(feature =>
+        <a className="innovation-feature" href={feature.path} key={feature.path}>
+          <img src={"/work/" + feature.image + ".webp"} alt="" width="640" height="400" loading="lazy"/>
+          <div><span>{feature.label}</span><h3>{feature.title}</h3><p>{feature.summary}</p><strong>Open walkthrough</strong></div>
+        </a>
+      )}</div>
+    </section>
+    <section aria-labelledby="lab-products">
+      <h2 id="lab-products">Products and architecture</h2>
+      <div className="innovation-list">{products.map(page =>
+        <a href={page.path} key={page.path}><span>{page.label}</span><h3>{page.title}</h3><p>{page.intro}</p></a>
+      )}</div>
+    </section>
+    <section aria-labelledby="lab-tools">
+      <h2 id="lab-tools">Interactive tools</h2>
+      <div className="innovation-list">{tools.map(page =>
+        <a href={page.path} key={page.path}><span>{page.label}</span><h3>{page.title}</h3><p>{page.intro}</p></a>
+      )}</div>
+    </section>
+  </div>;
 }

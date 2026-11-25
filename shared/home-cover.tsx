@@ -4,7 +4,7 @@ import { careerOverview } from "./career-overview";
 
 const features = [
   { image: "devices", company: "e& · UAE", title: "From quote to device order", caption: "How I map the decisions between choosing a device and getting it into a customer’s hands.", href: "/demo/device-order" },
-  { image: "payments", company: "Greens Fin Innovations · Pakistan", title: "Rethinking how payments work", caption: "Explore the design decisions behind a deferred purchase, from disclosed profit to the final installment.", href: "/solutions/islamic-bnpl" },
+  { image: "payments", company: "Greens Fin Innovations · Pakistan", title: "Designing a deferred purchase", caption: "Explore the design decisions behind a deferred purchase, from disclosed profit to the final installment.", href: "/solutions/islamic-bnpl" },
   { image: "virtualiec", company: "VirtualIEC · Local beta candidate", title: "What should an AI remember?", caption: "Inside my intention workspace and the decision to separate working context from recalled experience.", href: "/products/virtualiec" },
 ];
 
@@ -29,7 +29,7 @@ export function HomeCover() {
       <section className="cover-section cover-index"><div className="cover-heading"><h2>Career by field</h2></div>
         <div className="cover-fields">{careerOverview.map(s=><div key={s.field}><h3>{s.field}</h3>{s.roles.map(([title,href])=><a key={href} href={href}>{title} ↗</a>)}</div>)}</div>
       </section>
-      <section className="cover-section"><div className="cover-heading"><h2>Try my work</h2></div><nav className="cover-actions" aria-label="Interactive portfolio"><a href="/demo/device-order">Run a device order →</a><a href="/ask">Ask my portfolio guide ↗</a></nav></section>
+      <section className="cover-section"><div className="cover-heading"><h2>Innovation Lab</h2></div><nav className="cover-actions" aria-label="Interactive portfolio"><a href="/innovation-lab">Explore products and tools</a><a href="/ask">Ask my portfolio guide ↗</a></nav></section>
       <nav className="cover-shelf" aria-label="More from Fasih"><a href="/notes">Delivery notebook ↗</a><a href="/research">Published research ↗</a><a href="/education">Education ↗</a><a href="/projects">Independent projects ↗</a></nav>
     </div>
   </main>;

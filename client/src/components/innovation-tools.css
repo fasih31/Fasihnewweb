@@ -8,3 +8,20 @@
 .innovation-directory{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:2rem;margin:2rem 0}
 .innovation-directory a{display:grid;gap:.3rem;padding:.85rem 0;border-bottom:1px solid currentColor}
 .innovation-directory span{font-size:.9rem}
+.innovation-directory{display:block;margin:2.25rem 0 4rem}
+.innovation-directory section+section{margin-top:3rem}
+.innovation-feature-grid,.innovation-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1.15rem}
+.innovation-feature-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.innovation-directory a{padding:0;display:flex;flex-direction:column;border:1px solid #a8bab0;border-radius:.7rem;overflow:hidden;background:#f6faf7;color:#172e2a;text-decoration:none}
+.innovation-directory a:hover{border-color:#194739;background:#eaf4ee}
+.innovation-directory a:focus-visible{outline:3px solid #237d67;outline-offset:3px}
+.innovation-feature img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;background:#d4e2da}
+.innovation-feature>div,.innovation-directory .innovation-list a{padding:1rem;display:flex;flex-direction:column;gap:.55rem;flex:1}
+.innovation-directory h3{font-size:1.2rem;font-weight:650;line-height:1.25}
+.innovation-directory span{color:#396456;font-weight:650}
+.innovation-directory p{margin:0;line-height:1.5}
+.innovation-feature strong{margin-top:auto;padding-top:.75rem;text-decoration:underline;text-underline-offset:.2rem}
+.innovation-panel form{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr))}
+.innovation-panel form button{align-self:end;min-height:2.8rem}
+@media(max-width:1050px){.innovation-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.innovation-feature-grid{grid-template-columns:1fr}}
