@@ -11,7 +11,7 @@ for (const page of publicPages) {
   await writeFile(file,portfolioHtml(template,page.path)!);
 }
 // Keep newly released static routes discoverable while the API serves its own release.
-const interactive=publicPages.filter(page=>page.path==="/ask" || page.path==="/demo/device-order");
+const interactive=publicPages.filter(page=>["/ask","/demo/device-order","/innovation-lab"].includes(page.path) || /^\/(tools|solutions|products)\//.test(page.path));
 const interactiveSitemap='<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+interactive.map(page=>'<url><loc>https://iamfasih.com'+page.path+'</loc></url>').join('')+'</urlset>';
 await writeFile(join(output,"interactive-sitemap.xml"),interactiveSitemap);
 const robots=await readFile(join(output,"robots.txt"),"utf8");

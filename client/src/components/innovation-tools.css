@@ -1,0 +1,10 @@
+.innovation-panel{padding:clamp(1.25rem,4vw,3rem);margin:2rem 0;background:#ecf4ef;border:1px solid #9cb8aa;color:#172e2a;border-radius:12px}
+.innovation-panel h2,.innovation-directory h2{font:normal clamp(1.7rem,3vw,2.6rem)/1.1 Georgia,serif;margin:0 0 1rem}
+.innovation-panel form{display:flex;flex-wrap:wrap;align-items:end;gap:1rem;margin:1.2rem 0}
+.innovation-panel label{display:grid;gap:.35rem;font-weight:600;flex:1 1 14rem;min-width:0}
+.innovation-panel input,.innovation-panel select{background:white;color:#172e2a;padding:.7rem;border:1px solid #789787;border-radius:5px;width:100%}
+.innovation-panel button{background:#194739;color:white;border-radius:5px;padding:.75rem 1rem}
+.innovation-panel li{padding:.48rem 0;border-bottom:1px solid #bed1c7;overflow-wrap:anywhere}
+.innovation-directory{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:2rem;margin:2rem 0}
+.innovation-directory a{display:grid;gap:.3rem;padding:.85rem 0;border-bottom:1px solid currentColor}
+.innovation-directory span{font-size:.9rem}

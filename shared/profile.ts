@@ -1,3 +1,4 @@
+import { innovationPages, labIndex } from "./innovation";
 import { publications } from "./publications";
 import { deliveryNotes } from "./delivery-notes";
 import { roleDetails } from "./role-details";
@@ -82,8 +83,10 @@ export const research = chapter("/research","My research publications","Fasih ur
 export const projectsPage = chapter("/projects","My independent projects","Outside my employed roles","These projects let me explore product questions in my own time. My professional roles and employer work are documented separately in my career history.",[
   ["YEESP","I established the Youth Education and Employment Support Program around affordable learning and opportunities to earn. The initial programme ran from May 2019 to August 2022. My later platform design connects tutoring, course delivery and freelance work. A learner can also tutor or contribute to a freelance project, so I define permissions around each activity."],
   ["VirtualIEC","From August 2022 to March 2023 I worked on a metaverse platform for immersive business interactions in Pakistan. My more recent prototypes look at conversational interfaces, memory and digital identity."],
+  ["Start Business Pro with AI and IT Help Desk as a Service","I launched a business planning and productivity initiative, including Speed Booster, and a service-management initiative. My lab includes separate sample workflows for both."],
+  ["Orkiva / Aegis AI","My architecture blueprints explore tenant isolation, AI gateway policies and decision audits."],
   ["Labs360.io","I co-founded Labs360.io as a Web3 growth initiative. It is one part of my independent work alongside my interests in marketplaces and technical prototyping."],
-  ["Nova Cart and Terasita","My commerce concepts explore two different shopping questions. With Nova Cart I am interested in personalised product discovery. With Terasita I am interested in where automation can simplify shopping while leaving the purchase decision with the customer."]],[["Inside YEESP","/work/yeesp"],["Inside VirtualIEC","/work/virtualiec"],["Web3 exploration","/domains/crypto-web3"]]);
+  ["Nova Cart and Terasita","My commerce concepts explore two different shopping questions. With Nova Cart I am interested in personalised product discovery. With Terasita I am interested in where automation can simplify shopping while leaving the purchase decision with the customer."]],[["Explore the innovation lab","/innovation-lab"],["Inside YEESP","/work/yeesp"],["Inside VirtualIEC","/work/virtualiec"],["Web3 exploration","/domains/crypto-web3"]]);
 export const about = chapter("/about","About me","Fasih ur Rehman · PMP","I’m Fasih ur Rehman, a Senior Project Manager at e& (Etisalat) in the UAE. I started my career building websites in Karachi. Today I work with business owners, engineers and operations teams on the steps an enterprise customer takes to buy a telecom service.",[
   ["Karachi","In Pakistan I worked across commerce, education and Islamic finance. As a developer I dealt with implementation details. Later I owned product roadmaps, coordinated with suppliers and advisors, and managed programmes for professional learners."],
   ["Saudi Arabia and the UAE","At Tahakam I worked between enterprise clients and delivery teams. Today at e& (Etisalat), I bring those experiences together in enterprise telecom, coordinating product journeys, solution design, reviews and delivery."],
@@ -113,7 +116,7 @@ for (const note of deliveryNotes) {
 export const deliveryLab=chapter("/demo/device-order","From device quote to delivery","Interactive product demo","Try a business device subscription from the sales, buyer, approver and operations perspectives. Build a sample quote, send it back for revision or complete delivery and export the order record. Progress stays in this browser.",[],[["My enterprise telecom work","/domains/telecom"],["My delivery notes","/notes/device-quotation"]]);
 export const portfolioGuide=chapter("/ask","Ask about product and delivery","Fasih’s portfolio guide","Explore my career and seven subjects I work on or study. Ask a question or choose a starting point to see an explanation and related portfolio reading.",[],[["Read the notebook","/notes"],["Browse my career","/career"]]);
 projectsPage.links.push(["Try the device-order demo",deliveryLab.path]);
-export const chapters = [deliveryLab,portfolioGuide,notebook,...deliveryNotes,home, career, expertise, about, research, education, projectsPage, contact, resourceIndex, ...rolePages, ...domains, ...studies.map(s=>chapter("/work/"+s.slug,s.title,s.name,s.context,[[s.question,s.decision],["How I would test it",s.check]],[[s.link,s.href]],image(s.art)))];
+export const chapters = [labIndex,...innovationPages,deliveryLab,portfolioGuide,notebook,...deliveryNotes,home, career, expertise, about, research, education, projectsPage, contact, resourceIndex, ...rolePages, ...domains, ...studies.map(s=>chapter("/work/"+s.slug,s.title,s.name,s.context,[[s.question,s.decision],["How I would test it",s.check]],[[s.link,s.href]],image(s.art)))];
 export const aliases: Record<string,string> = {
   "/solutions/daas": "/domains/telecom", "/solutions/edtech": "/domains/edtech",
   "/solutions/fintech": "/domains/fintech", "/solutions/ecommerce": "/domains/ecommerce",
@@ -121,8 +124,9 @@ export const aliases: Record<string,string> = {
   "/project/3": "/domains/ai-ml", "/project/4": "/domains/fintech",
   "/project/5": "/domains/edtech", "/project/6": "/domains/ecommerce",
 };
-export const titleFor = (c:Chapter) => c === home ? "Fasih ur Rehman | Senior Project Manager at e& (Etisalat), UAE" : c.title + " | Fasih ur Rehman";
+export const titleFor = (c:Chapter) => c === home ? "Fasih ur Rehman | Enterprise Product Leadership, AI & Islamic FinTech" : c.title + " | Fasih ur Rehman";
 export function parentOf(c:Chapter): [string,string] {
+  if(innovationPages.includes(c)) return ["Innovation lab","/innovation-lab"];
   if(c.path.startsWith("/career/")) return ["Career","/career"];
   if(c.path.startsWith("/domains/")) return ["Domains","/expertise"];
   if(c.path.startsWith("/notes/")) return ["Delivery notebook","/notes"];

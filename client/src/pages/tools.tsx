@@ -1,3 +1,4 @@
+import { innovationPages } from "@shared/innovation";
 
 import { useState, useMemo } from "react";
 import { Navigation } from "@/components/navigation";
@@ -75,6 +76,10 @@ interface Tool {
 }
 
 const tools: Tool[] = [
+  ...innovationPages.filter(page=>page.path.startsWith("/tools/") || page.path==="/solutions/islamic-bnpl").map(page=>({
+    id:page.path, title:page.title, description:page.intro, icon:Calculator, features:[page.sections[0][0]],
+    gradient:"from-emerald-600 to-teal-700", category:page.label, openAsPage:true, pagePath:page.path
+  })),
   {
     id: "crypto",
     title: "Crypto Market Tracker",
