@@ -1,3 +1,4 @@
+import { recruiterProfile } from "@shared/recruiter-profile";
 import { caseStudies, showcasePages } from "@shared/portfolio-expansion";
 import {InnovationDirectory, InnovationTool, ShowcaseJourney} from "@/components/innovation-tools";
 import { PortfolioReading } from "@/components/portfolio-reading";
@@ -30,8 +31,9 @@ export default function PersonalPage({chapter:c}:{chapter:Chapter}) {
     if(isHome && window.location.hash==="#contact") window.location.replace("/contact");
   },[isHome]);
   return <><ChapterMeta chapter={c}/>
-    <Navigation skipLink/>{isHome ? <HomeCover/> : <main className="folio personal" id="main-content"><div className="folio-width">
+    <Navigation skipLink/>{isHome ? <HomeCover/> : <main className={c===recruiterProfile ? "folio personal resume-page" : "folio personal"} id="main-content"><div className="folio-width">
     <ChapterHeading chapter={c}/>
+    {c===recruiterProfile && <div className="resume-actions"><button type="button" onClick={() => window.print()}>Print or save résumé as PDF</button><a href="/contact">Contact Fasih</a></div>}
     <ShowcaseJourney chapter={c}/>
     {c===caseStudies && <Directory items={showcasePages} illustrated/>}
     <div id="try-workflow">

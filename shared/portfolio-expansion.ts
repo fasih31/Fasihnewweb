@@ -21,9 +21,25 @@ const showcases: Showcase[] = [
   ["/solutions/product-governance","Product governance and readiness","Enterprise delivery","At e& I coordinate product reviews, approvals and delivery dependencies with business and engineering teams.","Track each approval with an owner, evidence and a decision date. Check exception ownership before moving into operational handover.","device-order","/career"],
   ["/solutions/lead-to-delivery","Lead-to-Order and Order-to-Delivery","Enterprise case study","I map how enterprise sales and operations hand work across quotation, acceptance and fulfillment.","After acceptance, preserve the quote version and customer identity while separately tracking the provisioning and fulfillment states.","device-order","/demo/device-order"],
 ];
+const caseEvidence: Record<string, Chapter["sections"]> = {
+  "/solutions/device-as-a-service": [
+    ["The delivery challenge", "Enterprise and SMB orders involve different verification and approval steps. After quote acceptance, operations needs to know what was agreed, what checks remain and who owns the next decision."],
+    ["My role and deliverables", "I coordinate business, engineering and operations at e&. My work includes process maps, solution designs, user stories and acceptance criteria for lead-to-order and order-to-delivery."],
+    ["What the demo demonstrates", "Use fictional devices to build a quote, approve it and follow the fulfillment handoff. The walkthrough illustrates the decision points with sample data."],
+  ],
+  "/expertise/islamic-fintech": [
+    ["The product challenge", "A buyer needs to understand the price, terms and next step before accepting an offer. Operations needs an auditable record of acquisition, eligibility, agreement and servicing."],
+    ["My role and deliverables", "At Greens Fin I contributed to product requirements and customer journeys. At Tahakam I supported delivery planning, white-label implementations and adaptation of eight fintech products to Islamic finance requirements."],
+    ["What the demo demonstrates", "Change asset cost, disclosed profit and tenure. Review the total and installment schedule before committing in the illustrative scenario."],
+  ],
+  "/expertise/artificial-intelligence": [
+    ["My work", "I launched Start Business Pro with AI and developed VirtualIEC as a local beta candidate. The portfolio includes an intention workflow and a separate business launch worksheet."],
+    ["What I would evaluate", "Can users tell which context informed an action, correct it, and understand what will happen when they approve the action? Test the workflow with changed input and compare the resulting plan."],
+  ],
+};
 export const showcasePages: Chapter[] = showcases.map(([path,title,label,intro,decision,image,related])=>({
   path,title,label,intro,image:"/work/"+image+".webp",
-  sections:[["Design and operating model",decision]],
+  sections:[...(caseEvidence[path] || []),["Design and operating model",decision]],
   links:[["Explore the related workflow",related],["Case studies","/case-studies"]],
 }));
 export const caseStudies: Chapter = {

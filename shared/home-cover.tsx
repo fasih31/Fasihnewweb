@@ -3,8 +3,8 @@ import { portrait } from "./profile";
 import { careerOverview } from "./career-overview";
 
 const features = [
-  { image: "devices", company: "e& · UAE", title: "From quote to device order", caption: "How I map the decisions between choosing a device and getting it into a customer’s hands.", href: "/demo/device-order" },
-  { image: "payments", company: "Greens Fin Innovations · Pakistan", title: "Designing a deferred purchase", caption: "Explore the design decisions behind a deferred purchase, from disclosed profit to the final installment.", href: "/solutions/islamic-bnpl" },
+  { image: "devices", company: "e& · UAE", title: "From quote to device order", caption: "See how I map quote acceptance, verification and fulfillment across business and operations teams.", href: "/solutions/device-as-a-service" },
+  { image: "payments", company: "Greens Fin Innovations · Pakistan", title: "Islamic digital financing", caption: "Explore the design decisions behind a deferred purchase, from disclosed profit to the final installment.", href: "/expertise/islamic-fintech" },
   { image: "virtualiec", company: "VirtualIEC · Local beta candidate", title: "What should an AI remember?", caption: "Inside my intention workspace and the decision to separate working context from recalled experience.", href: "/products/virtualiec" },
 ];
 
@@ -15,11 +15,16 @@ export function HomeCover() {
         <div className="cover-copy"><p className="cover-role">Enterprise product leadership · UAE</p>
           <h1>Fasih <span>ur Rehman</span></h1>
           <p className="cover-position">Product leader and solution architect</p>
-          <p className="cover-lead">At e& in the UAE, I lead delivery across the journey from a device quote to an enterprise order. I also design financial products and build independent platforms for AI, learning and work.</p>
-          <nav className="cover-actions" aria-label="Introduction"><a href="/case-studies">Explore the case studies</a><a href="/innovation-lab">Try the innovation lab</a><a href="/career">Professional journey</a></nav>
+          <p className="cover-lead">I lead enterprise device-ordering delivery at e& (Etisalat). My experience spans Islamic fintech product design, enterprise technology delivery, and independent AI products.</p>
+          <nav className="cover-actions" aria-label="Introduction"><a href="/resume">Read my résumé</a><a href="#portfolio">See selected work</a><a href="/contact">Get in touch</a></nav>
         </div>
         <img className="cover-portrait" src={portrait} alt="Fasih ur Rehman" width="630" height="840" {...{fetchpriority:"high"}}/>
       </header>
+      <dl className="cover-credentials">
+        <div><dt>Current role</dt><dd>Senior Project Manager at e& (Etisalat)</dd></div>
+        <div><dt>Markets</dt><dd>UAE · Saudi Arabia · Pakistan</dd></div>
+        <div><dt>Credential</dt><dd>Project Management Professional (PMP)</dd></div>
+      </dl>
       <section id="portfolio" className="cover-section">
         <div className="cover-heading"><h2>Selected work</h2><a href="/career">Career history ↗</a></div>
         <div className="cover-cards">{features.map(f=><a href={f.href} key={f.href}>

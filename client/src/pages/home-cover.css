@@ -58,3 +58,14 @@
  .cover-lead{margin-top:.6rem}
  .cover-portrait{outline-offset:3px}
 }
+.cover-credentials{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;background:#173e34;color:#fff;border-radius:.8rem;overflow:hidden}
+.cover-credentials div{padding:clamp(.9rem,2vw,1.5rem)}
+.cover-credentials div+div{border-inline-start:1px solid #698c7d}
+.cover-credentials dt{font-size:.875rem;color:#c6e1d5;margin-bottom:.28rem}
+.cover-credentials dd{font-weight:650;line-height:1.35;margin:0}
+.cover-credentials+.cover-section{border-top:0}
+#portfolio{scroll-margin-top:5rem}
+@media(max-width:600px){
+ .cover-credentials{grid-template-columns:1fr}
+ .cover-credentials div+div{border-inline-start:0;border-top:1px solid #698c7d}
+}

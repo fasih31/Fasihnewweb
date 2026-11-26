@@ -80,3 +80,13 @@
 @media(min-width:761px){.personal .folio-reading aside nav {position:sticky;top:5rem}.personal .folio-reading aside:has(.source-link) nav{position:static}}
 @media(max-width:760px){.personal .profile-intro.with-art{gap:.8rem}.personal .profile-intro .editorial-photo,.personal .profile-intro .portrait{width:100%;max-height:210px}.personal .profile-intro .chapter-art{max-height:200px}}
 .personal #contact {background:hsl(var(--background));color:hsl(var(--foreground))}
+.resume-actions{display:flex;align-items:center;flex-wrap:wrap;gap:1rem;margin:1rem 0 2rem}
+.resume-actions button{padding:.7rem 1rem;background:#173e34;color:#fff;border-radius:.4rem;font-weight:650}
+.resume-actions a{text-decoration:underline;text-underline-offset:.2rem}
+@media print{
+ body:has(.resume-page) .folio-header,body:has(.resume-page) footer,.resume-page .resume-actions,.resume-page aside,.resume-page nav{display:none!important}
+ .resume-page,.resume-page *{color:#000!important;background:transparent!important}
+ .resume-page .folio-width{width:100%}
+ .resume-page .folio-reading{display:block}
+ .resume-page section{break-inside:avoid}
+}

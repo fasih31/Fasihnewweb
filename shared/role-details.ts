@@ -24,7 +24,7 @@ export const roleDetails: Record<string,RoleDetail> = {
     slug:"greens-fin",headline:"Taking payments and financing products through Shariah-compliant redesign",domain:"fintech",
     sections:[
       ["The product portfolio","I worked on virtual credit cards, buy now pay later, retail and corporate finance, housing finance and SME financing. My payments work included point-of-sale systems and online checkouts. Those products served different users, from a merchant accepting payment to a business applying for financing."],
-      ["Eight product transformations","I helped transform eight fintech products into Shariah-compliant offerings and designed white-label products for individual clients. My responsibilities covered product requirements, roadmap priorities, delivery plans and coordination across design, development, analytics and QA."],
+      ["Islamic finance product design","I contributed to customer journeys and requirements for Islamic digital finance products. My responsibilities covered product requirements, roadmap priorities, delivery plans and coordination across design, development, analytics and QA."],
       ["What I measured","I used customer feedback and expected return to prioritise improvements, then tracked adoption, retention and delivery performance. I also worked directly with fintech clients and B2B partners on implementation and new partnerships."]
     ]},
   "IMarkplace": {
@@ -39,7 +39,7 @@ export const roleDetails: Record<string,RoleDetail> = {
     sections:[
       ["The client brief","I supported consulting work for banks, fintechs and insurers on product development and conversion. I agreed scope and deliverables with clients and translated them into a timeline, budget and review schedule."],
       ["Specialist review","I coordinated consultants and Shariah advisors, kept senior management informed of milestones, and tracked issues that could affect delivery. The advisors provided specialist judgement. My responsibility was getting the right material and decisions to them on time."],
-      ["Delivery record","I delivered twelve consulting projects on schedule and within budget. I maintained the client relationship through status reviews, early escalation of risks and follow-through on agreed actions."]
+      ["Delivery record","I maintained the client relationship through status reviews, early escalation of risks and follow-through on agreed actions."]
     ]},
   "Centre for Islamic Economics": {
     slug:"centre-for-islamic-economics",headline:"Connecting Islamic finance research with professional education",domain:"islamic-economics",
