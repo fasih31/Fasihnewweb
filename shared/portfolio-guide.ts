@@ -1,3 +1,4 @@
+import { islamicBankingSources } from "./islamic-banking-sources";
 import { chapters } from "./profile";
 
 type Reading = { title:string; text:string; path:string; terms:string };
@@ -10,7 +11,7 @@ const lessons: Reading[] = [
   {title:"Verifying a digital credential",terms:"blockchain distributed ledger web3 identity did credential decentralized consensus smart contract token",path:"/domains/crypto-web3",text:"For a digital credential, identify the issuer, holder and verifier first. A verifier needs a trustworthy issuer key and a way to check validity or revocation. A shared ledger can record public proofs when several organisations need a common record. Personal credential contents can stay off-chain."},
   {title:"Evaluating a grounded AI assistant",terms:"artificial intelligence ai machine learning llm rag model embeddings retrieval hallucination evaluation training neural",path:"/domains/ai-ml",text:"A retrieval-based assistant selects relevant passages before generating an answer. Test it with questions that have known answers and questions the material cannot answer. Evaluate whether its citations support its claims, whether it acknowledges missing evidence and whether answers remain consistent when a question is rephrased."},
 ];
-const records=[...lessons,...chapters.filter(c=>["/education","/research","/projects","/resume"].includes(c.path)).flatMap(c=>c.sections.map(([title,text])=>({title,text,path:c.path,terms:c.title+" credentials certifications research ventures"}))),...chapters.filter(c=>/^\/(career|domains|notes|work|products|solutions|expertise)\//.test(c.path)).flatMap(c=>c.sections.map(([title,text])=>({title:c.title+" · "+title,text:c.intro+" "+text,path:c.path,terms:c.label+" "+c.title})))];
+const records=[...islamicBankingSources,...lessons,...chapters.filter(c=>["/education","/research","/projects","/resume"].includes(c.path)).flatMap(c=>c.sections.map(([title,text])=>({title,text,path:c.path,terms:c.title+" credentials certifications research ventures"}))),...chapters.filter(c=>/^\/(career|domains|notes|work|products|solutions|expertise)\//.test(c.path)).flatMap(c=>c.sections.map(([title,text])=>({title:c.title+" · "+title,text:c.intro+" "+text,path:c.path,terms:c.label+" "+c.title})))];
 const stop=new Set("a an the is are be for to on at from of and or in can i how why what do does would with my me about explain you your fasih tell did as which by it that this his he".split(" "));
 function tokens(text:string){return [...new Set(text.toLowerCase().match(/[a-z0-9]+/g)||[])].filter(w=>!stop.has(w));}
 // Labeled example questions train a small multinomial Naive Bayes topic classifier.
@@ -44,7 +45,9 @@ for(const {terms,words} of indexed)for(const w of new Set([...terms,...words]))f
 export function readings(question:string):Reading[]{
   const words=tokens(question);
   const label=topic(words);
-  const scored=indexed.map(({r,terms,words:body})=>({r,score:(lessons.includes(r)&&r.path===label?12:0)+words.reduce((n,w)=>n+(terms.includes(w)?3:body.includes(w)?1:0)*Math.log(1+indexed.length/(freq.get(w)||1)),0)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);
+  const subject = /murabaha|ijara|musharaka|mudaraba|riba|islamic (banking|finance|fintech)/i.test(question);
+  const aboutFasih = /fasih|experience|portfolio|work at|his work|your work/i.test(question);
+  const scored=indexed.map(({r,terms,words:body})=>({r,score:(subject && !aboutFasih && islamicBankingSources.includes(r) && words.some(word=>terms.includes(word))?14:0)+(lessons.includes(r)&&r.path===label?12:0)+words.reduce((n,w)=>n+(terms.includes(w)?3:body.includes(w)?1:0)*Math.log(1+indexed.length/(freq.get(w)||1)),0)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);
   const seen=new Set<string>();
-  return scored.filter(({r})=>{if(seen.has(r.path))return false;seen.add(r.path);return true}).slice(0,3).map(x=>x.r);
+  return scored.filter(({r})=>{if(seen.has(r.title))return false;seen.add(r.title);return true}).slice(0,3).map(x=>x.r);
 }

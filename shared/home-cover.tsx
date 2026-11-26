@@ -17,9 +17,11 @@ export function HomeCover() {
           <p className="cover-lead">I lead enterprise device-ordering delivery at e& (Etisalat). My experience spans Islamic fintech product design, enterprise technology delivery, and independent AI products.</p>
           <nav className="cover-actions" aria-label="Introduction"><a href="/resume">Read my résumé</a><a href="#portfolio">See selected work</a><a href="/contact">Get in touch</a></nav>
         </div>
-        <figure className="cover-work-visual">
-          <img src="/work/cover-devices.webp" alt="Illustration of devices used in an enterprise ordering workflow" width="600" height="600" {...{fetchpriority:"high"}}/>
-        </figure>
+        <aside className="cover-companion" aria-label="Portfolio assistant">
+          <h2>Ask Fasih</h2>
+          <p>Explore my work at e&, independent products, and the principles behind Islamic banking.</p>
+          <a href="/ask">Open the assistant</a>
+        </aside>
       </header>
       <dl className="cover-credentials">
         <div><dt>Current role</dt><dd>Senior Project Manager at e& (Etisalat)</dd></div>
@@ -36,7 +38,7 @@ export function HomeCover() {
       <section className="cover-section cover-index"><div className="cover-heading"><h2>Career by field</h2></div>
         <div className="cover-fields">{careerOverview.map(s=><div key={s.field}><h3>{s.field}</h3>{s.roles.map(([title,href])=><a key={href} href={href}>{title} ↗</a>)}</div>)}</div>
       </section>
-      <section className="cover-section"><div className="cover-heading"><h2>Innovation Lab</h2></div><nav className="cover-actions" aria-label="Interactive portfolio"><a href="/innovation-lab">Explore products and tools</a><a href="/ask">Ask my portfolio guide ↗</a></nav></section>
+      <section className="cover-section"><div className="cover-heading"><h2>Innovation Lab</h2></div><nav className="cover-actions" aria-label="Interactive portfolio"><a href="/innovation-lab">Explore products and tools</a><a href="/ask">Ask Fasih</a></nav></section>
       <nav className="cover-shelf" aria-label="More from Fasih"><a href="/notes">Delivery notebook ↗</a><a href="/research">Published research ↗</a><a href="/education">Education ↗</a><a href="/projects">Independent projects ↗</a></nav>
     </div>
   </main>;

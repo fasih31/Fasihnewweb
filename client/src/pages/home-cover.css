@@ -76,3 +76,8 @@
  .cover-work-visual{grid-column:1;grid-row:auto;margin-top:1rem}
  .cover-work-visual img{aspect-ratio:2/1}
 }
+.cover-companion{display:grid;gap:1rem;padding:clamp(1.5rem,4vw,3rem);border:1px solid #b4c9bf;border-radius:.8rem;background:#edf4ef}
+.cover-companion h2{font:normal clamp(2rem,4vw,3.25rem)/1 Georgia,serif;letter-spacing:-.04em}
+.cover-companion p{max-width:34ch;line-height:1.6}
+.cover-companion a{font-weight:650;text-decoration:underline;text-underline-offset:.25rem;width:max-content}
+@media(max-width:600px){.cover-companion{grid-column:1/-1;margin-top:1.5rem}}

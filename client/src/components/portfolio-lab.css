@@ -7,3 +7,10 @@
 .lab-steps{padding:0 0 1rem;font-size:.85rem}.lab-steps li{border-bottom:2px solid #c9d6cd;padding:.4rem}.lab-steps [aria-current]{border-color:#214a3c;font-weight:bold}
 .lab-totals>div{flex:1 1 12rem;background:#edf1e8;padding:1rem}.lab-totals dd{font:1.45rem Georgia,serif}
 .lab-examples{margin:1rem 0}.lab-examples button{background:transparent;color:#254739;text-align:left;font-size:.9rem}.lab-answer{white-space:pre-wrap}
+.ask-transcript{display:grid;gap:1.25rem;margin:1.5rem 0}
+.ask-turn{border-top:1px solid #a5c0b1;padding-top:1.1rem}
+.ask-question{background:#173e34;color:#fff;border-radius:.55rem;padding:.8rem 1rem;width:fit-content;max-width:100%;margin:0 0 1rem auto;overflow-wrap:anywhere}
+.ask-sources{display:grid;gap:.75rem;margin:1rem 0}
+.ask-sources h3{font-weight:650}
+.ask-sources a{text-decoration:underline;text-underline-offset:.2rem}
+.ask-fasih form button + button{margin-left:.6rem}

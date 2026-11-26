@@ -32,20 +32,59 @@ export function DeliveryLab(){
     {o.history.length>0 && <div aria-live="polite"><h3>Order record · {o.ref}</h3><ol>{o.history.map((h,i)=><li key={i}>{h}</li>)}</ol></div>}
   </section>;
 }
-const prompts=["How does payment reconciliation work?","How would you review a Murabaha purchase?","How do I measure learner retention?","How do I manage a project dependency?","How should I prioritise a product roadmap?","How does blockchain verify a credential?","How do you evaluate an AI assistant?"];
-export function PortfolioGuide(){
-  const [q,setQ]=useState(""),[busy,loading]=useState(false),[reply,setReply]=useState<{answer?:string;sources:ReturnType<typeof readings>;question:string}|null>(null);
-  async function ask(question:string){
-    question=question.trim();if(!question||busy)return;setQ(question);loading(true);setReply(null);
-    const local=readings(question);let answer:string|undefined;
-    try{const response=await fetch("/guide/query",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question}),signal:AbortSignal.timeout(15000)});
-      if(response.ok){const data=await response.json();if(data.mode==="assistant"&&typeof data.answer==="string")answer=data.answer}
-    }catch{}finally{setReply({question,answer,sources:local});loading(false)}
+const prompts = ["What does Fasih do at e&?", "How does Murabaha work?", "What is the difference between Ijara and Murabaha?", "What has Fasih built with AI?"];
+type ConversationTurn = {question: string; answer?: string; sources: ReturnType<typeof readings>};
+
+export function PortfolioGuide() {
+  const [question, setQuestion] = useState("");
+  const [pending, setPending] = useState("");
+  const [conversation, setConversation] = useState<ConversationTurn[]>([]);
+
+  async function ask(value: string) {
+    const clean = value.trim();
+    if (!clean || pending) return;
+    setQuestion("");
+    setPending(clean);
+    let sources = readings(clean);
+    let answer: string | undefined;
+    try {
+      const response = await fetch("/guide/query", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({question: clean}),
+        signal: AbortSignal.timeout(5500),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.mode === "assistant" && typeof data.answer === "string") {
+          answer = data.answer;
+          if (Array.isArray(data.sources)) sources = data.sources;
+        }
+      }
+    } catch {
+      // The curated references are available even when the model endpoint is unavailable.
+    } finally {
+      setConversation(turns => [...turns, {question: clean, answer, sources}]);
+      setPending("");
+    }
   }
-  function submit(e:FormEvent){e.preventDefault();void ask(q)}
-  return <section className="lab-panel"><h2>Ask the portfolio guide</h2><div className="lab-examples">{prompts.map(p=><button disabled={busy} key={p} onClick={()=>ask(p)}>{p}</button>)}</div>
-    <form onSubmit={submit}><label>Your question<textarea maxLength={700} rows={3} value={q} onChange={e=>setQ(e.target.value)} required/></label><small>Questions may be processed by OpenAI. Use public examples.</small><button disabled={busy||!q.trim()}>{busy?"Finding an answer…":"Ask question"}</button></form>
-    <div aria-live="polite">{reply && <><h3>{reply.question}</h3>{reply.answer?<p className="lab-answer">{reply.answer}</p>:<p>{reply.sources.length?"Relevant passages from the portfolio and teaching notes":"I couldn’t find a relevant passage. Try a specific product, role or delivery question."}</p>}
-      {reply.sources.map((s,i)=><article key={s.path}><a href={s.path}>[{i+1}] {s.title} ↗</a>{!reply.answer&&<p>{s.text}</p>}</article>)}</>}</div>
+
+  return <section className="lab-panel ask-fasih" aria-label="Ask Fasih assistant">
+    <div className="lab-examples">{prompts.map(prompt => <button disabled={!!pending} key={prompt} onClick={() => void ask(prompt)}>{prompt}</button>)}</div>
+    <div className="ask-transcript" role="log" aria-label="Conversation">
+      {conversation.map((turn,index) => <article className="ask-turn" key={index}>
+        <p className="ask-question">{turn.question}</p>
+        {turn.answer ? <p className="lab-answer">{turn.answer}</p> : !turn.sources.length && <p>I don’t have a source for that question. Try a specific role, project or banking term.</p>}
+        {turn.sources.length>0 && <div className="ask-sources"><h3>{turn.answer ? "Sources" : "From the reference library"}</h3>
+          {turn.sources.map((source,i) => <div key={source.title}><a href={source.path}>[{i+1}] {source.title}</a>{!turn.answer && <p>{source.text}</p>}</div>)}</div>}
+      </article>)}
+      {pending && <p role="status">Looking up references…</p>}
+    </div>
+    <form onSubmit={(event: FormEvent) => { event.preventDefault(); void ask(question); }}>
+      <label>Your question<textarea maxLength={700} rows={2} value={question} onChange={event => setQuestion(event.target.value)} required/></label>
+      <small>Use public examples. Questions may be processed by OpenAI.</small>
+      <button disabled={!!pending || !question.trim()}>Send question</button>
+      {conversation.length>0 && <button disabled={!!pending} type="button" onClick={() => setConversation([])}>Clear conversation</button>}
+    </form>
   </section>;
 }
