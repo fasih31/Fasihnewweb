@@ -1,4 +1,4 @@
-import {InnovationDirectory, InnovationTool} from "@/components/innovation-tools";
+import {InnovationDirectory, InnovationTool, ShowcaseJourney} from "@/components/innovation-tools";
 import { PortfolioReading } from "@/components/portfolio-reading";
 import { ChapterHeading, artFor } from "@shared/chapter-heading";
 import { HomeCover } from "@shared/home-cover";
@@ -31,9 +31,12 @@ export default function PersonalPage({chapter:c}:{chapter:Chapter}) {
   return <><ChapterMeta chapter={c}/>
     <Navigation/>{isHome ? <HomeCover/> : <main className="folio personal"><div className="folio-width">
     <ChapterHeading chapter={c}/>
+    <ShowcaseJourney chapter={c}/>
+    <div id="try-workflow">
     {c.path==="/innovation-lab" ? <InnovationDirectory/> : <InnovationTool key={c.path} path={c.path}/>}
     {c.path==="/demo/device-order" && <DeliveryLab/>}
     {c.path==="/ask" && <PortfolioGuide/>}
+    </div>
     {c===expertise && <section className="profile-section"><h2>My professional experience</h2>
       <Directory illustrated items={domains.filter(d=>!["/domains/ai-ml","/domains/crypto-web3"].includes(d.path))}/>
             <h2>Research and independent interests</h2><Directory items={domains.filter(d=>["/domains/ai-ml","/domains/crypto-web3"].includes(d.path))}/></section>}

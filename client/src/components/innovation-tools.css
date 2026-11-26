@@ -25,3 +25,13 @@
 .innovation-panel form button{align-self:end;min-height:2.8rem}
 @media(max-width:1050px){.innovation-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.innovation-feature-grid{grid-template-columns:1fr}}
+.showcase-journey{margin:2rem 0 0;padding:clamp(1rem,3vw,2rem);background:#173e34;color:#fff;border-radius:.85rem}
+.showcase-journey-heading{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.showcase-journey h2{font:normal clamp(1.65rem,3vw,2.3rem)/1.1 Georgia,serif}
+.showcase-journey a{padding:.65rem 1rem;background:#ecf4ef;color:#173e34;border-radius:.4rem;font-weight:650}
+.showcase-journey ol{list-style:decimal inside;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:.7rem;padding:0;margin:1.35rem 0 0}
+.showcase-journey li{background:#255245;border:1px solid #609281;border-radius:.45rem;padding:.8rem;line-height:1.4}
+.showcase-journey li::marker{color:#bde2d1;font-weight:700}
+#try-workflow{scroll-margin-top:6rem}
+@media(max-width:700px){.showcase-journey ol{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:360px){.showcase-journey ol{grid-template-columns:1fr}}

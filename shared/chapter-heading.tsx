@@ -2,6 +2,10 @@ import React from "react";
 import { parentOf, portrait, type Chapter } from "./profile";
 
 const covers: Record<string,string> = {
+  "/products/virtualiec": "/work/virtualiec.webp",
+  "/solutions/islamic-bnpl": "/work/murabaha.webp",
+  "/solutions/islamic-virtual-card": "/work/cover-payments.webp",
+  "/demo/device-order": "/work/device-order.webp",
   "/career": portrait, "/contact": portrait, "/about": portrait,
   "/expertise": "/work/cover-devices.webp", "/notes": "/work/cover-learning.webp",
   "/projects": "/work/yeesp.webp", "/research": "/work/cover-learning.webp",

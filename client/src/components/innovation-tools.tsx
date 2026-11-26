@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import type { Chapter } from "@shared/profile";
 import { innovationPages } from "@shared/innovation";
 import "./innovation-tools.css";
 
@@ -67,6 +68,30 @@ const flagship = [
   { title: "VirtualIEC", label: "AI · Local beta candidate", image: "virtualiec", path: "/products/virtualiec", summary: "Build an action plan from an intention and see how the workflow tracks context and outcomes." },
   { title: "YEESP", label: "Learning and freelance marketplace", image: "yeesp", path: "/work/yeesp", summary: "Submit a sample milestone and see which decisions belong to the contributor and reviewer." },
 ];
+
+const productJourneys: Record<string, { steps: string[]; demo: string }> = {
+  "/products/virtualiec": { steps: ["Capture an intention", "Add context", "Choose an action", "Record the outcome"], demo: "/products/virtualiec" },
+  "/products/it-helpdesk": { steps: ["Log an incident", "Classify the request", "Assign a team", "Record the resolution"], demo: "/tools/service-desk" },
+  "/products/start-business-pro": { steps: ["Identify a customer", "Describe the problem", "Define a pilot offer", "Test demand"], demo: "/tools/business-plan-generator" },
+  "/products/orkiva": { steps: ["Identify the tenant", "Evaluate policy", "Allow or deny", "Record the decision"], demo: "/tools/role-access" },
+  "/solutions/islamic-bnpl": { steps: ["Enter asset cost", "Set disclosed profit", "Choose a term", "Review installments"], demo: "/solutions/islamic-bnpl" },
+  "/solutions/islamic-virtual-card": { steps: ["Issue a demo card", "Set spending limits", "Attempt payment", "Review the ledger"], demo: "/tools/card-controls" },
+  "/demo/device-order": { steps: ["Configure devices", "Review the quote", "Approve the order", "Track fulfillment"], demo: "/demo/device-order" },
+  "/work/yeesp": { steps: ["Agree the milestone", "Submit evidence", "Review the work"], demo: "/work/yeesp" },
+};
+
+export function ShowcaseJourney({chapter}: {chapter: Chapter}) {
+  const journey = productJourneys[chapter.path];
+  if (!journey) return null;
+
+  return <section className="showcase-journey" aria-labelledby="showcase-flow">
+    <div className="showcase-journey-heading">
+      <h2 id="showcase-flow">How the workflow runs</h2>
+      <a href={journey.demo === chapter.path ? "#try-workflow" : journey.demo}>Try the demo</a>
+    </div>
+    <ol>{journey.steps.map(step => <li key={step}>{step}</li>)}</ol>
+  </section>;
+}
 
 export function InnovationDirectory() {
   const products = innovationPages.filter(page => !flagship.some(feature => feature.path === page.path) && !page.path.startsWith("/tools/"));
