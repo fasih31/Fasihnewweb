@@ -1,3 +1,4 @@
+import { Navigation } from "../client/src/components/navigation";
 import { deliveryNotes } from "../shared/delivery-notes";
 import { ChapterHeading, artFor } from "../shared/chapter-heading";
 import { HomeCover } from "../shared/home-cover";
@@ -30,7 +31,7 @@ export function portfolioHtml(template:string,path="/") {
     <meta data-rh="true" name="twitter:title" content="${title}"><meta data-rh="true" name="twitter:description" content="${desc}">
     <script data-rh="true" type="application/ld+json">${JSON.stringify(schemaFor(c)).replaceAll("<","\\u003c")}</script>`;
   const body = c===home ? renderToStaticMarkup(createElement(HomeCover)) : `<main class="folio personal"><div class="folio-width">${renderToStaticMarkup(createElement(ChapterHeading,{chapter:c}))}${c.sections.map(([heading,body])=>`<section class="profile-band"><h2>${esc(heading)}</h2><p>${esc(body)}</p></section>`).join("")}<nav>${c.links.map(([text,href])=>`<p><a href="${esc(href)}">${esc(text)}</a></p>`).join("")}</nav></div></main>`;
-  return template.replace(/<title>.*?<\/title>/,()=>head).replace('<div id="root"></div>',()=>'<div id="root">'+body+'</div>');
+  return template.replace(/<title>.*?<\/title>/,()=>head).replace('<div id="root"></div>',()=>'<div id="root">'+renderToStaticMarkup(createElement(Navigation,{skipLink:true}))+body+'</div>');
 }
 
 

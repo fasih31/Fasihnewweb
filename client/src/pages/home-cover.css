@@ -69,3 +69,10 @@
  .cover-credentials{grid-template-columns:1fr}
  .cover-credentials div+div{border-inline-start:0;border-top:1px solid #698c7d}
 }
+.cover-work-visual{margin:0;border:1px solid #b4c9bf;border-radius:1rem;overflow:hidden;background:#d7e5df}
+.cover-work-visual img{display:block;width:100%;height:auto;aspect-ratio:6/5;object-fit:cover}
+@media(max-width:600px){
+ .cover-intro{grid-template-columns:minmax(0,1fr)}
+ .cover-work-visual{grid-column:1;grid-row:auto;margin-top:1rem}
+ .cover-work-visual img{aspect-ratio:2/1}
+}

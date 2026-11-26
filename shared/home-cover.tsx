@@ -1,5 +1,4 @@
 import React from "react";
-import { portrait } from "./profile";
 import { careerOverview } from "./career-overview";
 
 const features = [
@@ -18,7 +17,9 @@ export function HomeCover() {
           <p className="cover-lead">I lead enterprise device-ordering delivery at e& (Etisalat). My experience spans Islamic fintech product design, enterprise technology delivery, and independent AI products.</p>
           <nav className="cover-actions" aria-label="Introduction"><a href="/resume">Read my résumé</a><a href="#portfolio">See selected work</a><a href="/contact">Get in touch</a></nav>
         </div>
-        <img className="cover-portrait" src={portrait} alt="Fasih ur Rehman" width="630" height="840" {...{fetchpriority:"high"}}/>
+        <figure className="cover-work-visual">
+          <img src="/work/cover-devices.webp" alt="Illustration of devices used in an enterprise ordering workflow" width="600" height="600" {...{fetchpriority:"high"}}/>
+        </figure>
       </header>
       <dl className="cover-credentials">
         <div><dt>Current role</dt><dd>Senior Project Manager at e& (Etisalat)</dd></div>
