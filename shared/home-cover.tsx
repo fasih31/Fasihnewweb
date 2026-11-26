@@ -9,11 +9,12 @@ const features = [
 ];
 
 export function HomeCover() {
-  return <main className="folio home-cover">
+  return <main className="folio home-cover" id="main-content">
     <div className="cover-width">
       <header className="cover-intro" id="about">
-        <div className="cover-copy"><p className="cover-role">Product leadership · Solution architecture</p>
+        <div className="cover-copy"><p className="cover-role">Enterprise product leadership · UAE</p>
           <h1>Fasih <span>ur Rehman</span></h1>
+          <p className="cover-position">Product leader and solution architect</p>
           <p className="cover-lead">At e& in the UAE, I lead delivery across the journey from a device quote to an enterprise order. I also design financial products and build independent platforms for AI, learning and work.</p>
           <nav className="cover-actions" aria-label="Introduction"><a href="/case-studies">Explore the case studies</a><a href="/innovation-lab">Try the innovation lab</a><a href="/career">Professional journey</a></nav>
         </div>

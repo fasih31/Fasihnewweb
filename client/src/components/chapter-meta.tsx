@@ -9,5 +9,5 @@ export function ChapterMeta({chapter:c}:{chapter:Chapter}) {
   return <Helmet><title>{titleFor(c)}</title><meta name="description" content={c.intro}/><link rel="canonical" href={url}/>
     <meta property="og:title" content={titleFor(c)}/><meta property="og:description" content={c.intro}/><meta property="og:url" content={url}/>
     <meta property="og:type" content={isHome||c.path==="/about"?"profile":c.path.startsWith("/notes/")?"article":"website"}/><meta property="og:image" content={"https://iamfasih.com"+(photo||portrait)}/>
-    <meta name="twitter:card" content="summary_large_image"/><script type="application/ld+json">{JSON.stringify(schemaFor(c))}</script></Helmet>;
+    <meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content={titleFor(c)}/><meta name="twitter:description" content={c.intro}/><script type="application/ld+json">{JSON.stringify(schemaFor(c))}</script></Helmet>;
 }

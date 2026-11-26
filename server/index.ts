@@ -10,6 +10,7 @@ import { logger } from "./utils/logger";
 import { randomUUID } from "crypto";
 
 const app = express();
+app.disable("x-powered-by");
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 declare module 'http' {
@@ -84,6 +85,7 @@ app.use((req, res, next) => {
     "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://archive.org https://api.coingecko.com https://api.exchangerate-api.com https://finnhub.io https://newsapi.org https://api.alquran.cloud https://random-hadith-generator.vercel.app; " +
     "frame-src 'self' https://archive.org https://openlibrary.org https://www.gutenberg.org; " +
     "frame-ancestors 'none'; " +
+    "object-src 'none'; " +
     "base-uri 'self'; " +
     "form-action 'self'; " +
     "upgrade-insecure-requests; " +
@@ -166,6 +168,13 @@ app.use((req, res, next) => {
   next();
 });
 
+// Public tools must not execute visitor code or fetch arbitrary destinations from this server.
+app.use(["/api/execute-code", "/api/scan-website-advanced", "/api/seo-schema", "/api/seo-analyze"], (_req, res) => {
+  const message = "This server-side tool is unavailable.";
+  res.setHeader("Cache-Control", "no-store");
+  res.status(410).json({ success: false, error: message, message });
+});
+
 app.use(express.json({
   verify: (req, _res, buf) => {
     req.rawBody = buf;
@@ -217,7 +226,7 @@ app.use((req, res, next) => {
     });
 
     if (!res.headersSent) {
-      res.status(status).json({ message });
+      res.status(status).json({ message: status >= 500 ? "Internal Server Error" : message });
     }
   });
 

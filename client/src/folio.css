@@ -78,3 +78,9 @@
 .resource-return h2 {font:normal clamp(1.6rem,3vw,2.6rem) Georgia,serif;letter-spacing:-.035em;margin-bottom:1rem}
 .resource-return nav {display:flex;gap:.8rem 2rem;flex-wrap:wrap}
 .resource-return a {text-decoration:underline;text-underline-offset:4px;padding:.3rem 0}
+.folio-skip{position:absolute;left:1rem;top:.5rem;z-index:10;padding:.65rem 1rem;background:#fff;color:#173e34;border-radius:.35rem;transform:translateY(-160%)}
+.folio-skip:focus{transform:none}
+.folio-bar nav{gap:clamp(.75rem,1.6vw,1.75rem)}
+@media (min-width:681px) and (max-width:940px){
+ .folio-bar nav{flex-wrap:wrap;justify-content:flex-end;row-gap:.35rem;padding-block:.6rem}
+}

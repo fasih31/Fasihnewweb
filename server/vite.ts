@@ -97,11 +97,19 @@ export function serveStatic(app: Express) {
     if (html) return res.type("html").send(html);
     next();
   });
-  app.use(express.static(distPath));
+  app.use(express.static(distPath, {
+    setHeaders(res, filePath) {
+      const relativePath = path.relative(distPath, filePath);
+      if (relativePath.startsWith("assets" + path.sep) && /-[\w-]{8}\.[\w]+$/.test(path.basename(filePath))) {
+        res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+      }
+    },
+  }));
 
   // fall through to index.html if the file doesn't exist
   app.use("*", (req, res) => {
     if (!(req.originalUrl.split("?")[0] === "/admin" || /^\/blog\/[^/]+$/.test(req.originalUrl.split("?")[0]))) res.status(404);
+    if (res.statusCode === 404) res.setHeader("X-Robots-Tag", "noindex");
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }

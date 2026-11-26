@@ -43,3 +43,18 @@
 .cover-cards .cover-photo img{display:block;width:100%;aspect-ratio:16/10}
 .cover-actions{gap:.8rem 1.25rem}
 .cover-actions a{min-height:2.75rem;display:inline-flex;align-items:center}
+.folio.home-cover{background:#f1f6f3}
+.cover-intro{border-bottom:1px solid #b8ccc1}
+.cover-position{font-size:clamp(1.2rem,2vw,1.7rem);font-weight:650;line-height:1.25;color:#224a3d;margin-bottom:.7rem}
+.cover-portrait{border-radius:1rem;outline:1px solid #a7bbb1;outline-offset:6px}
+.cover-intro+.cover-section{border-top:0}
+.cover-cards>a{border:1px solid #b9ccc2;border-radius:.85rem;background:#fbfdfb;overflow:hidden;padding:0 0 1rem}
+.cover-cards>a>:not(.cover-photo){margin-inline:1rem}
+.cover-cards .cover-photo{border-radius:0}
+.cover-cards>a:hover{background:#fff;border-color:#50786a}
+.cover-fields>div{border:1px solid #bbcdc4;border-radius:.6rem;padding:1rem;background:#f9fcfa}
+@media(max-width:600px){
+ .cover-position{grid-column:1/-1;margin-top:1.4rem;margin-bottom:0}
+ .cover-lead{margin-top:.6rem}
+ .cover-portrait{outline-offset:3px}
+}

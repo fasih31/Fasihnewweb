@@ -3,10 +3,11 @@ import { Menu, X } from "lucide-react";
 
 const resume = "/attached_assets/Fasih Ur Rehman Resume_1761533879218.pdf";
 
-export function Navigation() {
+export function Navigation({ skipLink = false }: { skipLink?: boolean }) {
   const [open, setOpen] = useState(false);
   return (
     <header className="folio-header" data-testid="navigation-header">
+      {skipLink && <a className="folio-skip" href="#main-content">Skip to content</a>}
       <div className="folio-bar">
         <a className="folio-brand" href="/"><i aria-hidden="true">FR</i>Fasih ur Rehman</a>
         <button className="folio-menu" aria-label={open ? "Close menu" : "Open menu"} aria-controls="folio-nav"

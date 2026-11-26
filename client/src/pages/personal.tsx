@@ -30,7 +30,7 @@ export default function PersonalPage({chapter:c}:{chapter:Chapter}) {
     if(isHome && window.location.hash==="#contact") window.location.replace("/contact");
   },[isHome]);
   return <><ChapterMeta chapter={c}/>
-    <Navigation/>{isHome ? <HomeCover/> : <main className="folio personal"><div className="folio-width">
+    <Navigation skipLink/>{isHome ? <HomeCover/> : <main className="folio personal" id="main-content"><div className="folio-width">
     <ChapterHeading chapter={c}/>
     <ShowcaseJourney chapter={c}/>
     {c===caseStudies && <Directory items={showcasePages} illustrated/>}
