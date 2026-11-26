@@ -1,3 +1,4 @@
+import { AssistantStudio } from "@/components/assistant-studio";
 import { recruiterProfile } from "@shared/recruiter-profile";
 import { caseStudies, showcasePages } from "@shared/portfolio-expansion";
 import {InnovationDirectory, InnovationTool, ShowcaseJourney} from "@/components/innovation-tools";
@@ -40,6 +41,7 @@ export default function PersonalPage({chapter:c}:{chapter:Chapter}) {
     {c.path==="/innovation-lab" ? <InnovationDirectory/> : <InnovationTool key={c.path} path={c.path}/>}
     {c.path==="/demo/device-order" && <DeliveryLab/>}
     {c.path==="/ask" && <PortfolioGuide/>}
+    {c.path==="/assistant-studio" && <AssistantStudio/>}
     </div>
     {c===expertise && <section className="profile-section"><h2>My professional experience</h2>
       <Directory illustrated items={domains.filter(d=>!["/domains/ai-ml","/domains/crypto-web3"].includes(d.path))}/>

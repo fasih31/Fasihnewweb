@@ -116,9 +116,10 @@ for (const note of deliveryNotes) {
   note.links.push(["All delivery notes",notebook.path]);
 }
 export const deliveryLab=chapter("/demo/device-order","From device quote to delivery","Interactive product demo","Try a business device subscription from the sales, buyer, approver and operations perspectives. Build a sample quote, send it back for revision or complete delivery and export the order record. Progress stays in this browser.",[],[["My enterprise telecom work","/domains/telecom"],["My delivery notes","/notes/device-quotation"]]);
-export const portfolioGuide = chapter("/ask","Ask Fasih","Portfolio assistant","Ask about my work, or explore Islamic banking and technology through linked public references.",[],[["Read the notebook","/notes"],["Browse my career","/career"]]);
+export const assistantStudio = chapter("/assistant-studio","Assistant Studio","Knowledge-based assistants","Create and share a source-backed assistant for your own profile, team or subject area.",[],[["Ask Fasih","/ask"]]);
+export const portfolioGuide = chapter("/ask","Ask Fasih","Portfolio assistant","Ask about my work, or explore Islamic banking and technology through linked public references.",[],[["Create your own assistant","/assistant-studio"],["Read the notebook","/notes"],["Browse my career","/career"]]);
 projectsPage.links.push(["Try the device-order demo",deliveryLab.path]);
-export const chapters = [labIndex,caseStudies,recruiterProfile,...showcasePages,...innovationPages,deliveryLab,portfolioGuide,notebook,...deliveryNotes,home, career, expertise, about, research, education, projectsPage, contact, resourceIndex, ...rolePages, ...domains, ...studies.map(s=>chapter("/work/"+s.slug,s.title,s.name,s.context,[[s.question,s.decision],["How I would test it",s.check]],[[s.link,s.href]],image(s.art)))];
+export const chapters = [labIndex,caseStudies,recruiterProfile,assistantStudio,...showcasePages,...innovationPages,deliveryLab,portfolioGuide,notebook,...deliveryNotes,home, career, expertise, about, research, education, projectsPage, contact, resourceIndex, ...rolePages, ...domains, ...studies.map(s=>chapter("/work/"+s.slug,s.title,s.name,s.context,[[s.question,s.decision],["How I would test it",s.check]],[[s.link,s.href]],image(s.art)))];
 export const aliases: Record<string,string> = {
   "/solutions/daas": "/domains/telecom", "/solutions/edtech": "/domains/edtech",
   "/solutions/fintech": "/domains/fintech", "/solutions/ecommerce": "/domains/ecommerce",

@@ -1,0 +1,15 @@
+.assistant-studio{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:1.3rem;margin:2rem 0 3rem}
+.assistant-preview,.assistant-editor{padding:clamp(1rem,3vw,2rem);border-radius:1rem;background:#edf5ef;border:1px solid #a8c4b5;color:#173e34;min-width:0}
+.assistant-editor{background:#f9fcf9}
+.assistant-studio h2{font:normal 2rem/1.15 Georgia,serif;margin:.75rem 0}
+.assistant-studio h3{font-weight:650}
+.assistant-studio form,.assistant-log,.assistant-studio fieldset{display:grid;gap:.9rem;margin:1rem 0}
+.assistant-studio label{display:grid;gap:.4rem;font-weight:650}
+.assistant-studio input,.assistant-studio textarea{background:white;color:#173e34;border:1px solid #83a294;border-radius:.4rem;padding:.6rem;width:100%;min-width:0}
+.assistant-studio button{width:fit-content;padding:.55rem .8rem;background:#173e34;color:white;border-radius:.4rem}
+.assistant-studio button:disabled{opacity:.55}
+.assistant-studio fieldset,.assistant-log article{padding:.8rem;border:1px solid #b3c9bd;border-radius:.55rem;min-width:0;overflow-wrap:anywhere}
+.assistant-studio a{text-decoration:underline}
+.assistant-log li{margin:.6rem 0}
+.assistant-prompts{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0}
+@media(max-width:760px){.assistant-studio{grid-template-columns:1fr}}
