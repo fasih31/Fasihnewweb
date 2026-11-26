@@ -77,7 +77,7 @@ interface Tool {
 
 const tools: Tool[] = [
   ...innovationPages.filter(page=>page.path.startsWith("/tools/") || page.path==="/solutions/islamic-bnpl").map(page=>({
-    id:page.path, title:page.title, description:page.intro, icon:Calculator, features:[page.sections[0][0]],
+    id:page.path, title:page.title, description:page.intro, icon:Calculator, features:page.sections.slice(0,1).map(([heading])=>heading),
     gradient:"from-emerald-600 to-teal-700", category:page.label, openAsPage:true, pagePath:page.path
   })),
   {

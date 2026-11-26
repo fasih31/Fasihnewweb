@@ -35,3 +35,5 @@
 #try-workflow{scroll-margin-top:6rem}
 @media(max-width:700px){.showcase-journey ol{grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:360px){.showcase-journey ol{grid-template-columns:1fr}}
+.innovation-filter{display:flex;align-items:center;flex-wrap:wrap;gap:.7rem;margin:0 0 1rem;font-weight:650}
+.innovation-filter select{background:#f6faf7;color:#172e2a;border:1px solid #789787;border-radius:.4rem;padding:.65rem}

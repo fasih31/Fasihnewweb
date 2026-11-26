@@ -1,3 +1,4 @@
+import { calculatorWorksheets } from "@shared/professional-calculators";
 import { useState, type FormEvent } from "react";
 import type { Chapter } from "@shared/profile";
 import { innovationPages } from "@shared/innovation";
@@ -7,6 +8,7 @@ const money = (cents:number) => new Intl.NumberFormat("en-AE",{style:"currency",
 type Field = [string,string,number?,number?,number?];
 type Worksheet = {fields:Field[]; run:(v:string[])=>string[]};
 const worksheets:Record<string,Worksheet> = {
+  ...calculatorWorksheets,
   "/solutions/islamic-bnpl": {
     fields:[["Asset cost in AED","5000",0.01,100000000,0.01],["Fixed profit (%)","8",0,100,0.01],["Months","6",1,120,1]],
     run:([cost,rate,term])=>{
@@ -94,8 +96,10 @@ export function ShowcaseJourney({chapter}: {chapter: Chapter}) {
 }
 
 export function InnovationDirectory() {
+  const [category, setCategory] = useState("All categories");
   const products = innovationPages.filter(page => !flagship.some(feature => feature.path === page.path) && !page.path.startsWith("/tools/"));
   const tools = innovationPages.filter(page => page.path.startsWith("/tools/"));
+  const categories = Array.from(new Set(tools.map(tool => tool.label))).sort();
   return <div className="innovation-directory">
     <section aria-labelledby="lab-featured">
       <h2 id="lab-featured">Featured demos</h2>
@@ -114,7 +118,8 @@ export function InnovationDirectory() {
     </section>
     <section aria-labelledby="lab-tools">
       <h2 id="lab-tools">Interactive tools</h2>
-      <div className="innovation-list">{tools.map(page =>
+      <label className="innovation-filter">Tool category<select value={category} onChange={event => setCategory(event.target.value)}><option>All categories</option>{categories.map(item => <option key={item}>{item}</option>)}</select></label>
+      <div className="innovation-list">{tools.filter(page => category === "All categories" || page.label === category).map(page =>
         <a href={page.path} key={page.path}><span>{page.label}</span><h3>{page.title}</h3><p>{page.intro}</p></a>
       )}</div>
     </section>

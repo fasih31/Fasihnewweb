@@ -1,3 +1,4 @@
+import { caseStudies, showcasePages } from "@shared/portfolio-expansion";
 import {InnovationDirectory, InnovationTool, ShowcaseJourney} from "@/components/innovation-tools";
 import { PortfolioReading } from "@/components/portfolio-reading";
 import { ChapterHeading, artFor } from "@shared/chapter-heading";
@@ -32,6 +33,7 @@ export default function PersonalPage({chapter:c}:{chapter:Chapter}) {
     <Navigation/>{isHome ? <HomeCover/> : <main className="folio personal"><div className="folio-width">
     <ChapterHeading chapter={c}/>
     <ShowcaseJourney chapter={c}/>
+    {c===caseStudies && <Directory items={showcasePages} illustrated/>}
     <div id="try-workflow">
     {c.path==="/innovation-lab" ? <InnovationDirectory/> : <InnovationTool key={c.path} path={c.path}/>}
     {c.path==="/demo/device-order" && <DeliveryLab/>}
@@ -43,6 +45,6 @@ export default function PersonalPage({chapter:c}:{chapter:Chapter}) {
     {c===notebook && <section className="profile-section"><h2>Read the notes</h2><Directory illustrated items={deliveryNotes}/><div className="personal-links"><a href="/notebook.xml">Subscribe in an RSS reader ↗</a></div></section>}
     {c===career ? <CareerExplorer/> : <PortfolioReading chapter={c}/>}
     {c.path==="/domains/telecom" && <section className="profile-band"><div><h2>A device order, step by step</h2><p>An illustrative walkthrough of how responsibilities change after a quotation is accepted.</p></div><OrderDemo/></section>}
-    {c.path!=="/innovation-lab" && c!==expertise && c!==notebook && c!==research && c!==career && c.links.length>0 && <nav className="personal-links" aria-label="Further reading">{c.links.map(([label,href])=><a href={href} key={href}>{label} ↗</a>)}</nav>}
+    {c!==caseStudies && c.path!=="/innovation-lab" && c!==expertise && c!==notebook && c!==research && c!==career && c.links.length>0 && <nav className="personal-links" aria-label="Further reading">{c.links.map(([label,href])=><a href={href} key={href}>{label} ↗</a>)}</nav>}
     </div>{c.path==="/contact" && <ContactSection/>}</main>}<Footer/></>;
 }

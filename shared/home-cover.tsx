@@ -15,7 +15,7 @@ export function HomeCover() {
         <div className="cover-copy"><p className="cover-role">Product leadership · Solution architecture</p>
           <h1>Fasih <span>ur Rehman</span></h1>
           <p className="cover-lead">At e& in the UAE, I lead delivery across the journey from a device quote to an enterprise order. I also design financial products and build independent platforms for AI, learning and work.</p>
-          <nav className="cover-actions" aria-label="Introduction"><a href="#portfolio">Explore the case studies</a><a href="/innovation-lab">Try the innovation lab</a><a href="/career">Professional journey</a></nav>
+          <nav className="cover-actions" aria-label="Introduction"><a href="/case-studies">Explore the case studies</a><a href="/innovation-lab">Try the innovation lab</a><a href="/career">Professional journey</a></nav>
         </div>
         <img className="cover-portrait" src={portrait} alt="Fasih ur Rehman" width="630" height="840" {...{fetchpriority:"high"}}/>
       </header>
