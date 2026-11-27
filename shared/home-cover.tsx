@@ -20,6 +20,10 @@ export function HomeCover() {
         <aside className="cover-companion" aria-label="Portfolio assistant">
           <h2>Ask Fasih</h2>
           <p>Explore my work at e&, independent products, and the principles behind Islamic banking.</p>
+          <div className="cover-suggestions">
+            <a href="/ask?question=What%20does%20Fasih%20do%20at%20e%26%3F">What do you do at e&amp;?</a>
+            <a href="/ask?question=How%20does%20Murabaha%20work%3F">How does Murabaha work?</a>
+          </div>
           <a href="/ask">Open the assistant</a>
         </aside>
       </header>

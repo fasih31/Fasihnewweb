@@ -81,3 +81,7 @@
 .cover-companion p{max-width:34ch;line-height:1.6}
 .cover-companion a{font-weight:650;text-decoration:underline;text-underline-offset:.25rem;width:max-content}
 @media(max-width:600px){.cover-companion{grid-column:1/-1;margin-top:1.5rem}}
+.cover-companion{background:linear-gradient(145deg,#e8f2eb,#fbfdfb);box-shadow:0 12px 28px #173e3410}
+.cover-suggestions{display:grid;gap:.55rem}
+.cover-companion .cover-suggestions a{width:100%;padding:.6rem .8rem;background:#fff;border:1px solid #b4c9bf;border-radius:.45rem;text-decoration:none}
+.cover-companion .cover-suggestions a:hover{border-color:#376957;text-decoration:underline}

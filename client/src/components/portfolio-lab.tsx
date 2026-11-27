@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { readings } from "@shared/portfolio-guide";
+import { readings, portfolioQuery } from "@shared/portfolio-guide";
 import "./portfolio-lab.css";
 
 const kits=[{name:"Business phone",price:95},{name:"Field tablet",price:145},{name:"Work laptop",price:215}];
@@ -36,7 +36,7 @@ const prompts = ["What does Fasih do at e&?", "How does Murabaha work?", "What i
 type ConversationTurn = {question: string; answer?: string; sources: ReturnType<typeof readings>};
 
 export function PortfolioGuide() {
-  const [question, setQuestion] = useState("");
+  const [question, setQuestion] = useState(() => (new URLSearchParams(window.location.search).get("question") || "").slice(0, 700));
   const [pending, setPending] = useState("");
   const [conversation, setConversation] = useState<ConversationTurn[]>([]);
 
@@ -45,14 +45,15 @@ export function PortfolioGuide() {
     if (!clean || pending) return;
     setQuestion("");
     setPending(clean);
-    let sources = readings(clean);
+    const previous = conversation.at(-1)?.question || "";
+    let sources = readings(portfolioQuery(clean, previous));
     let answer: string | undefined;
     try {
       const response = await fetch("/guide/query", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({question: clean}),
-        signal: AbortSignal.timeout(5500),
+        body: JSON.stringify({question: clean, previous}),
+        signal: AbortSignal.timeout(13500),
       });
       if (response.ok) {
         const data = await response.json();

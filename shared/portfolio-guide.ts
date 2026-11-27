@@ -51,3 +51,9 @@ export function readings(question:string):Reading[]{
   const seen=new Set<string>();
   return scored.filter(({r})=>{if(seen.has(r.title))return false;seen.add(r.title);return true}).slice(0,3).map(x=>x.r);
 }
+
+
+export function portfolioQuery(question: string, previous = "") {
+  const followUp = /\b(it|that|this|they|those|more|example|how so)\b/i.test(question);
+  return previous && followUp ? previous.trim().slice(0, 700) + " " + question : question;
+}
