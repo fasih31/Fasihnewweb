@@ -22,6 +22,10 @@ export default async function handler(req:any,res:any) {
     ]});
     const answer=result.choices[0]?.message.content;
     return res.json({mode:answer?"assistant":"reading",answer,sources});
-  } catch {return res.json({mode:"reading",sources});}
+  } catch (error) {
+    const status = error instanceof OpenAI.APIError ? error.status : undefined;
+    console.warn("Portfolio model request failed", {status, code: error instanceof OpenAI.APIError ? error.code : undefined});
+    return res.json({mode:"reading",sources});
+  }
 }
 let windowStart=Date.now(),used=0;
