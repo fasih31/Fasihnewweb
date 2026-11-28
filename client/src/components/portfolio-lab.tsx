@@ -35,6 +35,15 @@ export function DeliveryLab(){
 const prompts = ["What does Fasih do at e&?", "How does Murabaha work?", "What is the difference between Ijara and Murabaha?", "What has Fasih built with AI?"];
 type ConversationTurn = {question: string; answer?: string; sources: ReturnType<typeof readings>};
 
+type LocalSession = {
+  prompt(input: string, options: {signal: AbortSignal}): Promise<string>;
+  destroy(): void;
+};
+type LocalLanguageModel = {
+  availability(): Promise<string>;
+  create(options: {signal: AbortSignal}): Promise<LocalSession>;
+};
+
 export function PortfolioGuide() {
   const [question, setQuestion] = useState(() => (new URLSearchParams(window.location.search).get("question") || "").slice(0, 700));
   const [pending, setPending] = useState("");
@@ -46,25 +55,23 @@ export function PortfolioGuide() {
     setQuestion("");
     setPending(clean);
     const previous = conversation.at(-1)?.question || "";
-    let sources = readings(portfolioQuery(clean, previous));
+    const sources = readings(portfolioQuery(clean, previous));
     let answer: string | undefined;
+    let session: LocalSession | undefined;
     try {
-      const response = await fetch("/guide/query", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({question: clean, previous}),
-        signal: AbortSignal.timeout(13500),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        if (data.mode === "assistant" && typeof data.answer === "string") {
-          answer = data.answer;
-          if (Array.isArray(data.sources)) sources = data.sources;
-        }
+      const model = (window as Window & {LanguageModel?: LocalLanguageModel}).LanguageModel;
+      if (model && sources.length && await model.availability() !== "unavailable") {
+        const signal = AbortSignal.timeout(120000);
+        session = await model.create({signal});
+        answer = await session.prompt([
+          "Answer the question using only the numbered portfolio references below. Cite claims with [1], [2] or [3]. If a fact is missing, say so. Distinguish demonstrations from achievements.",
+          JSON.stringify({question: clean, previous, references: sources.map(({title,text}, i) => ({number: i+1,title,text}))})
+        ].join("\n"), {signal});
       }
     } catch {
       // The curated references are available even when the model endpoint is unavailable.
     } finally {
+      session?.destroy();
       setConversation(turns => [...turns, {question: clean, answer, sources}]);
       setPending("");
     }
@@ -79,11 +86,11 @@ export function PortfolioGuide() {
         {turn.sources.length>0 && <div className="ask-sources"><h3>{turn.answer ? "Sources" : "From the reference library"}</h3>
           {turn.sources.map((source,i) => <div key={source.title}><a href={source.path}>[{i+1}] {source.title}</a>{!turn.answer && <p>{source.text}</p>}</div>)}</div>}
       </article>)}
-      {pending && <p role="status">Looking up references…</p>}
+      {pending && <p role="status">Preparing your answer…</p>}
     </div>
     <form onSubmit={(event: FormEvent) => { event.preventDefault(); void ask(question); }}>
       <label>Your question<textarea maxLength={700} rows={2} value={question} onChange={event => setQuestion(event.target.value)} required/></label>
-      <small>Use public examples. Questions may be processed by OpenAI.</small>
+      <small>Ask Fasih uses your browser’s free on-device model when available. The first use may download the model. Other browsers show matching source excerpts.</small>
       <button disabled={!!pending || !question.trim()}>Send question</button>
       {conversation.length>0 && <button disabled={!!pending} type="button" onClick={() => setConversation([])}>Clear conversation</button>}
     </form>
