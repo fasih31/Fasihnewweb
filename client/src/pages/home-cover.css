@@ -85,3 +85,56 @@
 .cover-suggestions{display:grid;gap:.55rem}
 .cover-companion .cover-suggestions a{width:100%;padding:.6rem .8rem;background:#fff;border:1px solid #b4c9bf;border-radius:.45rem;text-decoration:none}
 .cover-companion .cover-suggestions a:hover{border-color:#376957;text-decoration:underline}
+
+/* Art direction for the personal homepage and its server-rendered cover. */
+.folio.home-cover {
+  background: #f7f6ff;
+  color: #1e1932;
+}
+.cover-intro {border-color:#d7d0e7}
+.cover-role,.cover-cards small {color:#543697}
+.cover-intro h1 {
+  font-family:inherit;
+  font-weight:850;
+  letter-spacing:-.09em;
+  line-height:.91;
+}
+.cover-intro h1 span {color:#5631a3}
+.cover-position {color:#29213e}
+.cover-actions a:first-child {background:#342066;color:#fff}
+.cover-companion {
+  background:#221739;
+  color:#fff;
+  border:none;
+  border-radius:1.75rem;
+  box-shadow:8px 8px 0 #cfb9ff;
+}
+.cover-companion h2,.cover-heading h2,.cover-cards h3 {
+  font-family:inherit;
+  font-weight:750;
+}
+.cover-companion p {color:#e7dcfb}
+.cover-companion .cover-suggestions a {
+  background:#362450;
+  color:#fff;
+  border-color:#796497;
+  border-radius:.8rem;
+}
+.cover-companion .cover-suggestions a:hover {border-color:#d7c2ff}
+.cover-companion>a {color:#e2cfff}
+.cover-credentials {background:#e8dfff;color:#2b194b;border-radius:1rem}
+.cover-credentials dt {color:#573e77}
+.cover-credentials div+div {border-color:#cdbbe8}
+.cover-section,.cover-shelf {border-color:#d7d0e7}
+.cover-cards>a,.cover-fields>div {
+  background:#fff;
+  border-color:#d7d0e7;
+  border-radius:1.2rem;
+}
+.cover-cards>a:hover {border-color:#7751be}
+.cover-cards p,.cover-fields a {color:#514666}
+.home-cover a:focus-visible {outline-color:#9257ed}
+@media(max-width:600px) {
+  .cover-intro h1 {font-size:clamp(3.15rem,12vw,4.5rem)}
+  .cover-companion {margin-inline-end:8px}
+}
