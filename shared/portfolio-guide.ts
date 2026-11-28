@@ -42,6 +42,20 @@ function topic(words:string[]) {
 const indexed=records.map(r=>({r,terms:tokens(r.terms+" "+r.title),words:tokens(r.text)}));
 const freq=new Map<string,number>();
 for(const {terms,words} of indexed)for(const w of new Set([...terms,...words]))freq.set(w,(freq.get(w)||0)+1);
+const biography: Reading = {
+  title: "Fasih ur Rehman · Professional profile",
+  path: "/resume",
+  terms: "professional introduction biography background",
+  text: "Fasih ur Rehman is a UAE-based product leader and solution architect. As a Senior Project Manager at e& (Etisalat), he helps enterprise customers move from a device quotation to a fulfilled order. His work also spans Islamic fintech at Greens Fin Innovations and independent AI projects such as VirtualIEC."
+};
+
+export function profileIntroduction(question: string) {
+  const normalized = question.toLowerCase().replace(/[’']/g, "").replace(/[^a-z0-9 ]/g, " ").trim().replace(/\s+/g, " ");
+  const name = "(?:fasih(?: ur rehman)?|you|him)";
+  const introduction = new RegExp("^(?:(?:please |can you |could you )*(?:who (?:is|are)|whos|tell me (?:more |a bit )?about|introduce|give me (?:a brief |an? )?(?:bio|overview) of) " + name + "|introduce yourself|your background|fasih(?: ur rehman)?(?: s)?(?: profile| bio| background)?)(?: please)?$");
+  if (introduction.test(normalized)) return {answer: biography.text, sources: [biography]};
+}
+
 export function readings(question:string):Reading[]{
   const words=tokens(question);
   const label=topic(words);
