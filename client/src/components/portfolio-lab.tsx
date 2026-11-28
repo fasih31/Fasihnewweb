@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { readings, portfolioQuery } from "@shared/portfolio-guide";
+import { readings, portfolioQuery, profileIntroduction } from "@shared/portfolio-guide";
 import "./portfolio-lab.css";
 
 const kits=[{name:"Business phone",price:95},{name:"Field tablet",price:145},{name:"Work laptop",price:215}];
@@ -32,7 +32,7 @@ export function DeliveryLab(){
     {o.history.length>0 && <div aria-live="polite"><h3>Order record · {o.ref}</h3><ol>{o.history.map((h,i)=><li key={i}>{h}</li>)}</ol></div>}
   </section>;
 }
-const prompts = ["What does Fasih do at e&?", "How does Murabaha work?", "What is the difference between Ijara and Murabaha?", "What has Fasih built with AI?"];
+const prompts = ["Who is Fasih?", "What does Fasih do at e&?", "How does Murabaha work?", "What is the difference between Ijara and Murabaha?", "What has Fasih built with AI?"];
 type ConversationTurn = {question: string; answer?: string; sources: ReturnType<typeof readings>};
 
 type LocalSession = {
@@ -54,6 +54,12 @@ export function PortfolioGuide() {
     if (!clean || pending) return;
     setQuestion("");
     setPending(clean);
+    const introduction = profileIntroduction(clean);
+    if (introduction) {
+      setConversation(turns => [...turns, {question: clean, ...introduction}]);
+      setPending("");
+      return;
+    }
     const previous = conversation.at(-1)?.question || "";
     const sources = readings(portfolioQuery(clean, previous));
     let answer: string | undefined;
